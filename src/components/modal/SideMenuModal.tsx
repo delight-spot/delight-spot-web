@@ -21,7 +21,7 @@ export default function SideMenuModal({ isVisible, hide }: Props) {
   }, [isVisible]);
 
   return isVisible ? (
-    <div className="absolute w-1/2 h-screen bg-gray-100  right-0 top-0">
+    <div className="absolute w-1/2 h-screen bg-slate-100  right-0 top-0 shadow-md">
       <button className="absolute right-4 top-4 p-3" onClick={hide}>
         <MdClose size={18} />
       </button>
@@ -29,7 +29,7 @@ export default function SideMenuModal({ isVisible, hide }: Props) {
       <ul className="mt-20 w-full flex flex-col items-center">
         {sideModalList.map((item) => (
           <li key={item.key} className="transition-colors w-full">
-            <Link href={item.url} className="w-full flex p-3 justify-center items-center hover:bg-gray-200 ">
+            <Link href={item.url} className="w-full flex p-3 justify-center items-center hover:bg-slate-200 ">
               {item.title}
             </Link>
           </li>
