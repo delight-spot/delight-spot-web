@@ -16,16 +16,16 @@ interface Store {
   pk: number;
   name: string;
   description: string;
-  reviews_len: string;
   kind_menu: KindMenu;
-  kind_detail: string;
   sell_list: SellingList[];
   city: string;
-  rating: string;
+  reviews_len: number;
+  total_rating: boolean;
   is_owner: boolean;
   user_name: string;
   is_liked: boolean;
   photos: Photo[];
+  create_at: Date;
 }
 
 export type { Photo, SellingList, Store, KindMenu };
