@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import HeaderButton from './HeaderButton';
+import HeaderButton from '../HeaderButton';
 
 describe('HeaderButton', () => {
   it('HeaderButton Static UI 스냅샷', () => {

@@ -1,5 +1,5 @@
 import { fireEvent, render, renderHook, screen } from '@testing-library/react';
-import Header from './Header';
+import Header from '../Header';
 import { useRouter } from 'next/navigation';
 import { useModal } from '@/hooks/useModal';
 
@@ -15,7 +15,7 @@ jest.mock('next/navigation', () => ({
   }),
 }));
 
-jest.mock('../../hooks/useModal.tsx', () => ({
+jest.mock('../../../hooks/useModal.tsx', () => ({
   useModal: () => ({
     show: mockShow,
     hide: mockHide,
