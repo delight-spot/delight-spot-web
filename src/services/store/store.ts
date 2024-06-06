@@ -13,4 +13,9 @@ const getStores = async (page: number = 1, type?: string): Promise<Store[]> => {
   return data;
 };
 
-export { getStores };
+const getStoreDetail = async (id: number) => {
+  const result = await (await api.get(`/stores/${id}`)).data;
+  return result;
+};
+
+export { getStores, getStoreDetail };
