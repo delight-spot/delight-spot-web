@@ -15,7 +15,7 @@ export default function StoreItem({ store }: Props) {
           <Image src={store.photos[0].file} alt={`store ${store.name}`} fill />
         ) : (
           <div className="absolute w-full h-full bg-slate-S200 flex items-center justify-center">
-            <IoImage size={20} color="#64748b" />
+            <IoImage size={20} color="#64748b" data-testid="store-no-image-icon" />
           </div>
         )}
       </div>
@@ -28,12 +28,12 @@ export default function StoreItem({ store }: Props) {
             <span className="uppercase my-1">{store.kind_menu}</span>
             <div className="flex items-center gap-2">
               <div className="flex items-center">
-                <IoStar size={12} color={store.reviews_len > 0 ? '#FFBD53' : '#C8C9DF'} />
+                <IoStar data-testid="store-star-icon" size={12} color={store.reviews_len > 0 ? '#FFBD53' : '#C8C9DF'} />
                 <span>{`(${store.reviews_len})`}</span>
               </div>
 
               <div>
-                <IoHeartSharp size={12} color={store.is_liked ? '#FF5F5F' : '#C8C9DF'} />
+                <IoHeartSharp data-testid="store-heart-icon" size={12} color={store.is_liked ? '#FF5F5F' : '#C8C9DF'} />
               </div>
             </div>
           </div>
