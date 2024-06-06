@@ -23,4 +23,19 @@ const sideModalList = [
   },
 ] as const;
 
-export { sideModalList };
+const storeTabList = [
+  {
+    title: '전체',
+    key: 'all',
+  },
+  {
+    title: '음식',
+    key: 'food',
+  },
+  {
+    title: '카페',
+    key: 'cafe',
+  },
+] as const;
+
+export { sideModalList, storeTabList };

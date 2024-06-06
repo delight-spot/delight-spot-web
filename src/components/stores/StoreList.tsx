@@ -2,13 +2,16 @@
 
 import { useGetInfiniteStores } from '@/hooks/queries/useGetStores';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 import StoreItem from './StoreItem';
+import { storeTabList } from '@/constants';
 
 export default function StoreList() {
-  const { data, fetchNextPage } = useGetInfiniteStores();
+  const [selectTab, setSelectTab] = useState<string>('all');
+  const { data, fetchNextPage } = useGetInfiniteStores(selectTab);
   const limitRef = useRef<HTMLDivElement | null>(null);
   const { isInterSecting } = useIntersectionObserver({
     ref: limitRef,
@@ -20,15 +23,33 @@ export default function StoreList() {
     }
   }, [isInterSecting, fetchNextPage]);
 
-  return (
-    <ul className="flex flex-col gap-8 px-4">
-      {data?.pages.flat().map((item) => (
-        <Link href={`/store/${item.pk}`} key={item.pk}>
-          <StoreItem store={item} />
-        </Link>
-      ))}
+  const handleSelectTab = (tabKey: string) => {
+    setSelectTab(tabKey);
+  };
 
-      <div ref={limitRef} />
-    </ul>
+  return (
+    <>
+      <div className="p-4 pt-20">
+        <ul className="flex items-center gap-2">
+          {storeTabList.map((tab) => (
+            <li className="p-4 relative cursor-pointer" key={tab.key} onClick={() => handleSelectTab(tab.key)}>
+              {tab.title}
+              {tab.key === selectTab && (
+                <motion.div layoutId="tab" className="border absolute w-full border-primary-P300 bottom-0 left-0" />
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <ul className="flex flex-col gap-8 px-4">
+        {data?.pages.flat().map((item) => (
+          <Link href={`/store/${item.pk}`} key={item.pk}>
+            <StoreItem store={item} />
+          </Link>
+        ))}
+
+        <div ref={limitRef} />
+      </ul>
+    </>
   );
 }
