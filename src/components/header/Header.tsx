@@ -50,7 +50,7 @@ export default function Header({ title, isBack, rightType, backUrl }: Props) {
   };
 
   return (
-    <header className="relative w-full">
+    <header className="fixed m-auto left-0 right-0 w-sm bg-white z-50">
       <div className="py-4 px-1 flex items-center relative justify-between">
         {isBack ? <HeaderButton icon={<MdChevronLeft color="#00000" size={16} />} onClick={onBackPage} /> : <div />}
 

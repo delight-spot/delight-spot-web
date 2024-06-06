@@ -7,7 +7,7 @@ export default function HomePage() {
   return (
     <section>
       <Header title="STORE LIST" rightType="menu" />
-      <SSRSuspense fallback={<StoreSkeleton length={10} />}>
+      <SSRSuspense fallback={<StoreSkeleton length={10} paddingTop={70} />}>
         <StoreList />
       </SSRSuspense>
     </section>
