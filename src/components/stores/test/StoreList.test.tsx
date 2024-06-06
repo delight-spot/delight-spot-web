@@ -1,9 +1,12 @@
 import { useGetInfiniteStores } from '@/hooks/queries/useGetStores';
 import { getStores } from '@/services/store/store';
 import { TestQueryProvider } from '@/tests/TestQueryProvider';
-import { render, renderHook, screen, waitFor, act } from '@testing-library/react';
+import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import StoreList from '../StoreList';
 import { Store } from '@/types/domain';
+
+import mockRouter from 'next-router-mock';
+import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
 
 jest.mock('../../../services/store/store.ts', () => ({
   getStores: jest.fn(),
@@ -43,5 +46,28 @@ describe('Store List', () => {
       expect(screen.getByText('Store 1')).toBeInTheDocument();
       expect(screen.getByText('Store 2')).toBeInTheDocument();
     });
+  });
+
+  it('아이템 클릭할 경우 디테일 페이지로 이동', async () => {
+    (getStores as jest.Mock).mockImplementation(() => [
+      { pk: 1, name: 'Store 1' },
+      { pk: 2, name: 'Store 2' },
+    ]);
+
+    render(
+      <TestQueryProvider>
+        <StoreList />
+      </TestQueryProvider>,
+      { wrapper: MemoryRouterProvider }
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Store 1')).toBeInTheDocument();
+    });
+
+    const link = await screen.findByRole('link', { name: 'Store 1' });
+    fireEvent.click(link);
+
+    expect(mockRouter.asPath).toEqual('/store/1');
   });
 });
