@@ -88,4 +88,60 @@ describe('Store List', () => {
       expect(selectedBar.parentElement).toHaveTextContent(tab.title);
     });
   });
+
+  it('Store List UI 스냅샷', () => {
+    const { container } = render(
+      <TestQueryProvider>
+        <StoreList />
+      </TestQueryProvider>
+    );
+    expect(container).toMatchInlineSnapshot(`
+<div>
+  <div
+    class="p-4 pt-20"
+  >
+    <ul
+      class="flex items-center gap-2 border-b"
+    >
+      <li
+        class="p-4 relative cursor-pointer"
+      >
+        <p
+          class="font-bold"
+        >
+          전체
+        </p>
+        <div
+          class="border absolute w-full border-primary-P300 bottom-0 left-0"
+          data-testid="selected"
+        />
+      </li>
+      <li
+        class="p-4 relative cursor-pointer"
+      >
+        <p
+          class="text-slate-S400"
+        >
+          음식
+        </p>
+      </li>
+      <li
+        class="p-4 relative cursor-pointer"
+      >
+        <p
+          class="text-slate-S400"
+        >
+          카페
+        </p>
+      </li>
+    </ul>
+  </div>
+  <ul
+    class="flex flex-col gap-8 px-4"
+  >
+    <div />
+  </ul>
+</div>
+`);
+  });
 });
