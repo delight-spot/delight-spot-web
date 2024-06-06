@@ -1,12 +1,13 @@
 import { useGetInfiniteStores } from '@/hooks/queries/useGetStores';
 import { getStores } from '@/services/store/store';
 import { TestQueryProvider } from '@/tests/TestQueryProvider';
-import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import StoreList from '../StoreList';
 import { Store } from '@/types/domain';
 
 import mockRouter from 'next-router-mock';
 import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
+import { storeTabList } from '@/constants';
 
 jest.mock('../../../services/store/store.ts', () => ({
   getStores: jest.fn(),
@@ -69,5 +70,22 @@ describe('Store List', () => {
     fireEvent.click(link);
 
     expect(mockRouter.asPath).toEqual('/store/1');
+  });
+
+  it('Store tab 클릭 했을 때 탭 하이라이트 되는지 검증', () => {
+    render(
+      <TestQueryProvider>
+        <StoreList />
+      </TestQueryProvider>
+    );
+
+    storeTabList.forEach((tab) => {
+      const tabElement = screen.getByText(tab.title);
+      fireEvent.click(tabElement);
+
+      const selectedBar = screen.getByTestId('selected');
+      expect(selectedBar).toBeInTheDocument();
+      expect(selectedBar.parentElement).toHaveTextContent(tab.title);
+    });
   });
 });

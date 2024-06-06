@@ -35,7 +35,11 @@ export default function StoreList() {
             <li className="p-4 relative cursor-pointer" key={tab.key} onClick={() => handleSelectTab(tab.key)}>
               {tab.title}
               {tab.key === selectTab && (
-                <motion.div layoutId="tab" className="border absolute w-full border-primary-P300 bottom-0 left-0" />
+                <motion.div
+                  data-testid="selected"
+                  layoutId="tab"
+                  className="border absolute w-full border-primary-P300 bottom-0 left-0"
+                />
               )}
             </li>
           ))}
