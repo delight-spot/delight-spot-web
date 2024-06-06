@@ -20,7 +20,7 @@ interface Store {
   sell_list: SellingList[];
   city: string;
   reviews_len: number;
-  total_rating: boolean;
+  total_rating: number | string;
   is_owner: boolean;
   user_name: string;
   is_liked: boolean;
