@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { IoStar, IoImage, IoHeartSharp } from 'react-icons/io5';
 
 import { Store } from '@/types/domain';
+import { translateKindMenu } from '@/utils/translateToKorean';
 
 interface Props {
   store: Store;
@@ -25,7 +26,7 @@ export default function StoreItem({ store }: Props) {
           <p className="line-clamp-2 text-subtitle leading-subtitle font-semibold">{store.name}</p>
           <div className="flex flex-col mt-2 *:text-label *:leading-label *:text-slate-S500">
             <span className="font-semibold text-slate-S700">{store.city}</span>
-            <span className="uppercase my-1">{store.kind_menu}</span>
+            <span className="my-1">{translateKindMenu(store.kind_menu)}</span>
             <div className="flex items-center gap-2">
               <div className="flex items-center">
                 <IoStar data-testid="store-star-icon" size={12} color={store.reviews_len > 0 ? '#FFBD53' : '#C8C9DF'} />
