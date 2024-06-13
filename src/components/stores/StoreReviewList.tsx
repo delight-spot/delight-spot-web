@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function StoreReviewList({ storeId }: Props) {
-  const { data } = useGetReviews(storeId);
+  const { data } = useGetReviews({ storeId });
 
   return <ul></ul>;
 }
