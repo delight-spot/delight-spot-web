@@ -9,7 +9,7 @@ import {
 import { number, queryKeys } from '@/constants';
 import { getStores } from '@/services/store/store';
 import { ErrorStatus } from '@/types/common';
-import { Store } from '@/types/domain';
+import { Store } from '@/types/domain/stores';
 
 function useGetInfiniteStores(
   selectedType: string = 'all',

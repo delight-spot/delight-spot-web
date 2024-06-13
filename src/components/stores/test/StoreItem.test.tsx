@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import StoreItem from '../StoreItem';
-import { Store } from '@/types/domain';
+import { Store } from '@/types/domain/stores';
 
 jest.mock('next/image', () => ({
   __esModule: true,
