@@ -1,8 +1,8 @@
+import { useQuery } from '@tanstack/react-query';
 import { number, queryKeys } from '@/constants';
 import { getStoreDetail } from '@/services/store/store';
 import { UseQueryCustomOption } from '@/types/common';
-import { StoreDetail } from '@/types/domain';
-import { useQuery } from '@tanstack/react-query';
+import { StoreDetail } from '@/types/domain/stores';
 
 function useGetStoreDetail(id: number, queryOptions?: UseQueryCustomOption<StoreDetail>) {
   return useQuery({

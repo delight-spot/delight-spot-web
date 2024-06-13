@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { IoStar, IoImage, IoHeartSharp } from 'react-icons/io5';
 
-import { Store } from '@/types/domain';
 import { translateKindMenu } from '@/utils/translateToKorean';
+import { Store } from '@/types/domain/stores';
 
 interface Props {
   store: Store;

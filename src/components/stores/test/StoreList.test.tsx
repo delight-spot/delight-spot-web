@@ -1,13 +1,13 @@
 import { useGetInfiniteStores } from '@/hooks/queries/useGetStores';
 import { getStores } from '@/services/store/store';
 import { TestQueryProvider } from '@/tests/TestQueryProvider';
-import { act, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import StoreList from '../StoreList';
-import { Store } from '@/types/domain';
 
 import mockRouter from 'next-router-mock';
 import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
 import { storeTabList } from '@/constants';
+import { Store } from '@/types/domain/stores';
 
 jest.mock('../../../services/store/store.ts', () => ({
   getStores: jest.fn(),

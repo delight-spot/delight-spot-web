@@ -1,5 +1,5 @@
+import { Store, StoreDetail } from '@/types/domain/stores';
 import api from '../httpClient';
-import { Store, StoreDetail } from '@/types/domain';
 
 const getStores = async (page: number = 1, type?: string): Promise<Store[]> => {
   const data = await (

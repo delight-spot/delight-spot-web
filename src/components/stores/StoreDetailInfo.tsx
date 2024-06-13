@@ -2,14 +2,17 @@
 
 import { useGetStoreDetail } from '@/hooks/queries/useGetStoreDetail';
 import Image from 'next/image';
-import { IoLocationSharp, IoHeartSharp, IoShareSocialOutline, IoPerson, IoHomeSharp } from 'react-icons/io5';
-import { MdOutlinePets } from 'react-icons/md';
+
+import StoreReviewList from './StoreReviewList';
 import IconWrapper from '../IconWrapper';
+import RatingList from '../RatingList';
+
+import { StoreDetail } from '@/types/domain/stores';
+import { translateKindMenu } from '@/utils/translateToKorean';
 import { formatTimeAgo } from '@/utils/formatDate';
 import { cls } from '@/utils/cls';
-import { translateKindMenu } from '@/utils/translateToKorean';
-import RatingList from '../RatingList';
-import { StoreDetail } from '@/types/domain';
+import { MdOutlinePets } from 'react-icons/md';
+import { IoLocationSharp, IoHeartSharp, IoShareSocialOutline, IoPerson, IoHomeSharp } from 'react-icons/io5';
 
 interface Props {
   id: number;
@@ -66,26 +69,28 @@ export default function StoreDetailInfo({ id }: Props) {
         )}
       </div>
 
-      <div className="border-b border-b-slate-S200 px-4 flex flex-col gap-4 pb-4">
-        <p className="text-h4 leading-h4 font-bold mt-4">{data?.name}</p>
+      <div className="border-b border-b-slate-S200 px-4 flex flex-col gap-5 pb-4">
+        <div className="flex items-center mt-4 gap-4">
+          <p className="text-h4 leading-h4 font-bold">{data?.name}</p>
 
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-0.5">
+            <IoLocationSharp size={18} color="#2D47DB" />
+            <span className="text-body leading-label text-primary-P300 font-semibold">{data?.city}</span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1">
             <IoHomeSharp color="#565978" />
             <p className="text-system-S300 font-bold">{translateKindMenu(data?.kind_menu)}</p>
           </div>
           <div className="flex items-center gap-1">
             <MdOutlinePets color="#565978" />
-            <p>애완동물 동반입장</p>
+            <p>애완동물</p>
             <span className={cls(data?.pet_friendly ? 'text-system-S300' : 'text-system-S200', 'font-bold')}>
               {data?.pet_friendly ? ' 가능' : '불가능'}
             </span>
           </div>
-        </div>
-
-        <div className="flex items-center gap-1">
-          <IoLocationSharp size={18} color="#2D47DB" />
-          <span className="text-body leading-label text-primary-P300 font-semibold">{data?.city}</span>
         </div>
 
         <div className="flex flex-col gap-0.5">
@@ -103,6 +108,7 @@ export default function StoreDetailInfo({ id }: Props) {
 
       <div className="my-4 px-4">
         <p className="text-h4 leading-h4 font-bold">댓글</p>
+        <StoreReviewList storeId={id} />
       </div>
     </div>
   );
