@@ -29,10 +29,10 @@ describe('Header', () => {
     expect(container).toMatchInlineSnapshot(`
 <div>
   <header
-    class="relative w-full"
+    class="fixed m-auto left-0 right-0 bg-white z-50"
   >
     <div
-      class="py-4 px-1 flex items-center relative justify-between"
+      class="py-4 px-1 flex items-center relative justify-between w-sm m-auto"
     >
       <div />
       <h1
