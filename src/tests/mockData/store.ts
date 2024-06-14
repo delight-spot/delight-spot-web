@@ -21,7 +21,7 @@ const mockStores: Store[] = [
 
 const mockStoreDetail: StoreDetail = {
   id: 1,
-  owner: { name: 'Owner 1', avatar: 'url-to-avatar', username: 'owner1' },
+  owner: { name: 'name', avatar: 'url-to-avatar', username: 'username' },
   sell_list: [{ pk: 1, name: 'Coffee', description: 'Hot coffee' }],
   total_rating: 4.5,
   taste_rating: 4.0,

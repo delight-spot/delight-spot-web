@@ -82,10 +82,8 @@ describe('StoreItem', () => {
             서울
           </span>
           <span
-            class="uppercase my-1"
-          >
-            한식
-          </span>
+            class="my-1"
+          />
           <div
             class="flex items-center gap-2"
           >
