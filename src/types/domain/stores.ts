@@ -45,7 +45,7 @@ interface StoreDetail {
   restroom_rating: number | string;
   is_owner: boolean;
   photos: Photo[];
-  is_liked: false;
+  is_liked: boolean;
   created_at: Date;
   updated_at: Date;
   name: string;

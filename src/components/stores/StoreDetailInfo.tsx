@@ -36,10 +36,15 @@ export default function StoreDetailInfo({ id }: Props) {
       <div className="flex items-center gap-2 mb-4 px-4">
         <div className="relative w-10 h-10 rounded-full">
           {data?.owner.avatar ? (
-            <Image src={data.owner.avatar} alt={data.owner.name} className="rounded-full overflow-hidden" />
+            <Image
+              src={data.owner.avatar}
+              alt={data.owner.name}
+              className="rounded-full overflow-hidden"
+              data-testid="detail-avatar"
+            />
           ) : (
             <div className="absolute w-full h-full rounded-full overflow-hidden bg-[#64748b] flex items-center justify-center">
-              <IoPerson size={18} color="white" />
+              <IoPerson size={18} color="white" data-testid="detail-person-icon" />
             </div>
           )}
         </div>
@@ -55,17 +60,20 @@ export default function StoreDetailInfo({ id }: Props) {
           </div>
 
           <div className="flex items-center gap-4">
-            <IconWrapper icon={<IoHeartSharp size={18} color={data?.is_liked ? '#FF5F5F' : '#C8C9DF'} />} />
-            <IconWrapper icon={<IoShareSocialOutline size={18} />} />
+            <IconWrapper
+              icon={<IoHeartSharp size={18} color={data?.is_liked ? '#FF5F5F' : '#C8C9DF'} />}
+              data-testid="like-icon"
+            />
+            <IconWrapper icon={<IoShareSocialOutline size={18} data-testid="share-icon" />} />
           </div>
         </div>
       </div>
 
       <div className="w-full h-[22.5rem] bg-slate-400 relative">
         {data?.photos && data?.photos.length > 0 ? (
-          <Image src={data.photos[0].file} alt={data.name} fill />
+          <Image src={data.photos[0].file} alt={data.name} fill data-testid="detail-photo" />
         ) : (
-          <div className="absolute w-full h-full" />
+          <div className="absolute w-full h-full" data-testid="detail-no-photo" />
         )}
       </div>
 
