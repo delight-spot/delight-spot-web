@@ -49,7 +49,7 @@ interface StoreDetail {
   created_at: Date;
   updated_at: Date;
   name: string;
-  description: number;
+  description: string;
   kind_menu: KindMenu;
   pet_friendly: boolean;
   city: string;
