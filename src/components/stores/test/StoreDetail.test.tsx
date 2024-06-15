@@ -23,6 +23,30 @@ jest.mock('next/image', () => ({
   default: ({ 'data-testid': testId }: { 'data-testid': string }) => <div data-testid={testId}>Image</div>,
 }));
 
+jest.mock('../../../components/stores/Avatar.tsx', () => {
+  const avatar = ({ size, avatarUrl }: { size: number; avatarUrl?: string }) => (
+    <div
+      data-testid="avatar"
+      style={{
+        width: size,
+        height: size,
+      }}
+    >
+      {avatarUrl}
+    </div>
+  );
+  return avatar;
+});
+
+jest.mock('../../../components/stores/ReviewList.tsx', () => {
+  const reviewList = ({ storeId }: { storeId: number }) => (
+    <div>
+      <h1>{`ReviewList ${storeId}`}</h1>
+    </div>
+  );
+  return reviewList;
+});
+
 jest.mock('../../../hooks/queries/useGetStoreDetail.tsx');
 
 jest.mock('../../../components/IconWrapper.tsx', () => {
@@ -86,13 +110,10 @@ describe('StoreDetailInfo', () => {
       class="flex items-center gap-2 mb-4 px-4"
     >
       <div
-        class="relative w-10 h-10 rounded-full"
+        data-testid="avatar"
+        style="width: 40px; height: 40px;"
       >
-        <div
-          data-testid="detail-avatar"
-        >
-          Image
-        </div>
+        url-to-avatar
       </div>
       <div
         class="text-body leading-body flex w-full justify-between"
@@ -417,38 +438,32 @@ describe('StoreDetailInfo', () => {
       class="my-4 px-4"
     >
       <p
-        class="text-h4 leading-h4 font-bold"
+        class="text-h4 leading-h4 font-bold mb-4"
       >
         댓글
       </p>
-      <ul />
+      <div>
+        <h1>
+          ReviewList 1
+        </h1>
+      </div>
     </div>
   </div>
 </div>
 `);
   });
 
-  it('스토어 아바타 있는 경우와 없는 경우', async () => {
-    const { rerender, getByTestId } = render(
+  it('Avatar 컴포넌트로 props 전달 후 렌더링 확인', async () => {
+    render(
       <TestQueryProvider>
         <StoreDetailInfo id={1} />
       </TestQueryProvider>
     );
 
     await waitFor(() => {
-      expect(getByTestId('detail-avatar')).toBeInTheDocument();
-    });
-
-    mockStoreDetailData!.owner.avatar = '';
-    rerender(
-      <TestQueryProvider>
-        <StoreDetailInfo id={1} />
-      </TestQueryProvider>
-    );
-
-    await waitFor(() => {
-      const personIcon = screen.getByTestId('detail-person-icon');
-      expect(personIcon).toBeInTheDocument();
+      const avatar = screen.getByTestId('avatar');
+      expect(avatar).toHaveStyle({ width: '40px', height: '40px' });
+      expect(avatar).toHaveTextContent('url-to-avatar');
     });
   });
 
@@ -602,6 +617,18 @@ describe('StoreDetailInfo', () => {
 
     await waitFor(() => {
       expect(getByText('평점 (없음)')).toBeInTheDocument();
+    });
+  });
+
+  it('ReviewList id를 props로 잘 전달하는지 확인', async () => {
+    render(
+      <TestQueryProvider>
+        <StoreDetailInfo id={1} />
+      </TestQueryProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('ReviewList 1')).toBeInTheDocument();
     });
   });
 });

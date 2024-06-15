@@ -3,7 +3,6 @@
 import { useGetStoreDetail } from '@/hooks/queries/useGetStoreDetail';
 import Image from 'next/image';
 
-import StoreReviewList from './StoreReviewList';
 import IconWrapper from '../IconWrapper';
 import RatingList from '../RatingList';
 
@@ -13,6 +12,8 @@ import { formatTimeAgo } from '@/utils/formatDate';
 import { cls } from '@/utils/cls';
 import { MdOutlinePets } from 'react-icons/md';
 import { IoLocationSharp, IoHeartSharp, IoShareSocialOutline, IoPerson, IoHomeSharp } from 'react-icons/io5';
+import ReviewList from './ReviewList';
+import Avatar from './Avatar';
 
 interface Props {
   id: number;
@@ -34,20 +35,7 @@ export default function StoreDetailInfo({ id }: Props) {
   return (
     <div className="pt-20">
       <div className="flex items-center gap-2 mb-4 px-4">
-        <div className="relative w-10 h-10 rounded-full">
-          {data?.owner.avatar ? (
-            <Image
-              src={data.owner.avatar}
-              alt={data.owner.name}
-              className="rounded-full overflow-hidden"
-              data-testid="detail-avatar"
-            />
-          ) : (
-            <div className="absolute w-full h-full rounded-full overflow-hidden bg-[#64748b] flex items-center justify-center">
-              <IoPerson size={18} color="white" data-testid="detail-person-icon" />
-            </div>
-          )}
-        </div>
+        <Avatar size={40} avatarUrl={data?.owner.avatar} />
 
         <div className="text-body leading-body flex w-full justify-between">
           <div>
@@ -115,8 +103,8 @@ export default function StoreDetailInfo({ id }: Props) {
       </div>
 
       <div className="my-4 px-4">
-        <p className="text-h4 leading-h4 font-bold">댓글</p>
-        <StoreReviewList storeId={id} />
+        <p className="text-h4 leading-h4 font-bold mb-4">댓글</p>
+        <ReviewList storeId={id} />
       </div>
     </div>
   );
