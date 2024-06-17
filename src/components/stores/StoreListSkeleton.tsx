@@ -3,7 +3,7 @@ interface Props {
   paddingTop?: number;
 }
 
-export default function StoreSkeleton({ length = 1, paddingTop }: Props) {
+export default function StoreListSkeleton({ length = 1, paddingTop }: Props) {
   return (
     <div style={{ paddingTop }}>
       {Array.from({ length }).map((_, index) => (
