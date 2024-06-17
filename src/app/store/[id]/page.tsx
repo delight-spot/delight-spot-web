@@ -1,6 +1,7 @@
 import SSRSuspense from '@/components/SSRSuspense';
 import Header from '@/components/header/Header';
 import StoreDetailInfo from '@/components/stores/StoreDetailInfo';
+import StoreDetailSkeleton from '@/components/stores/StoreDetailSkeleton';
 
 interface Props {
   params: {
@@ -12,7 +13,7 @@ export default function StoreDetailPage({ params: { id } }: Props) {
   return (
     <section>
       <Header title="Detail" rightType="menu" isBack />
-      <SSRSuspense fallback={<h1>Loading...</h1>}>
+      <SSRSuspense fallback={<StoreDetailSkeleton />}>
         <StoreDetailInfo id={Number(id)} />
       </SSRSuspense>
     </section>
