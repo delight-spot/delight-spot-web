@@ -15,9 +15,9 @@ export default function Button({ title, size = 'md', ...props }: Props) {
   return (
     <button
       className={cls(
-        props.disabled ? 'bg-slate-S400 text-slate-S500' : 'bg-primary-P300 hover:bg-primary-P400 text-white w-full',
+        props.disabled ? 'bg-slate-S400 text-slate-S500' : 'bg-primary-P300 hover:bg-primary-P400 text-white',
         sizes[size],
-        'text-body leading-body flex justify-center items-center px-4 rounded-lg '
+        'text-body leading-body flex justify-center items-center px-4 rounded-lg w-full'
       )}
       {...props}
     >

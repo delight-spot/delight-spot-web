@@ -9,8 +9,20 @@ const config: Config = {
   theme: {
     extend: {
       width: {
-        sm: '360px',
-        lg: '1366px',
+        sm: '22.5rem',
+        md: '48rem',
+      },
+      screens: {
+        sm: '22.5rem',
+        md: '48rem',
+      },
+      minWidth: {
+        sm: '22.5rem',
+        md: '48rem',
+      },
+      maxWidth: {
+        sm: '22.5rem',
+        md: '48rem',
       },
       fontSize: {
         display: '3.5rem',
