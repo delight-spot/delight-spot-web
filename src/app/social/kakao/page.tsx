@@ -1,6 +1,6 @@
 'use client';
 
-import { useKakaoLogin } from '@/hooks/queries/useAuth';
+import { useKakaoLogin, useSignUp } from '@/hooks/queries/useAuth';
 import { useModal } from '@/hooks/useModal';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
@@ -34,9 +34,19 @@ export default function KakaoLoginPage() {
     }
   }, [code, modal]);
 
+  const { mutate: signup, data: signupData } = useSignUp({
+    onError: () => {
+      modal.show();
+    },
+  });
+
   useEffect(() => {
     if (code) {
-      kakaoLogin(code);
+      signup({
+        code,
+        email: 'abc@gmail.com',
+      });
+      //    kakaoLogin(code);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
