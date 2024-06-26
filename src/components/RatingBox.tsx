@@ -1,22 +1,25 @@
 import { translateRatingTitle } from '@/utils/translateToKorean';
+import { FaStar } from 'react-icons/fa';
 
 interface Props {
   title: string;
   rating: number;
 }
 
+const MAX_COUNT = 5;
 export default function RatingBox({ rating, title }: Props) {
-  const ratingPercentage = Math.min(Math.max(rating, 0), 5) * 20;
-
   return (
-    <div className="relative bg-slate-S200 h-10 w-full rounded-md">
-      <div
-        className="rounded-md absolute w-full h-full bg-system-S600 bg-opacity-50"
-        style={{ width: `${ratingPercentage}%` }}
-      />
-      <p className="h-full flex items-center px-2 text-body leading-body font-semibold relative z-10">
-        {`${translateRatingTitle(title)} (${rating})`}
-      </p>
+    <div>
+      <div className="flex items-center gap-5">
+        <p className="min-w-24 text-body leading-body">{`${translateRatingTitle(title)} (${rating})`}</p>
+        <div className="flex items-center gap-3">
+          {Array.from({ length: MAX_COUNT }).map((_, index) => (
+            <div key={index}>
+              <FaStar size={20} color={index < rating ? '#FFBD53' : '#C8C9DF'} />
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
