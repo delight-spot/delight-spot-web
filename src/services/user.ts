@@ -25,4 +25,9 @@ const logout = async () => {
   return response;
 };
 
-export { kakaoAuthCode, logout, signup };
+const getMyInfo = async () => {
+  const response = await (await api('users/me')).data;
+  return response;
+};
+
+export { kakaoAuthCode, logout, signup, getMyInfo };

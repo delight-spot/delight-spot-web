@@ -14,6 +14,11 @@ import { formatTimeAgo } from '@/utils/formatDate';
 import { cls } from '@/utils/cls';
 import { MdOutlinePets } from 'react-icons/md';
 import { IoLocationSharp, IoHeartSharp, IoShareSocialOutline, IoHomeSharp } from 'react-icons/io5';
+import Header from '../header/Header';
+import StoreDetailSubtitle from './StoreDetailSubTitle';
+import { useUser } from '@/hooks/useUser';
+import { useModal } from '@/hooks/useModal';
+import LoginModal from '../modal/LoginModal';
 
 interface Props {
   id: number;
@@ -21,6 +26,8 @@ interface Props {
 
 export default function StoreDetailInfo({ id }: Props) {
   const { data } = useGetStoreDetail(id);
+  const modal = useModal();
+  const { isLoggedIn } = useUser();
 
   const ratingList: { title: string; rating: number }[] = data
     ? Object.keys(data)
@@ -32,80 +39,98 @@ export default function StoreDetailInfo({ id }: Props) {
         .filter((item) => typeof item.rating === 'number')
     : [];
 
-  return (
-    <div className="pt-20 min-w-sm md:w-md m-auto">
-      <div className="flex items-center gap-2 mb-4 px-4">
-        <Avatar size={40} avatarUrl={data?.owner.avatar} />
+  const onBooking = () => {
+    if (!isLoggedIn) return modal.show();
+    console.log('booking');
+  };
 
-        <div className="text-body leading-body flex w-full justify-between">
-          <div>
-            <span className="text-black">{data?.owner.name}</span>
-            <div className="flex items-center gap-1 text-slate-S400">
-              <p>{data?.owner.username}</p>
-              <span>﹒</span>
-              <p>{formatTimeAgo(data?.created_at)}</p>
+  const onShare = () => {
+    if (!isLoggedIn) return modal.show();
+    console.log('share');
+  };
+
+  return (
+    <div>
+      <Header title={data?.name ?? ''} rightType="menu" isBack />
+      <div className="pt-20 min-w-sm md:w-md m-auto">
+        <div className="flex items-center gap-2 mb-4 px-4">
+          <Avatar size={40} avatarUrl={data?.owner.avatar} />
+
+          <div className="text-body leading-body flex w-full justify-between">
+            <div>
+              <span className="text-black">{data?.owner.name}</span>
+              <div className="flex items-center gap-1 text-slate-S400">
+                <p>{data?.owner.username}</p>
+                <span>﹒</span>
+                <p>{formatTimeAgo(data?.created_at)}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <IconWrapper
+                onClick={onBooking}
+                icon={<IoHeartSharp size={18} color={data?.is_liked ? '#FF5F5F' : '#C8C9DF'} />}
+                data-testid="like-icon"
+              />
+              <IconWrapper onClick={onShare} icon={<IoShareSocialOutline size={18} data-testid="share-icon" />} />
+            </div>
+          </div>
+        </div>
+
+        <div className="w-full h-[22.5rem] md:min-h-[48rem] bg-slate-400 relative">
+          {data?.photos && data?.photos.length > 0 ? (
+            <Image src={data.photos[0].file} alt={data.name} fill data-testid="detail-photo" className="object-cover" />
+          ) : (
+            <div className="absolute w-full h-full" data-testid="detail-no-photo" />
+          )}
+        </div>
+
+        <div className="border-b border-b-slate-S200 px-4 flex flex-col gap-5 pb-4">
+          <div className="flex items-center mt-4 gap-4">
+            <StoreDetailSubtitle title={data?.name ?? ''} />
+
+            <div className="flex items-center gap-0.5">
+              <IoLocationSharp size={18} color="#2D47DB" />
+              <span className="text-label leading-label text-primary-P300 font-semibold max-w-[200px] ">
+                {data?.city}
+              </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <IconWrapper
-              icon={<IoHeartSharp size={18} color={data?.is_liked ? '#FF5F5F' : '#C8C9DF'} />}
-              data-testid="like-icon"
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1">
+              <IoHomeSharp color="#565978" />
+              <p className="text-system-S300 font-bold">{translateKindMenu(data?.kind_menu)}</p>
+            </div>
+            <div className="flex items-center gap-1">
+              <MdOutlinePets color="#565978" />
+              <p>애완동물</p>
+              <span className={cls(data?.pet_friendly ? 'text-system-S300' : 'text-system-S200', 'font-bold')}>
+                {data?.pet_friendly ? ' 가능' : '불가능'}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-0.5">
+            <StoreDetailSubtitle title="설명" />
+            <p className="text-body leading-body">{data?.description}</p>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <StoreDetailSubtitle
+              title={`평점 (${data?.total_rating === 'No Ratings' ? '없음' : data?.total_rating})`}
             />
-            <IconWrapper icon={<IoShareSocialOutline size={18} data-testid="share-icon" />} />
-          </div>
-        </div>
-      </div>
-
-      <div className="w-full h-[22.5rem] md:min-h-[48rem] bg-slate-400 relative">
-        {data?.photos && data?.photos.length > 0 ? (
-          <Image src={data.photos[0].file} alt={data.name} fill data-testid="detail-photo" className="object-cover" />
-        ) : (
-          <div className="absolute w-full h-full" data-testid="detail-no-photo" />
-        )}
-      </div>
-
-      <div className="border-b border-b-slate-S200 px-4 flex flex-col gap-5 pb-4">
-        <div className="flex items-center mt-4 gap-4">
-          <p className="text-h4 leading-h4 font-bold">{data?.name}</p>
-
-          <div className="flex items-center gap-0.5">
-            <IoLocationSharp size={18} color="#2D47DB" />
-            <span className="text-body leading-label text-primary-P300 font-semibold">{data?.city}</span>
+            <RatingList ratingList={ratingList} />
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1">
-            <IoHomeSharp color="#565978" />
-            <p className="text-system-S300 font-bold">{translateKindMenu(data?.kind_menu)}</p>
-          </div>
-          <div className="flex items-center gap-1">
-            <MdOutlinePets color="#565978" />
-            <p>애완동물</p>
-            <span className={cls(data?.pet_friendly ? 'text-system-S300' : 'text-system-S200', 'font-bold')}>
-              {data?.pet_friendly ? ' 가능' : '불가능'}
-            </span>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-0.5">
-          <p className="text-h4 leading-h4 font-bold">설명</p>
-          <p className="text-body leading-body">{data?.description}</p>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <p className="text-h4 leading-h4 font-bold">
-            평점 ({data?.total_rating === 'No Ratings' ? '없음' : data?.total_rating})
-          </p>
-          <RatingList ratingList={ratingList} />
+        <div className="my-4 px-4 flex flex-col gap-4">
+          <StoreDetailSubtitle title="댓글" />
+          <ReviewList storeId={id} />
         </div>
       </div>
 
-      <div className="my-4 px-4">
-        <p className="text-h4 leading-h4 font-bold mb-4">댓글</p>
-        <ReviewList storeId={id} />
-      </div>
+      <LoginModal isOpen={modal.isVisible} onCloseModal={modal.hide} />
     </div>
   );
 }

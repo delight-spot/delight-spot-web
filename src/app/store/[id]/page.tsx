@@ -12,7 +12,6 @@ interface Props {
 export default function StoreDetailPage({ params: { id } }: Props) {
   return (
     <section>
-      <Header title="Detail" rightType="menu" isBack />
       <SSRSuspense fallback={<StoreDetailSkeleton />}>
         <StoreDetailInfo id={Number(id)} />
       </SSRSuspense>
