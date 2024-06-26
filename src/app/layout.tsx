@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <KakaoScript />
         <QueryProvider>
-          <main className="max-w-md m-auto">{children}</main>
+          <main className="w-sm md:w-md m-auto">{children}</main>
           <div id="modal" />
         </QueryProvider>
       </body>
