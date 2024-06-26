@@ -4,20 +4,18 @@ import { useForm } from 'react-hook-form';
 import { useSignUp } from '@/hooks/queries/useAuth';
 import { useRouter } from 'next/navigation';
 import { useModal } from '@/hooks/useModal';
+import { useLoginState } from '@/store/useLoginState';
 
 import Button from './Button';
 import Input from './Input';
-
-interface Props {
-  code: string;
-}
 
 type SignUpForm = {
   email: string;
 };
 
-export default function SignUpForm({ code }: Props) {
+export default function SignUpForm() {
   const router = useRouter();
+  const { code } = useLoginState();
   const {
     register,
     handleSubmit,
@@ -27,13 +25,11 @@ export default function SignUpForm({ code }: Props) {
   });
   const modal = useModal();
 
-  const { mutate: signup, data } = useSignUp({
+  const { mutate: signup } = useSignUp({
     onError: () => {
       modal.show();
     },
   });
-
-  console.log('SignUpForm ', data);
 
   const onSubmit = (data: SignUpForm) => {
     if (!code || !data.email) return;

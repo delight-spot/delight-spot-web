@@ -7,8 +7,8 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 import StoreItem from './StoreItem';
+
 import { storeTabList } from '@/constants';
-import LoginModal from '../modal/LoginModal';
 
 export default function StoreList() {
   const [selectTab, setSelectTab] = useState<string>('all');
@@ -55,7 +55,6 @@ export default function StoreList() {
 
         <div ref={limitRef} />
       </ul>
-      <LoginModal isOpen />
     </>
   );
 }
