@@ -1,12 +1,17 @@
 'use client';
 
 import { useGetStoreDetail } from '@/hooks/queries/useGetStoreDetail';
-import Image from 'next/image';
+import { useUser } from '@/hooks/useUser';
+import { useModal } from '@/hooks/useModal';
 
 import IconWrapper from '../IconWrapper';
 import RatingList from '../RatingList';
 import Avatar from './Avatar';
 import ReviewList from './ReviewList';
+import Header from '../header/Header';
+import StoreDetailSubtitle from './StoreDetailSubTitle';
+import LoginModal from '../modal/LoginModal';
+import ImageSlider from './ImageSlider';
 
 import { StoreDetail } from '@/types/domain/stores';
 import { translateKindMenu } from '@/utils/translateToKorean';
@@ -14,11 +19,6 @@ import { formatTimeAgo } from '@/utils/formatDate';
 import { cls } from '@/utils/cls';
 import { MdOutlinePets } from 'react-icons/md';
 import { IoLocationSharp, IoHeartSharp, IoShareSocialOutline, IoHomeSharp } from 'react-icons/io5';
-import Header from '../header/Header';
-import StoreDetailSubtitle from './StoreDetailSubTitle';
-import { useUser } from '@/hooks/useUser';
-import { useModal } from '@/hooks/useModal';
-import LoginModal from '../modal/LoginModal';
 
 interface Props {
   id: number;
@@ -79,7 +79,7 @@ export default function StoreDetailInfo({ id }: Props) {
 
         <div className="w-full h-[22.5rem] md:min-h-[48rem] bg-slate-400 relative">
           {data?.photos && data?.photos.length > 0 ? (
-            <Image src={data.photos[0].file} alt={data.name} fill data-testid="detail-photo" className="object-cover" />
+            <ImageSlider images={data.photos.map((photo) => photo.file)} />
           ) : (
             <div className="absolute w-full h-full" data-testid="detail-no-photo" />
           )}
