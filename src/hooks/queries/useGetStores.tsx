@@ -17,7 +17,7 @@ function useGetInfiniteStores(
 ) {
   return useInfiniteQuery({
     queryFn: ({ pageParam }) => getStores(pageParam, selectedType),
-    queryKey: [queryKeys.GET_STORES, selectedType],
+    queryKey: [queryKeys.STORE.GET_STORES, selectedType],
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPage) => {
       if (lastPage.length < number.INFINITE_QUERY_OFFSET) return undefined;

@@ -1,5 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import HttpError from './httpError';
+import { getCookie } from 'cookies-next';
+import { ACCESS_TOKEN } from '@/constants';
 
 export const SSR_BASE_URL = 'http://localhost:8000/api/v1';
 export const CSR_BASE_URL = '/api/v1/';
@@ -10,7 +12,11 @@ const api = axios.create({
   baseURL: isServer ? SSR_BASE_URL : CSR_BASE_URL,
 });
 
-api.interceptors.request.use((config) => {
+api.interceptors.request.use(async (config) => {
+  const prevAccessToken = getCookie(ACCESS_TOKEN);
+  if (prevAccessToken) {
+    config.headers.Authorization = `Bearer ${prevAccessToken}`;
+  }
   return config;
 });
 

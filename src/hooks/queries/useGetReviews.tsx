@@ -16,7 +16,7 @@ function useGetReviews(
   >
 ) {
   return useInfiniteQuery({
-    queryKey: [queryKeys.GET_REVIEWS, storeId],
+    queryKey: [queryKeys.STORE.GET_REVIEWS, storeId],
     queryFn: () => getReviews({ storeId, page }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPage) => {

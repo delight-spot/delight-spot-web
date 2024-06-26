@@ -16,6 +16,9 @@ import { MdOutlinePets } from 'react-icons/md';
 import { IoLocationSharp, IoHeartSharp, IoShareSocialOutline, IoHomeSharp } from 'react-icons/io5';
 import Header from '../header/Header';
 import StoreDetailSubtitle from './StoreDetailSubTitle';
+import { useUser } from '@/hooks/useUser';
+import { useModal } from '@/hooks/useModal';
+import LoginModal from '../modal/LoginModal';
 
 interface Props {
   id: number;
@@ -23,6 +26,8 @@ interface Props {
 
 export default function StoreDetailInfo({ id }: Props) {
   const { data } = useGetStoreDetail(id);
+  const modal = useModal();
+  const { isLoggedIn } = useUser();
 
   const ratingList: { title: string; rating: number }[] = data
     ? Object.keys(data)
@@ -33,6 +38,16 @@ export default function StoreDetailInfo({ id }: Props) {
         }))
         .filter((item) => typeof item.rating === 'number')
     : [];
+
+  const onBooking = () => {
+    if (!isLoggedIn) return modal.show();
+    console.log('booking');
+  };
+
+  const onShare = () => {
+    if (!isLoggedIn) return modal.show();
+    console.log('share');
+  };
 
   return (
     <div>
@@ -53,10 +68,11 @@ export default function StoreDetailInfo({ id }: Props) {
 
             <div className="flex items-center gap-4">
               <IconWrapper
+                onClick={onBooking}
                 icon={<IoHeartSharp size={18} color={data?.is_liked ? '#FF5F5F' : '#C8C9DF'} />}
                 data-testid="like-icon"
               />
-              <IconWrapper icon={<IoShareSocialOutline size={18} data-testid="share-icon" />} />
+              <IconWrapper onClick={onShare} icon={<IoShareSocialOutline size={18} data-testid="share-icon" />} />
             </div>
           </div>
         </div>
@@ -113,6 +129,8 @@ export default function StoreDetailInfo({ id }: Props) {
           <ReviewList storeId={id} />
         </div>
       </div>
+
+      <LoginModal isOpen={modal.isVisible} onCloseModal={modal.hide} />
     </div>
   );
 }
