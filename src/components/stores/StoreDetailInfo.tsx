@@ -5,15 +5,15 @@ import Image from 'next/image';
 
 import IconWrapper from '../IconWrapper';
 import RatingList from '../RatingList';
+import Avatar from './Avatar';
+import ReviewList from './ReviewList';
 
 import { StoreDetail } from '@/types/domain/stores';
 import { translateKindMenu } from '@/utils/translateToKorean';
 import { formatTimeAgo } from '@/utils/formatDate';
 import { cls } from '@/utils/cls';
 import { MdOutlinePets } from 'react-icons/md';
-import { IoLocationSharp, IoHeartSharp, IoShareSocialOutline, IoPerson, IoHomeSharp } from 'react-icons/io5';
-import ReviewList from './ReviewList';
-import Avatar from './Avatar';
+import { IoLocationSharp, IoHeartSharp, IoShareSocialOutline, IoHomeSharp } from 'react-icons/io5';
 
 interface Props {
   id: number;
@@ -33,7 +33,7 @@ export default function StoreDetailInfo({ id }: Props) {
     : [];
 
   return (
-    <div className="pt-20">
+    <div className="pt-20 min-w-sm md:w-md m-auto">
       <div className="flex items-center gap-2 mb-4 px-4">
         <Avatar size={40} avatarUrl={data?.owner.avatar} />
 
@@ -57,9 +57,9 @@ export default function StoreDetailInfo({ id }: Props) {
         </div>
       </div>
 
-      <div className="w-full h-[22.5rem] bg-slate-400 relative">
+      <div className="w-full h-[22.5rem] md:min-h-[48rem] bg-slate-400 relative">
         {data?.photos && data?.photos.length > 0 ? (
-          <Image src={data.photos[0].file} alt={data.name} fill data-testid="detail-photo" />
+          <Image src={data.photos[0].file} alt={data.name} fill data-testid="detail-photo" className="object-cover" />
         ) : (
           <div className="absolute w-full h-full" data-testid="detail-no-photo" />
         )}

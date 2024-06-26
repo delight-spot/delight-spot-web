@@ -1,19 +1,28 @@
+import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
 import { ACCESS_TOKEN } from '@/constants';
 import { kakaoAuthCode, signup } from '@/services/user';
+import { useLoginState } from '@/store/useLoginState';
 import { UseMutationCustomOptions } from '@/types/common';
-import { useMutation } from '@tanstack/react-query';
 import { setCookie } from 'cookies-next';
-import { useRouter } from 'next/navigation';
 
-function useKakaoLogin(mutationOptions?: UseMutationCustomOptions) {
+function useKakaoLogin(authCode: string | null, mutationOptions?: UseMutationCustomOptions) {
   const router = useRouter();
+  const { setLoginState } = useLoginState();
   return useMutation({
     mutationFn: (code: string) => kakaoAuthCode(code),
     onSuccess: (data) => {
+      setLoginState({ code: authCode });
       if (data.is_member && data.kakao_jwt) {
+        setLoginState({
+          is_member: true,
+          token: data.kakao_jwt,
+        });
         setCookie(ACCESS_TOKEN, data.kakao_jwt);
         router.replace('/');
         return;
+      } else {
+        router.replace('/signup');
       }
     },
     ...mutationOptions,
@@ -21,11 +30,17 @@ function useKakaoLogin(mutationOptions?: UseMutationCustomOptions) {
 }
 
 function useSignUp(mutationOptions?: UseMutationCustomOptions) {
+  const router = useRouter();
+  const { setLoginState } = useLoginState();
   return useMutation({
     mutationFn: (state: { code: string; email: string }) => signup(state),
     onSuccess: (data) => {
-      console.log('useSignUp ', data);
+      setLoginState({
+        is_member: true,
+        token: data.kakao_jwt,
+      });
       setCookie(ACCESS_TOKEN, data.kakao_jwt);
+      router.replace('/');
     },
     ...mutationOptions,
   });

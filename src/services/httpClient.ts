@@ -19,7 +19,7 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log('error ', error);
+    console.warn('error ', error);
     if (!(error instanceof AxiosError)) throw new Error('네트워크 통신 에러');
     throw new HttpError(error.response?.status, error.response?.statusText).errorData;
   }

@@ -19,7 +19,7 @@ export default function ReviewForm({}: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="py-2 px-4 flex items-center gap-2">
+    <form onSubmit={handleSubmit(onSubmit)} className="py-2 px-4 flex items-center gap-2 w-sm m-auto md:w-md">
       <div className="flex-1">
         <Input register={register('text', { required: true })} placeholder="입력해주세요." />
       </div>
