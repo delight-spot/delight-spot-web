@@ -3,6 +3,7 @@
 import { useGetStoreDetail } from '@/hooks/queries/useGetStoreDetail';
 import { useUser } from '@/hooks/useUser';
 import { useModal } from '@/hooks/useModal';
+import { useRouter } from 'next/navigation';
 
 import IconWrapper from '../IconWrapper';
 import RatingList from '../RatingList';
@@ -18,7 +19,7 @@ import { translateKindMenu } from '@/utils/translateToKorean';
 import { formatTimeAgo } from '@/utils/formatDate';
 import { cls } from '@/utils/cls';
 import { MdOutlinePets } from 'react-icons/md';
-import { IoLocationSharp, IoHeartSharp, IoShareSocialOutline, IoHomeSharp } from 'react-icons/io5';
+import { IoLocationSharp, IoHeartSharp, IoShareSocialOutline, IoHomeSharp, IoPencilSharp } from 'react-icons/io5';
 
 interface Props {
   id: number;
@@ -26,6 +27,7 @@ interface Props {
 
 export default function StoreDetailInfo({ id }: Props) {
   const { data } = useGetStoreDetail(id);
+  const router = useRouter();
   const modal = useModal();
   const { isLoggedIn } = useUser();
 
@@ -47,6 +49,11 @@ export default function StoreDetailInfo({ id }: Props) {
   const onShare = () => {
     if (!isLoggedIn) return modal.show();
     console.log('share');
+  };
+
+  const onReviewForm = () => {
+    if (!isLoggedIn) return modal.show();
+    router.push(`/store/${id}/review`);
   };
 
   return (
@@ -125,7 +132,13 @@ export default function StoreDetailInfo({ id }: Props) {
         </div>
 
         <div className="my-4 px-4 flex flex-col gap-4">
-          <StoreDetailSubtitle title="리뷰" />
+          <div className="flex items-center justify-between">
+            <StoreDetailSubtitle title="리뷰" />
+            <button onClick={onReviewForm} className="flex items-center gap-1 p-2">
+              <IoPencilSharp color="#2D47DB" />
+              <span className="text-subtitle leading-subtitle text-primary-P300 ">리뷰 쓰기</span>
+            </button>
+          </div>
           <ReviewList storeId={id} />
         </div>
       </div>

@@ -25,6 +25,11 @@ const nextConfig = {
         hostname: 't1.kakaocdn.net',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'delight-spot.s3.ap-northeast-2.amazonaws.com',
+        port: '',
+      },
     ],
   },
 };
