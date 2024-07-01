@@ -7,14 +7,14 @@ import { useCreateReviews } from '@/hooks/queries/useReviews';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import Button from '../Button';
-import Input from '../Input';
-import LoginModal from '../modal/LoginModal';
-import AlertModal from '../modal/AlertModal';
-import Header from '../header/Header';
-import UploadPhoto, { PhotoItem } from './UploadPhoto';
-import UploadPhotoList from '../UploadPhotoList';
-import Divider from '../Divider';
+import Button from '../../Button';
+import Input from '../../Input';
+import LoginModal from '../../modal/LoginModal';
+import AlertModal from '../../modal/AlertModal';
+import Header from '../../header/Header';
+import UploadPhoto, { PhotoItem } from '../UploadPhoto';
+import UploadPhotoList from '../../UploadPhotoList';
+import Divider from '../../Divider';
 
 interface Props {
   storeId: number;
@@ -77,6 +77,9 @@ export default function ReviewForm({ storeId }: Props) {
         <div>
           <UploadPhotoList fileUrls={fileUrls} />
         </div>
+
+        {/* 평점 */}
+        <div></div>
 
         <div className="mt-10"></div>
 
