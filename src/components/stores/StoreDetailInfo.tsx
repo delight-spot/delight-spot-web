@@ -125,7 +125,7 @@ export default function StoreDetailInfo({ id }: Props) {
         </div>
 
         <div className="my-4 px-4 flex flex-col gap-4">
-          <StoreDetailSubtitle title="댓글" />
+          <StoreDetailSubtitle title="리뷰" />
           <ReviewList storeId={id} />
         </div>
       </div>

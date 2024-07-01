@@ -26,7 +26,7 @@ const logout = async () => {
 };
 
 const getMyInfo = async () => {
-  const response = await (await api('users/me')).data;
+  const response = await (await api('/users/me')).data;
   return response;
 };
 

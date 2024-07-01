@@ -17,6 +17,12 @@ api.interceptors.request.use(async (config) => {
   if (prevAccessToken) {
     config.headers.Authorization = `Bearer ${prevAccessToken}`;
   }
+
+  const csrftoken = getCookie('csrftoken'); // csrftoken 쿠키에서 가져오는 예시 함수
+  if (csrftoken) {
+    config.headers['X-CSRFToken'] = csrftoken;
+  }
+
   return config;
 });
 

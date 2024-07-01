@@ -1,8 +1,9 @@
+import { queryClient } from '@/QueryProvider';
 import { number, queryKeys } from '@/constants';
-import { getReviews } from '@/services/store/reviews';
-import { ErrorStatus, UseQueryCustomOption } from '@/types/common';
+import { createReview, getReviews } from '@/services/store/reviews';
+import { ErrorStatus, UseMutationCustomOptions } from '@/types/common';
 import { Review } from '@/types/domain/reviews';
-import { InfiniteData, QueryKey, UseInfiniteQueryOptions, useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { InfiniteData, QueryKey, UseInfiniteQueryOptions, useInfiniteQuery, useMutation } from '@tanstack/react-query';
 
 function useGetReviews(
   { storeId, page = 1 }: { storeId: number; page?: number },
@@ -28,4 +29,16 @@ function useGetReviews(
   });
 }
 
-export { useGetReviews };
+function useCreateReviews(storeId: number, mutationOptions?: UseMutationCustomOptions) {
+  return useMutation({
+    mutationFn: (description: string) => createReview({ storeId, description }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.STORE.GET_REVIEWS, storeId],
+      });
+    },
+    ...mutationOptions,
+  });
+}
+
+export { useGetReviews, useCreateReviews };

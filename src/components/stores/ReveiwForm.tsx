@@ -1,30 +1,51 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import Button from '../Button';
-import Input from '../Input';
 import { useUser } from '@/hooks/useUser';
 import { useModal } from '@/hooks/useModal';
-import LoginModal from '../modal/LoginModal';
+import { useCreateReviews } from '@/hooks/queries/useReviews';
 
-interface Props {}
+import Button from '../Button';
+import Input from '../Input';
+import LoginModal from '../modal/LoginModal';
+import AlertModal from '../modal/AlertModal';
+
+interface Props {
+  storeId: number;
+}
 
 type ReviewFormValue = {
   text: string;
 };
 
-export default function ReviewForm({}: Props) {
+export default function ReviewForm({ storeId }: Props) {
   const { register, handleSubmit, reset } = useForm<ReviewFormValue>();
   const { isLoggedIn } = useUser();
-  const modal = useModal();
+  const loginModal = useModal();
+  const errorModal = useModal();
+  const {
+    mutate: reviewMutate,
+    isPending,
+    error: reviewError,
+  } = useCreateReviews(storeId, {
+    onError: (error) => {
+      if (error.statusCode === 403 || error.statusCode === 403) {
+        return loginModal.show();
+      } else {
+        errorModal.show();
+      }
+    },
+  });
 
-  const onSubmit = (data: ReviewFormValue) => {
-    console.log('review form ', data);
+  const onSubmit = ({ text }: ReviewFormValue) => {
+    if (isPending || !text) return;
+    reviewMutate(text);
     reset();
   };
 
   const onCheckLogin = () => {
-    if (!isLoggedIn) return modal.show();
+    reviewMutate({});
+    if (!isLoggedIn) return loginModal.show();
   };
 
   return (
@@ -37,7 +58,8 @@ export default function ReviewForm({}: Props) {
         <Button title="게시" disabled={!isLoggedIn} />
       </div>
 
-      <LoginModal isOpen={modal.isVisible} onCloseModal={modal.hide} />
+      <LoginModal isOpen={loginModal.isVisible} onCloseModal={loginModal.hide} />
+      <AlertModal close={errorModal.hide} isOpen={errorModal.isVisible} type="error" />
     </form>
   );
 }

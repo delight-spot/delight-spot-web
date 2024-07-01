@@ -4,6 +4,7 @@ interface Review {
     name: string;
     avatar: string;
     username: string;
+    date_joined: Date;
   };
   total_rating: number;
   taste_rating: number;
@@ -13,6 +14,7 @@ interface Review {
   parking_rating: number;
   restroom_rating: number;
   description: string;
+  review_photo: { pk: number; file: string }[];
 }
 
 export type { Review };
