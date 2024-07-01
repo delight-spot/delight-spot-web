@@ -7,8 +7,6 @@ interface Props {
 export default function UploadPhotoList({ fileUrls = [] }: Props) {
   const totalSlots = 5;
 
-  console.log(fileUrls);
-
   return (
     <ul className="grid grid-cols-3 gap-4 max-w-sm">
       {Array.from({ length: totalSlots }, (_, index) => (

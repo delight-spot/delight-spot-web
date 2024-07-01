@@ -15,6 +15,7 @@ import Header from '../../header/Header';
 import UploadPhoto, { PhotoItem } from '../UploadPhoto';
 import UploadPhotoList from '../../UploadPhotoList';
 import Divider from '../../Divider';
+import ReviewRating from './ReviewRating';
 
 interface Props {
   storeId: number;
@@ -31,6 +32,14 @@ export default function ReviewForm({ storeId }: Props) {
   const errorModal = useModal();
   const router = useRouter();
   const [fileUrls, setFileUrls] = useState<string[]>([]);
+  const [ratings, setRatings] = useState({
+    taste_rating: 0,
+    atmosphere_rating: 0,
+    kindness_rating: 0,
+    clean_rating: 0,
+    parking_rating: 0,
+    restroom_rating: 0,
+  });
 
   const {
     mutate: reviewMutate,
@@ -49,6 +58,13 @@ export default function ReviewForm({ storeId }: Props) {
   const onSetFileUrls = (fileUrl: string) => {
     if (fileUrls.length > 5) return;
     setFileUrls((prev) => [...prev, fileUrl]);
+  };
+
+  const handleRatingChange = (key: string, value: number) => {
+    setRatings((prevRatings) => ({
+      ...prevRatings,
+      [key]: value,
+    }));
   };
 
   const onSubmit = ({ text }: ReviewFormValue) => {
@@ -79,9 +95,11 @@ export default function ReviewForm({ storeId }: Props) {
         </div>
 
         {/* 평점 */}
-        <div></div>
+        <div className="my-10">
+          <ReviewRating onRatingChange={handleRatingChange} ratings={ratings} />
+        </div>
 
-        <div className="mt-10"></div>
+        <div></div>
 
         <LoginModal isOpen={loginModal.isVisible} onCloseModal={loginModal.hide} />
         <AlertModal close={errorModal.hide} isOpen={errorModal.isVisible} type="error" />
