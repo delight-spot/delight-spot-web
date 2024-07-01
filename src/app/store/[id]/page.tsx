@@ -1,5 +1,4 @@
 import SSRSuspense from '@/components/SSRSuspense';
-import Header from '@/components/header/Header';
 import StoreDetailInfo from '@/components/stores/StoreDetailInfo';
 import StoreDetailSkeleton from '@/components/stores/StoreDetailSkeleton';
 
