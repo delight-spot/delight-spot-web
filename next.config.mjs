@@ -15,6 +15,16 @@ const nextConfig = {
         hostname: 'yt3.ggpht.com',
         port: '',
       },
+      {
+        protocol: 'http',
+        hostname: 'k.kakaocdn.net',
+        port: '',
+      },
+      {
+        protocol: 'http',
+        hostname: 't1.kakaocdn.net',
+        port: '',
+      },
     ],
   },
 };

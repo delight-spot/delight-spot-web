@@ -1,10 +1,10 @@
 'use client';
 
-import { useGetReviews } from '@/hooks/queries/useGetReviews';
+import { useGetReviews } from '@/hooks/queries/useReviews';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { useEffect, useRef } from 'react';
+
 import ReviewItem from './ReviewItem';
-import ReviewForm from './ReveiwForm';
 
 interface Props {
   storeId: number;
@@ -25,17 +25,13 @@ export default function ReviewList({ storeId }: Props) {
 
   return (
     <>
-      <ul className="flex flex-col mb-20">
+      <ul className="flex flex-col">
         {reviews?.pages.flat().map((review) => (
           <ReviewItem key={review.pk} review={review} />
         ))}
 
         <div ref={limitRef} />
       </ul>
-
-      <div className="fixed bottom-0 left-0 w-full bg-white border-t border-t-slate-S200 z-20">
-        <ReviewForm />
-      </div>
     </>
   );
 }
