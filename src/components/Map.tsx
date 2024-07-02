@@ -20,7 +20,7 @@ export default function Map({ address }: Props) {
       const location = new naver.maps.LatLng(y, x);
       const mapOptions = {
         center: location,
-        zoom: 12,
+        zoom: 16,
       };
 
       const map = new naver.maps.Map(mapRef.current, mapOptions);

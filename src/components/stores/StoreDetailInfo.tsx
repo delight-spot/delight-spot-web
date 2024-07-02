@@ -20,7 +20,6 @@ import { formatTimeAgo } from '@/utils/formatDate';
 import { cls } from '@/utils/cls';
 import { MdOutlinePets } from 'react-icons/md';
 import {
-  IoLocationSharp,
   IoHeartSharp,
   IoShareSocialOutline,
   IoHomeSharp,
