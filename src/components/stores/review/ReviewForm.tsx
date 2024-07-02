@@ -68,6 +68,10 @@ export default function ReviewForm({ storeId }: Props) {
     setFileUrls((prev) => [...prev, fileUrl]);
   };
 
+  const onDeleteFileUrls = (fileUrl: string) => {
+    setFileUrls((prev) => prev.filter((url) => url !== fileUrl));
+  };
+
   const handleRatingChange = (key: string, value: number) => {
     setRatings((prevRatings) => ({
       ...prevRatings,
@@ -94,21 +98,14 @@ export default function ReviewForm({ storeId }: Props) {
         }
       />
       <div className="pt-20 px-4">
-        <div className="flex gap-2 items-end">
-          <UploadPhoto onSetFileUrls={onSetFileUrls} />
-          <div className="flex flex-col text-label text-system-S200 font-semibold">
-            <p>최대 5개 이미지만 가능합니다.</p>
-            <p>jpg, jpeg, png 형식만 가능합니다.</p>
-            <p>최대 10MB까지만 가능합니다.</p>
-          </div>
-        </div>
+        <UploadPhoto onSetFileUrls={onSetFileUrls} />
 
         <div className="my-4">
           <Divider type="sm" />
         </div>
 
         <div>
-          <UploadPhotoList fileUrls={fileUrls} />
+          <UploadPhotoList fileUrls={fileUrls} onDeleteFileUrls={onDeleteFileUrls} />
         </div>
 
         <div className="my-10">
@@ -118,8 +115,8 @@ export default function ReviewForm({ storeId }: Props) {
         <div>
           <p
             className={cls(
-              errors.text?.message ? 'border-b border-b-system-S200' : 'border-0',
-              'text-h4 leading-h4 font-bold mb-4 inline-block'
+              errors.text?.message ? 'border-b border-b-system-S200' : '',
+              'text-h4 leading-h4 font-bold inline-block'
             )}
           >
             내용을 입력해 주세요.

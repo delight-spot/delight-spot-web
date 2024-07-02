@@ -24,8 +24,14 @@ const uploadImage = async (formData: FormData): Promise<ImageResponse> => {
   }
 };
 
-const deleteImage = async (fileName: string) => {
+const deleteImage = async (fileName: string): Promise<ImageResponse> => {
   try {
+    const response = await (
+      await axios.delete('/api/s3', {
+        data: { fileName },
+      })
+    ).data;
+    return response;
   } catch (error) {
     console.error(error);
     if (!(error instanceof AxiosError)) throw new Error('네트워크 통신 에러');

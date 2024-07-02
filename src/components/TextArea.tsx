@@ -11,7 +11,7 @@ export default function TextArea({ register, isError, ...props }: Props) {
     <textarea
       {...register}
       {...props}
-      className="w-full appearance-none bg-transparent border-none outline-none resize-none py-3 placeholder:text-body-lg placeholder:font-regular placeholder:leading-body-lg placeholder:tracking-body-lg text-base font-medium leading-title-md tracking-title-md min-h-[23.4rem]"
+      className="w-full appearance-none bg-transparent border-none outline-none  resize-none placeholder:text-body-lg placeholder:font-regular placeholder:leading-body-lg placeholder:tracking-body-lg text-base font-medium leading-title-md tracking-title-md min-h-[23.4rem] py-2"
     />
   );
 }
