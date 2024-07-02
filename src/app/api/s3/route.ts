@@ -1,5 +1,6 @@
 import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { NextResponse } from 'next/server';
+import { v4 as uuidv4 } from 'uuid';
 
 const Bucket = process.env.AMPLIFY_BUCKET;
 const Region = process.env.AWS_REGION;
@@ -31,17 +32,18 @@ export async function POST(req: Request, res: Response) {
 
     const arrayBuffer = await file.arrayBuffer();
     const Body = Buffer.from(arrayBuffer);
+    const fileName = `${uuidv4()}-${file.name}`;
 
     await s3.send(
       new PutObjectCommand({
         Bucket,
-        Key: file.name,
+        Key: fileName,
         Body,
         ContentType: file.type,
       })
     );
 
-    const imageUrl = `https://${Bucket}.s3.${Region}.amazonaws.com/${file.name}`;
+    const imageUrl = `https://${Bucket}.s3.${Region}.amazonaws.com/${fileName}`;
 
     return NextResponse.json(
       {
@@ -82,10 +84,12 @@ export async function DELETE(req: Request, res: Response) {
       );
     }
 
+    const Key = `${uuidv4()}-${fileName}`;
+
     await s3.send(
       new DeleteObjectCommand({
         Bucket,
-        Key: fileName,
+        Key,
       })
     );
 
