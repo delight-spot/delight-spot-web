@@ -19,7 +19,20 @@ import { translateKindMenu } from '@/utils/translateToKorean';
 import { formatTimeAgo } from '@/utils/formatDate';
 import { cls } from '@/utils/cls';
 import { MdOutlinePets } from 'react-icons/md';
-import { IoLocationSharp, IoHeartSharp, IoShareSocialOutline, IoHomeSharp, IoPencilSharp } from 'react-icons/io5';
+import {
+  IoHeartSharp,
+  IoShareSocialOutline,
+  IoHomeSharp,
+  IoPencilSharp,
+  IoArrowForward,
+  IoCopy,
+} from 'react-icons/io5';
+import Link from 'next/link';
+import dynamic from 'next/dynamic';
+import { copyToClipboard } from '@/utils/coypText';
+const Maps = dynamic(() => import('../Map'), {
+  ssr: false,
+});
 
 interface Props {
   id: number;
@@ -92,15 +105,15 @@ export default function StoreDetailInfo({ id }: Props) {
           )}
         </div>
 
-        <div className="border-b border-b-slate-S200 px-4 flex flex-col gap-5 pb-4">
-          <div className="flex items-center mt-4 gap-4">
+        <div className="border-b border-b-slate-S200 px-4 flex flex-col gap-4 pb-4">
+          <div className="flex flex-col mt-4">
             <StoreDetailSubtitle title={data?.name ?? ''} />
 
-            <div className="flex items-center gap-0.5">
-              <IoLocationSharp size={18} color="#2D47DB" />
+            <div className="flex items-center gap-1 cursor-pointer" onClick={() => copyToClipboard(data?.city ?? '')}>
               <span className="text-label leading-label text-primary-P300 font-semibold max-w-[200px] ">
                 {data?.city}
               </span>
+              <IoCopy size={14} color="#2D47DB" />
             </div>
           </div>
 
@@ -128,6 +141,19 @@ export default function StoreDetailInfo({ id }: Props) {
               title={`평점 (${data?.total_rating === 'No Ratings' ? '없음' : data?.total_rating})`}
             />
             <RatingList ratingList={ratingList} />
+          </div>
+
+          <div>
+            <StoreDetailSubtitle title="위치" />
+            <Link
+              href={`https://map.naver.com/v5/search/${data?.city}`}
+              className="flex items-center gap-1 mb-2"
+              target="_blank"
+            >
+              <p className="text-label leading-label text-system-S500 font-semibold mt-0.5">네이버 지도에서 보기</p>
+              <IoArrowForward size={14} color="#00A007" />
+            </Link>
+            <Maps address={data?.city} />
           </div>
         </div>
 
