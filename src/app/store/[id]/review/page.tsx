@@ -1,4 +1,4 @@
-import ReviewForm from '@/components/stores/ReviewForm';
+import ReviewForm from '@/components/stores/review/ReviewForm';
 import { notFound } from 'next/navigation';
 
 interface Props {

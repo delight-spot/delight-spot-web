@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { IoStar } from 'react-icons/io5';
 
-import Avatar from './Avatar';
+import Avatar from '../Avatar';
 
 import { Review } from '@/types/domain/reviews';
 import { formatRating } from '@/utils/formatNumber';

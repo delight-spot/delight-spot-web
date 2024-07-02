@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import IconWrapper from '../IconWrapper';
 import RatingList from '../RatingList';
 import Avatar from './Avatar';
-import ReviewList from './ReviewList';
+import ReviewList from './review/ReviewList';
 import Header from '../header/Header';
 import StoreDetailSubtitle from './StoreDetailSubTitle';
 import LoginModal from '../modal/LoginModal';

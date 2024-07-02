@@ -14,6 +14,7 @@ interface Props {
   isBack?: boolean;
   backUrl?: string;
   rightType?: RightIconType;
+  custom?: React.ReactNode;
 }
 
 function selectRightIcon(type?: RightIconType) {
@@ -29,7 +30,7 @@ function selectRightIcon(type?: RightIconType) {
   }
 }
 
-export default function Header({ title, isBack, rightType, backUrl }: Props) {
+export default function Header({ title, isBack, rightType, backUrl, custom }: Props) {
   const router = useRouter();
   const rightMenuModal = useModal();
 
@@ -56,7 +57,11 @@ export default function Header({ title, isBack, rightType, backUrl }: Props) {
 
         <h1 className="absolute left-1/2 transform -translate-x-1/2 text-h4 font-bold text-slate-S900">{title}</h1>
 
-        {rightType && <HeaderButton icon={selectRightIcon(rightType)} onClick={() => handleRightIcon(rightType)} />}
+        {!rightType && custom && custom}
+
+        {!custom && rightType && (
+          <HeaderButton icon={selectRightIcon(rightType)} onClick={() => handleRightIcon(rightType)} />
+        )}
       </div>
 
       <SideMenuModal isVisible={rightMenuModal.isVisible} hide={rightMenuModal.hide} />
