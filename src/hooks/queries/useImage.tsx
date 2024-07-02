@@ -1,4 +1,4 @@
-import { ImageResponse, uploadImage } from '@/services/store/upload';
+import { ImageResponse, deleteImage, uploadImage } from '@/services/store/upload';
 import { UseMutationCustomOptions } from '@/types/common';
 import { useMutation } from '@tanstack/react-query';
 
@@ -10,4 +10,11 @@ function useUploadImage(mutationOptions?: UseMutationCustomOptions<ImageResponse
   });
 }
 
-export { useUploadImage };
+function useDeleteImage(mutationOptions?: UseMutationCustomOptions<ImageResponse>) {
+  return useMutation({
+    mutationFn: (fileName: string) => deleteImage(fileName),
+    ...mutationOptions,
+  });
+}
+
+export { useUploadImage, useDeleteImage };

@@ -1,4 +1,4 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { NextResponse } from 'next/server';
 
 const Bucket = process.env.AMPLIFY_BUCKET;
@@ -66,4 +66,47 @@ export async function POST(req: Request, res: Response) {
   }
 }
 
-export async function DELETE(req: Request, res: Response) {}
+export async function DELETE(req: Request, res: Response) {
+  try {
+    const { fileName } = await req.json();
+
+    if (!fileName) {
+      return NextResponse.json(
+        {
+          error: '존재하지 않는 파일입니다.',
+          isSuccess: false,
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    await s3.send(
+      new DeleteObjectCommand({
+        Bucket,
+        Key: fileName,
+      })
+    );
+
+    return NextResponse.json(
+      {
+        isSuccess: true,
+      },
+      {
+        status: 200,
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      {
+        error: '서버 장애가 발생하였습니다.',
+        isSuccess: false,
+      },
+      {
+        status: 500,
+      }
+    );
+  }
+}

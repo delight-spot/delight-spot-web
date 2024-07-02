@@ -53,13 +53,18 @@ export default function UploadPhoto({ onSetFileUrls }: Props) {
   };
 
   return (
-    <div>
+    <div className="flex items-end gap-2">
       <label
         htmlFor="photo"
         className="size-24 aspect-square bg-slate-S200 flex items-center justify-center rounded-lg cursor-pointer relative overflow-hidden"
       >
         {isPending ? <LoadingSpinner /> : <IoImage size={30} color="#64748b" />}
       </label>
+      <div className="flex flex-col text-label text-system-S200 font-semibold">
+        <p>최대 5개 이미지만 가능합니다.</p>
+        <p>jpg, jpeg, png 형식만 가능합니다.</p>
+        <p>최대 10MB까지만 가능합니다.</p>
+      </div>
       <input onChange={handleFile} type="file" id="photo" className="hidden" accept="image/*" />
 
       <LoginModal isOpen={loginModal.isVisible} onCloseModal={loginModal.hide} />
