@@ -26,9 +26,11 @@ import {
   IoHomeSharp,
   IoPencilSharp,
   IoArrowForward,
+  IoCopy,
 } from 'react-icons/io5';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
+import { copyToClipboard } from '@/utils/coypText';
 const Maps = dynamic(() => import('../Map'), {
   ssr: false,
 });
@@ -104,15 +106,15 @@ export default function StoreDetailInfo({ id }: Props) {
           )}
         </div>
 
-        <div className="border-b border-b-slate-S200 px-4 flex flex-col gap-5 pb-4">
-          <div className="flex items-center mt-4 gap-4">
+        <div className="border-b border-b-slate-S200 px-4 flex flex-col gap-4 pb-4">
+          <div className="flex flex-col mt-4">
             <StoreDetailSubtitle title={data?.name ?? ''} />
 
-            <div className="flex items-center gap-0.5">
-              <IoLocationSharp size={18} color="#2D47DB" />
+            <div className="flex items-center gap-1 cursor-pointer" onClick={() => copyToClipboard(data?.city ?? '')}>
               <span className="text-label leading-label text-primary-P300 font-semibold max-w-[200px] ">
                 {data?.city}
               </span>
+              <IoCopy size={14} color="#2D47DB" />
             </div>
           </div>
 
