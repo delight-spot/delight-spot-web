@@ -1,6 +1,6 @@
 import { paths } from './paths';
 
-const sideModalList = [
+const homeMenuList = [
   {
     title: '찜 스토어',
     key: 'booking',
@@ -53,4 +53,15 @@ const storeTypeList = [
   },
 ];
 
-export { sideModalList, storeTabList, storeTypeList };
+const storeDetailMenuList = [
+  {
+    name: '수정',
+    key: 'edit',
+  },
+  {
+    name: '삭제',
+    key: 'delete',
+  },
+];
+
+export { homeMenuList, storeTabList, storeTypeList, storeDetailMenuList };

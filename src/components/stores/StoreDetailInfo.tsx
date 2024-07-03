@@ -13,6 +13,7 @@ import Header from '../header/Header';
 import StoreDetailSubtitle from './StoreDetailSubTitle';
 import LoginModal from '../modal/LoginModal';
 import ImageSlider from './ImageSlider';
+import StoreDetailMenu from '../header/StoreDetailMenu';
 
 import { StoreDetail } from '@/types/domain/stores';
 import { translateKindMenu } from '@/utils/translateToKorean';
@@ -71,7 +72,7 @@ export default function StoreDetailInfo({ id }: Props) {
 
   return (
     <div>
-      <Header title={data?.name ?? ''} rightType="menu" isBack />
+      <Header title={data?.name ?? ''} isBack customMenu={<StoreDetailMenu />} />
       <div className="pt-20 min-w-sm md:w-md m-auto">
         <div className="flex items-center gap-2 mb-4 px-4">
           <Avatar size={40} avatarUrl={data?.owner.avatar} />
