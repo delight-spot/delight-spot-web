@@ -3,6 +3,7 @@ import { useModal } from '@/hooks/useModal';
 import Image from 'next/image';
 import { IoClose } from 'react-icons/io5';
 import LoadingSpinner from './LoadingSpinner';
+import { useEffect } from 'react';
 
 interface Props {
   fileUrls?: string[];
@@ -25,6 +26,29 @@ export default function UploadPhotoList({ fileUrls = [], onDeleteFileUrls }: Pro
     if (!fileName) return;
     deleteImageMutate(fileName);
   };
+
+  // 브라우저 종료, 게시 하지 않은 경우 모든 이미지 제거, isSubmit일 경우만!
+  // const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+  //   if (!isFormSaved) {
+  //     fileUrls.forEach((fileUrl) => {
+  //       const urlObj = new URL(fileUrl);
+  //       const fileName = urlObj.pathname.split('/')[1];
+  //       if (fileName) {
+  //         deleteImageMutate(fileName);
+  //       }
+  //     });
+  //     event.preventDefault();
+  //     event.returnValue = ''; // 표준 방식
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   window.addEventListener('beforeunload', handleBeforeUnload);
+
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handleBeforeUnload);
+  //   };
+  // }, [fileUrls, deleteImageMutate, isFormSaved]);
 
   return (
     <ul className="grid grid-cols-3 gap-4 max-w-sm">

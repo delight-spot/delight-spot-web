@@ -11,5 +11,5 @@ const styleMap = {
 export default function Divider({ type }: Props) {
   const style = styleMap[type];
 
-  return <div className={`w-full bg-slate-S300 ${style}`}></div>;
+  return <div className={`w-full bg-slate-S200 ${style}`}></div>;
 }

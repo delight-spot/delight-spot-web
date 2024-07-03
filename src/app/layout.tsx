@@ -27,6 +27,7 @@ export default function RootLayout({
           src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env
             .NEXT_PUBLIC_NMAP_KEY!}&submodules=geocoder`}
         />
+        <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" />
         <QueryProvider>
           <main className="w-sm md:w-md m-auto">{children}</main>
           <div id="modal" />
