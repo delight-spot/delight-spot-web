@@ -11,9 +11,14 @@ export function useModal() {
     setIsVisible(false);
   };
 
+  const toggle = () => {
+    setIsVisible((prev) => !prev);
+  };
+
   return {
     isVisible,
     show,
     hide,
+    toggle,
   };
 }

@@ -61,7 +61,7 @@ export default function StoreCreateForm() {
       <Header
         title="작성하기"
         isBack
-        custom={
+        customButton={
           <div>
             <Button title="게시" type="submit" disabled={!isValid} />
           </div>

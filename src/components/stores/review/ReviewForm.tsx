@@ -91,7 +91,7 @@ export default function ReviewForm({ storeId }: Props) {
       <Header
         title="리뷰 작성"
         isBack
-        custom={
+        customButton={
           <div>
             <Button title="게시" type="submit" disabled={!isValid} />
           </div>
