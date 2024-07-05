@@ -9,9 +9,17 @@ function translateKindMenu(word?: string) {
   return dictionary[word];
 }
 
-function translateRatingTitle(word?: string) {
+type RatingTitle =
+  | 'taste_rating'
+  | 'atmosphere_rating'
+  | 'kindness_rating'
+  | 'clean_rating'
+  | 'parking_rating'
+  | 'restroom_rating';
+
+function translateRatingTitle(word?: RatingTitle) {
   if (!word) return;
-  const obj: Record<string, string> = {
+  const obj: Record<RatingTitle, string> = {
     taste_rating: '맛',
     atmosphere_rating: '분위기',
     kindness_rating: '친절함',
@@ -24,3 +32,4 @@ function translateRatingTitle(word?: string) {
 }
 
 export { translateKindMenu, translateRatingTitle };
+export type { RatingTitle };

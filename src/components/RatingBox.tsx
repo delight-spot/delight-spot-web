@@ -1,8 +1,8 @@
-import { translateRatingTitle } from '@/utils/translateToKorean';
+import { RatingTitle, translateRatingTitle } from '@/utils/translateToKorean';
 import { FaStar } from 'react-icons/fa';
 
 interface Props {
-  title: string;
+  title: RatingTitle;
   rating: number;
 }
 

@@ -1,7 +1,8 @@
+import { RatingTitle } from '@/utils/translateToKorean';
 import RatingBox from './RatingBox';
 
 interface Props {
-  ratingList?: { title: string; rating: number }[];
+  ratingList?: { title: RatingTitle; rating: number }[];
 }
 
 export default function RatingList({ ratingList }: Props) {
