@@ -1,4 +1,4 @@
-import { RatingTitle } from '@/utils/translateToKorean';
+import { RatingTitle } from '@/types/domain/stores';
 import RatingBox from './RatingBox';
 
 interface Props {

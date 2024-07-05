@@ -11,6 +11,13 @@ type SellingList = {
 };
 
 type KindMenu = 'cafe' | 'food' | 'ect';
+type RatingTitle =
+  | 'taste_rating'
+  | 'atmosphere_rating'
+  | 'kindness_rating'
+  | 'clean_rating'
+  | 'parking_rating'
+  | 'restroom_rating';
 
 interface Store {
   pk: number;
@@ -55,4 +62,4 @@ interface StoreDetail {
   city: string;
 }
 
-export type { Photo, SellingList, Store, KindMenu, StoreDetail };
+export type { Photo, SellingList, Store, KindMenu, StoreDetail, RatingTitle };

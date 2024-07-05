@@ -13,9 +13,9 @@ import Header from '../header/Header';
 import StoreDetailSubtitle from './StoreDetailSubTitle';
 import LoginModal from '../modal/LoginModal';
 import ImageSlider from './ImageSlider';
-import StoreDetailMenu from '../header/StoreDetailMenu';
 
-import { StoreDetail } from '@/types/domain/stores';
+import StoreDetailMenu from '../header/StoreDetailMenu';
+import { RatingTitle, StoreDetail } from '@/types/domain/stores';
 import { translateKindMenu } from '@/utils/translateToKorean';
 import { formatTimeAgo } from '@/utils/formatDate';
 import { cls } from '@/utils/cls';
@@ -45,9 +45,9 @@ export default function StoreDetailInfo({ id }: Props) {
   const modal = useModal();
   const { isLoggedIn } = useUser();
 
-  const ratingList: { title: string; rating: number }[] = data
+  const ratingList: { title: RatingTitle; rating: number }[] = data
     ? Object.keys(data)
-        .filter((key): key is keyof StoreDetail => key.endsWith('_rating') && key !== 'total_rating')
+        .filter((key): key is RatingTitle => key !== 'total_rating')
         .map((key) => ({
           title: key,
           rating: data[key as keyof StoreDetail] as number,
