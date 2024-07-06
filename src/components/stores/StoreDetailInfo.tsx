@@ -15,7 +15,7 @@ import LoginModal from '../modal/LoginModal';
 import ImageSlider from './ImageSlider';
 
 import StoreDetailMenu from '../header/StoreDetailMenu';
-import { RatingTitle, StoreDetail } from '@/types/domain/stores';
+import { RatingTitle } from '@/types/domain/stores';
 import { translateKindMenu } from '@/utils/translateToKorean';
 import { formatTimeAgo } from '@/utils/formatDate';
 import { cls } from '@/utils/cls';
@@ -31,6 +31,7 @@ import {
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { copyToClipboard } from '@/utils/coypText';
+import { storeRatingList } from '@/constants';
 const Maps = dynamic(() => import('../Map'), {
   ssr: false,
 });
@@ -46,13 +47,12 @@ export default function StoreDetailInfo({ id }: Props) {
   const { isLoggedIn } = useUser();
 
   const ratingList: { title: RatingTitle; rating: number }[] = data
-    ? Object.keys(data)
-        .filter((key): key is RatingTitle => key !== 'total_rating')
-        .map((key) => ({
-          title: key,
-          rating: data[key as keyof StoreDetail] as number,
-        }))
-        .filter((item) => typeof item.rating === 'number')
+    ? storeRatingList.reduce<{ title: RatingTitle; rating: number }[]>((acc, title) => {
+        if (data[title] !== undefined) {
+          acc.push({ title, rating: data[title] as number });
+        }
+        return acc;
+      }, [])
     : [];
 
   const onBooking = () => {
@@ -79,7 +79,7 @@ export default function StoreDetailInfo({ id }: Props) {
 
           <div className="text-body leading-body flex w-full justify-between">
             <div>
-              <span className="text-black">{data?.owner.name}</span>
+              <span className="text-black">{data?.owner.username}</span>
               <div className="flex items-center gap-1 text-slate-S400">
                 <p>{data?.owner.username}</p>
                 <span>﹒</span>
@@ -99,8 +99,8 @@ export default function StoreDetailInfo({ id }: Props) {
         </div>
 
         <div className="w-full h-[22.5rem] md:min-h-[48rem] bg-slate-400 relative">
-          {data?.photos && data?.photos.length > 0 ? (
-            <ImageSlider images={data.photos.map((photo) => photo.file)} />
+          {data?.store_photo && data?.store_photo.length > 0 ? (
+            <ImageSlider images={data.store_photo.map((photo) => photo)} />
           ) : (
             <div className="absolute w-full h-full" data-testid="detail-no-photo" />
           )}

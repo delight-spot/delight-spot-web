@@ -14,7 +14,7 @@ interface Review {
   parking_rating: number;
   restroom_rating: number;
   description: string;
-  review_photo: { pk: number; file: string }[];
+  review_photo: string[];
 }
 
 export type { Review };

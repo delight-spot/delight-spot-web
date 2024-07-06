@@ -12,8 +12,8 @@ export default function StoreItem({ store }: Props) {
   return (
     <li className="flex gap-2">
       <div className="relative w-[8rem] h-[8rem] rounded-md overflow-hidden ">
-        {store.photos.length > 0 ? (
-          <Image src={store.photos[0].file} alt={`store ${store.name}`} fill />
+        {store.store_photo?.length > 0 ? (
+          <Image src={store.store_photo[0]} alt={`store ${store.name}`} fill />
         ) : (
           <div className="absolute w-full h-full bg-slate-S200 flex items-center justify-center">
             <IoImage size={20} color="#64748b" data-testid="store-no-image-icon" />

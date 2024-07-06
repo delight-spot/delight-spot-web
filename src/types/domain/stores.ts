@@ -1,9 +1,3 @@
-type Photo = {
-  pk: number;
-  file: string;
-  description: string;
-};
-
 type SellingList = {
   pk: number;
   name: string;
@@ -31,14 +25,14 @@ interface Store {
   is_owner: boolean;
   user_name: string;
   is_liked: boolean;
-  photos: Photo[];
+  store_photo: string[];
   create_at: Date;
 }
 
 interface StoreDetail {
   id: number;
   owner: {
-    name: string;
+    pk: number;
     avatar: string;
     username: string;
   };
@@ -51,7 +45,7 @@ interface StoreDetail {
   parking_rating: number | string;
   restroom_rating: number | string;
   is_owner: boolean;
-  photos: Photo[];
+  store_photo: string[];
   is_liked: boolean;
   created_at: Date;
   updated_at: Date;
@@ -62,4 +56,4 @@ interface StoreDetail {
   city: string;
 }
 
-export type { Photo, SellingList, Store, KindMenu, StoreDetail, RatingTitle };
+export type { SellingList, Store, KindMenu, StoreDetail, RatingTitle };
