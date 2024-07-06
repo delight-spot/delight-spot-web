@@ -1,3 +1,4 @@
+import { RatingTitle } from '@/types/domain/stores';
 import { paths } from './paths';
 
 const homeMenuList = [
@@ -64,4 +65,13 @@ const storeDetailMenuList = [
   },
 ];
 
-export { homeMenuList, storeTabList, storeTypeList, storeDetailMenuList };
+const storeRatingList: RatingTitle[] = [
+  'taste_rating',
+  'atmosphere_rating',
+  'kindness_rating',
+  'clean_rating',
+  'parking_rating',
+  'restroom_rating',
+] as const;
+
+export { homeMenuList, storeTabList, storeTypeList, storeDetailMenuList, storeRatingList };
