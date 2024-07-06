@@ -1,7 +1,8 @@
+import { RatingTitle } from '@/types/domain/stores';
 import RatingBox from './RatingBox';
 
 interface Props {
-  ratingList?: { title: string; rating: number }[];
+  ratingList?: { title: RatingTitle; rating: number }[];
 }
 
 export default function RatingList({ ratingList }: Props) {

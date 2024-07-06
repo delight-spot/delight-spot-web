@@ -1,6 +1,8 @@
-function translateKindMenu(word?: string) {
+import { KindMenu, RatingTitle } from '@/types/domain/stores';
+
+function translateKindMenu(word?: KindMenu) {
   if (!word) return;
-  const dictionary: Record<string, string> = {
+  const dictionary: Record<KindMenu, string> = {
     ect: '기타',
     cafe: '카페',
     food: '상점',
@@ -9,9 +11,9 @@ function translateKindMenu(word?: string) {
   return dictionary[word];
 }
 
-function translateRatingTitle(word?: string) {
+function translateRatingTitle(word?: RatingTitle) {
   if (!word) return;
-  const obj: Record<string, string> = {
+  const obj: Record<RatingTitle, string> = {
     taste_rating: '맛',
     atmosphere_rating: '분위기',
     kindness_rating: '친절함',
