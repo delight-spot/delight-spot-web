@@ -19,9 +19,10 @@ type AddressData = {
 
 interface Props {
   onSelectAddress: (address: string) => void;
+  errorMessage?: string;
 }
 
-export default function SearchAddress({ onSelectAddress }: Props) {
+export default function SearchAddress({ onSelectAddress, errorMessage }: Props) {
   const [address, setAddress] = useState('');
   const postcodeScriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
   const open = useDaumPostcodePopup(postcodeScriptUrl);
@@ -37,7 +38,7 @@ export default function SearchAddress({ onSelectAddress }: Props) {
 
   return (
     <div className="flex flex-col gap-1">
-      <FormLabel text="주소 찾기" isRequired />
+      <FormLabel text="주소 찾기" isRequired errorMessage={errorMessage} />
       <Input
         style={{ cursor: 'default' }}
         readOnly={true}

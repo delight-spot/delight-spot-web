@@ -1,4 +1,4 @@
-import { Store, StoreDetail } from '@/types/domain/stores';
+import { KindMenu, Store, StoreDetail } from '@/types/domain/stores';
 import api from '../httpClient';
 
 const getStores = async (page: number = 1, type?: string): Promise<Store[]> => {
@@ -13,9 +13,33 @@ const getStores = async (page: number = 1, type?: string): Promise<Store[]> => {
   return data;
 };
 
+type CreateStoreArgs = {
+  name: string;
+  description: string;
+  kind_menu: KindMenu;
+  city: string;
+  store_photo: string[];
+  pet_friendly: boolean;
+};
+
+const createStore = async ({ city, description, kind_menu, name, store_photo, pet_friendly }: CreateStoreArgs) => {
+  const response = await (
+    await api.post(`/stores`, {
+      name,
+      description,
+      kind_menu,
+      city,
+      store_photo,
+      pet_friendly,
+    })
+  ).data;
+
+  return response;
+};
+
 const getStoreDetail = async (id: number): Promise<StoreDetail> => {
   const result = await (await api.get(`/stores/${id}`)).data;
   return result;
 };
 
-export { getStores, getStoreDetail };
+export { getStores, getStoreDetail, createStore };
