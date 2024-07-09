@@ -29,8 +29,7 @@ export default function KakaoLoginPage() {
     if (code) {
       kakaoLogin(code);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [code, kakaoLogin]);
 
   const closeModal = useCallback(() => {
     modal.hide();
