@@ -13,17 +13,18 @@ type CreateReviewArgs = {
   clean_rating?: number;
   parking_rating?: number;
   restroom_rating?: number;
+  review_photo?: string[];
   description: string;
-  storeId: number;
 };
 
-const createReview = async ({ description, storeId }: CreateReviewArgs) => {
+const createReview = async (storeId: number, reviewData: CreateReviewArgs) => {
   const response = await (
     await api.post(`/stores/${storeId}/reviews`, {
-      description,
+      ...reviewData,
     })
   ).data;
   return response;
 };
 
 export { getReviews, createReview };
+export type { CreateReviewArgs };

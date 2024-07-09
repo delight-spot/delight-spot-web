@@ -25,7 +25,7 @@ export default function ReviewItem({ review }: Props) {
         {review?.review_photo && review?.review_photo.length > 0 && (
           <ul className="flex items-center gap-1 w-full overflow-x-auto">
             {review?.review_photo.map((item) => (
-              <li key={item} className="w-[180px] h-[226px] shrink-0 relative rounded-lg overflow-hidden">
+              <li key={item} className="size-[120px] aspect-square shrink-0 relative rounded-lg overflow-hidden">
                 <Image src={item} fill alt="review_image" className="object-cover" />
               </li>
             ))}

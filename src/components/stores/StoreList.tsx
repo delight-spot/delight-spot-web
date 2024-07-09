@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 import StoreItem from './StoreItem';
+import EmptyNotice from '../EmptyNotice';
 
 import { storeTabList } from '@/constants';
 
@@ -29,12 +30,19 @@ export default function StoreList() {
     setSelectedTab(tabKey);
   };
 
+  const hasStoreList = data?.pages && data.pages.some((item) => item.length > 0);
+
   return (
     <>
       <div className="p-4 pt-20">
         <ul className="flex items-center gap-2 border-b">
           {storeTabList.map((tab) => (
-            <li className="p-4 relative cursor-pointer" key={tab.key} onClick={() => handleSelectTab(tab.key)}>
+            <li
+              data-testid="storeList-tab"
+              className="p-4 relative cursor-pointer"
+              key={tab.key}
+              onClick={() => handleSelectTab(tab.key)}
+            >
               <p className={tab.key === selectedTab ? 'font-bold' : 'text-slate-S400'}>{tab.title}</p>
               {tab.key === selectedTab && (
                 <motion.div layoutId="tab" className="border absolute w-full border-primary-P300 bottom-0 left-0" />
@@ -44,15 +52,19 @@ export default function StoreList() {
         </ul>
       </div>
 
-      <ul className="flex flex-col gap-8 px-4">
-        {data?.pages.flat().map((item) => (
-          <Link href={`/store/${item.pk}`} key={item.pk}>
-            <StoreItem store={item} />
-          </Link>
+      {!isPending &&
+        (hasStoreList ? (
+          <ul className="flex flex-col gap-8 px-4">
+            {data?.pages.flat().map((item) => (
+              <Link href={`/store/${item.pk}`} key={item.pk}>
+                <StoreItem store={item} />
+              </Link>
+            ))}
+          </ul>
+        ) : (
+          <EmptyNotice height={400} />
         ))}
-
-        <div ref={limitRef} className="mb-4" />
-      </ul>
+      <div ref={limitRef} className="mt-4" />
     </>
   );
 }

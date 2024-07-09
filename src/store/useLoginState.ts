@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 
-interface LoginState {
+interface LoginInitialState {
   is_member?: boolean;
   token?: string;
   code?: string | null;
   setLoginState: (state: { is_member?: boolean; token?: string; code?: string | null }) => void;
 }
 
-const useLoginState = create<LoginState>((set) => ({
+const useLoginState = create<LoginInitialState>((set) => ({
   is_member: undefined,
   token: undefined,
   code: null,
@@ -15,3 +15,4 @@ const useLoginState = create<LoginState>((set) => ({
 }));
 
 export { useLoginState };
+export type { LoginInitialState };

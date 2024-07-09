@@ -22,6 +22,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <KakaoScript />
         <Script
+          strategy="beforeInteractive"
           id="naver-map-script"
           type="text/javascript"
           src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env

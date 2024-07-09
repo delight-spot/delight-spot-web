@@ -28,13 +28,14 @@ export default function StoreAddButton() {
   const handleLoggedIn = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     if (!isLoggedIn) {
       e.preventDefault();
+      e.stopPropagation();
       modal.show();
     }
   };
 
   return (
-    <>
-      <Link onClick={handleLoggedIn} href={'/store/create'} className="fixed right-4 bottom-[5rem]">
+    <div className="fixed left-0 right-4 m-auto flex items-center justify-end bottom-5">
+      <Link onClick={handleLoggedIn} href={'/store/create'} className="absolute bottom-0">
         <motion.div
           variants={buttonVariants}
           initial="notScrolled"
@@ -68,6 +69,6 @@ export default function StoreAddButton() {
       </Link>
 
       <LoginModal isOpen={modal.isVisible} onCloseModal={modal.hide} />
-    </>
+    </div>
   );
 }
