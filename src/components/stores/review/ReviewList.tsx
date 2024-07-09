@@ -5,6 +5,7 @@ import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { useEffect, useRef } from 'react';
 
 import ReviewItem from './ReviewItem';
+import EmptyNotice from '@/components/EmptyNotice';
 
 interface Props {
   storeId: number;
@@ -22,16 +23,20 @@ export default function ReviewList({ storeId }: Props) {
       fetchNextPage();
     }
   }, [fetchNextPage, isInterSecting]);
+  const hasReviews = reviews?.pages && reviews.pages.some((page) => page.length > 0);
 
   return (
     <>
-      <ul className="flex flex-col">
-        {reviews?.pages.flat().map((review) => (
-          <ReviewItem key={review.pk} review={review} />
-        ))}
-
-        <div ref={limitRef} />
-      </ul>
+      {hasReviews ? (
+        <ul className="flex flex-col">
+          {reviews?.pages.flat().map((review) => (
+            <ReviewItem key={review.pk} review={review} />
+          ))}
+        </ul>
+      ) : (
+        <EmptyNotice />
+      )}
+      <div ref={limitRef} />
     </>
   );
 }

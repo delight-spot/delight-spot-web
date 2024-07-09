@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 import StoreItem from './StoreItem';
+import EmptyNotice from '../EmptyNotice';
 
 import { storeTabList } from '@/constants';
 
@@ -29,6 +30,8 @@ export default function StoreList() {
     setSelectedTab(tabKey);
   };
 
+  const hasStoreList = data?.pages && data.pages.some((item) => item.length > 0);
+
   return (
     <>
       <div className="p-4 pt-20">
@@ -49,15 +52,19 @@ export default function StoreList() {
         </ul>
       </div>
 
-      <ul className="flex flex-col gap-8 px-4">
-        {data?.pages.flat().map((item) => (
-          <Link href={`/store/${item.pk}`} key={item.pk}>
-            <StoreItem store={item} />
-          </Link>
+      {!isPending &&
+        (hasStoreList ? (
+          <ul className="flex flex-col gap-8 px-4">
+            {data?.pages.flat().map((item) => (
+              <Link href={`/store/${item.pk}`} key={item.pk}>
+                <StoreItem store={item} />
+              </Link>
+            ))}
+          </ul>
+        ) : (
+          <EmptyNotice height={400} />
         ))}
-
-        <div ref={limitRef} className="mb-4" />
-      </ul>
+      <div ref={limitRef} className="mt-4" />
     </>
   );
 }
