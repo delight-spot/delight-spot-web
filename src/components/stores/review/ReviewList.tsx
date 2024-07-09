@@ -14,7 +14,7 @@ export default function ReviewList({ storeId }: Props) {
   const { data: reviews, fetchNextPage } = useGetReviews({ storeId });
   const limitRef = useRef<HTMLDivElement | null>(null);
   const { isInterSecting } = useIntersectionObserver({
-    ref: limitRef,
+    node: limitRef.current,
   });
 
   useEffect(() => {
