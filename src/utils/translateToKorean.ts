@@ -1,7 +1,7 @@
 import { KindMenu, RatingTitle } from '@/types/domain/stores';
 
-function translateKindMenu(word?: KindMenu) {
-  if (!word) return;
+function translateKindMenu(word?: KindMenu): string {
+  if (!word) return '';
   const dictionary: Record<KindMenu, string> = {
     ect: '기타',
     cafe: '카페',

@@ -34,7 +34,12 @@ export default function StoreList() {
       <div className="p-4 pt-20">
         <ul className="flex items-center gap-2 border-b">
           {storeTabList.map((tab) => (
-            <li className="p-4 relative cursor-pointer" key={tab.key} onClick={() => handleSelectTab(tab.key)}>
+            <li
+              data-testid="storeList-tab"
+              className="p-4 relative cursor-pointer"
+              key={tab.key}
+              onClick={() => handleSelectTab(tab.key)}
+            >
               <p className={tab.key === selectedTab ? 'font-bold' : 'text-slate-S400'}>{tab.title}</p>
               {tab.key === selectedTab && (
                 <motion.div layoutId="tab" className="border absolute w-full border-primary-P300 bottom-0 left-0" />
