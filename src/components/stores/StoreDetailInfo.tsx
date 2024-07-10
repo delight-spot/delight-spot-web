@@ -13,6 +13,7 @@ import Header from '../header/Header';
 import StoreDetailSubtitle from './StoreDetailSubTitle';
 import LoginModal from '../modal/LoginModal';
 import ImageSlider from './ImageSlider';
+import Toast from '../Toast';
 
 import StoreDetailMenu from '../header/StoreDetailMenu';
 import { RatingTitle } from '@/types/domain/stores';
@@ -171,6 +172,7 @@ export default function StoreDetailInfo({ id }: Props) {
       </div>
 
       <LoginModal isOpen={modal.isVisible} onCloseModal={modal.hide} />
+      <Toast isShowing />
     </div>
   );
 }

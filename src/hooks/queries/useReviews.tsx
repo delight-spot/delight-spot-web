@@ -1,6 +1,7 @@
 import { queryClient } from '@/QueryProvider';
 import { number, queryKeys } from '@/constants';
 import { createReview, CreateReviewArgs, getReviews } from '@/services/store/reviews';
+import { useToastStore } from '@/store/useToastStore';
 import { ErrorStatus, UseMutationCustomOptions } from '@/types/common';
 import { Review } from '@/types/domain/reviews';
 import { InfiniteData, QueryKey, UseInfiniteQueryOptions, useInfiniteQuery, useMutation } from '@tanstack/react-query';
@@ -31,12 +32,20 @@ function useGetReviews(
 }
 
 function useCreateReviews(storeId: number, mutationOptions?: UseMutationCustomOptions) {
+  const { addToast } = useToastStore();
   const router = useRouter();
   return useMutation({
     mutationFn: (reviewData: CreateReviewArgs) => createReview(storeId, reviewData),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [queryKeys.STORE.GET_REVIEWS, storeId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.STORE.GET_STORE_DETAIL, storeId],
+      });
+      addToast({
+        message: '리뷰를 작성했습니다.',
+        type: 'success',
       });
       router.replace(`/store/${storeId}`);
     },

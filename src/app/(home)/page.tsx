@@ -4,6 +4,7 @@ import SSRSuspense from '@/components/SSRSuspense';
 import StoreListSkeleton from '@/components/stores/StoreListSkeleton';
 import StoreAddButton from '@/components/stores/StoreAddButton';
 import HeaderMenu from '@/components/HeaderMenu';
+import Toast from '@/components/Toast';
 
 export default function HomePage() {
   return (
@@ -13,6 +14,7 @@ export default function HomePage() {
         <StoreList />
       </SSRSuspense>
       <StoreAddButton />
+      <Toast isShowing />
     </section>
   );
 }
