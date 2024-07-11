@@ -6,6 +6,7 @@ import { useLoginState } from '@/store/useLoginState';
 import { UseMutationCustomOptions } from '@/types/common';
 import { setCookie } from 'cookies-next';
 import dayjs from 'dayjs';
+import { useToastStore } from '@/store/useToastStore';
 
 function useKakaoLogin(authCode: string | null, mutationOptions?: UseMutationCustomOptions) {
   const router = useRouter();
@@ -30,8 +31,8 @@ function useKakaoLogin(authCode: string | null, mutationOptions?: UseMutationCus
   });
 }
 
-const expires = dayjs().add(24, 'hour').toDate();
 function useSignUp(mutationOptions?: UseMutationCustomOptions) {
+  const { addToast } = useToastStore();
   const router = useRouter();
   const { setLoginState } = useLoginState();
   return useMutation({
@@ -41,8 +42,10 @@ function useSignUp(mutationOptions?: UseMutationCustomOptions) {
         is_member: true,
         token: data.kakao_jwt,
       });
-      setCookie(ACCESS_TOKEN, data.kakao_jwt, {
-        expires,
+      setCookie(ACCESS_TOKEN, data.kakao_jwt);
+      addToast({
+        message: '회원가입하셨습니다.',
+        type: 'success',
       });
       router.replace('/');
     },

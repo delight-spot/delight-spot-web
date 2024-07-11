@@ -19,6 +19,7 @@ import SelectorStoreType from './SelectorStoreType';
 import RadioButton from '../RadioButton';
 
 import { KindMenu } from '@/types/domain/stores';
+import LoadingSpinner from '../LoadingSpinner';
 
 type CreateForm = {
   description: string;
@@ -54,7 +55,7 @@ export default function StoreCreateForm() {
     value: 'impossible',
   });
   const typeSelectorModal = useModal();
-  const { mutate: createStore, isPending, data } = useCreateStore();
+  const { mutate: createStore, isPending } = useCreateStore();
 
   const onSelectorType = useCallback(
     (type?: Record<string, string>) => {
@@ -122,9 +123,7 @@ export default function StoreCreateForm() {
         title="작성하기"
         isBack
         customButton={
-          <div>
-            <Button title="게시" type="submit" disabled={disabled} />
-          </div>
+          <div>{isPending ? <LoadingSpinner /> : <Button title="게시" type="submit" disabled={disabled} />}</div>
         }
       />
       <div className="pt-24">

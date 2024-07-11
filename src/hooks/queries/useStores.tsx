@@ -14,6 +14,7 @@ import { Store } from '@/types/domain/stores';
 import { queryClient } from '@/QueryProvider';
 import { useRouter } from 'next/navigation';
 import { useStoreListTabState } from '@/store/useStoreListTabStore';
+import { useToastStore } from '@/store/useToastStore';
 
 function useGetInfiniteStores(
   selectedType: string = 'all',
@@ -39,12 +40,17 @@ function useGetInfiniteStores(
 
 function useCreateStore(mutationOptions?: UseMutationCustomOptions) {
   const router = useRouter();
+  const { addToast } = useToastStore();
   const { selectedTab } = useStoreListTabState();
   return useMutation({
     mutationFn: createStore,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [queryKeys.STORE.GET_STORES, selectedTab],
+      });
+      addToast({
+        message: '스토어를 생성했습니다.',
+        type: 'success',
       });
       router.push('/');
     },
