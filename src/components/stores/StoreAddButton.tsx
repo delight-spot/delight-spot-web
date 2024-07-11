@@ -34,7 +34,7 @@ export default function StoreAddButton() {
   };
 
   return (
-    <div className="fixed left-0 right-4 m-auto flex items-center justify-end bottom-5">
+    <div className="fixed left-0 right-4 m-auto flex items-center justify-end bottom-5 w-sm md:w-md">
       <Link onClick={handleLoggedIn} href={'/store/create'} className="absolute bottom-0">
         <motion.div
           variants={buttonVariants}
