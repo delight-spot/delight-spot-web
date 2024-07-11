@@ -24,7 +24,7 @@ export default function UploadPhotoList({ fileUrls = [], onDeleteFileUrls }: Pro
     const urlObj = new URL(fileUrl);
     const fileName = urlObj.pathname.split('/')[1];
     if (!fileName) return;
-    deleteImageMutate(fileName);
+    deleteImageMutate([fileName]);
   };
 
   // 브라우저 종료, 게시 하지 않은 경우 모든 이미지 제거, isSubmit일 경우만!

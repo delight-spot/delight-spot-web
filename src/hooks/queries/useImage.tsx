@@ -12,7 +12,7 @@ function useUploadImage(mutationOptions?: UseMutationCustomOptions<ImageResponse
 
 function useDeleteImage(mutationOptions?: UseMutationCustomOptions<ImageResponse>) {
   return useMutation({
-    mutationFn: (fileName: string) => deleteImage(fileName),
+    mutationFn: (fileNames: string[]) => deleteImage(fileNames),
     ...mutationOptions,
   });
 }
