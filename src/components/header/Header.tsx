@@ -40,11 +40,18 @@ export default function Header({ title, isBack, backUrl, customMenu, customButto
     <header ref={headerRef} className="fixed m-auto left-0 right-0 bg-white z-50">
       <div className="w-sm md:w-md m-auto relative">
         <div className="py-4 px-1 flex items-center relative justify-between h-14 bg-white">
-          {isBack ? <HeaderButton icon={<MdChevronLeft color="#00000" size={24} />} onClick={onBackPage} /> : <div />}
+          {isBack ? (
+            <HeaderButton
+              icon={<MdChevronLeft aria-label="back-icon" color="#00000" size={24} />}
+              onClick={onBackPage}
+            />
+          ) : (
+            <div />
+          )}
 
           <h1 className="absolute left-1/2 transform -translate-x-1/2 text-h4 font-bold text-slate-S900">{title}</h1>
           {customMenu ? (
-            <button type="button" onClick={handleMenuButton}>
+            <button aria-label="menu-button" type="button" onClick={handleMenuButton}>
               <MdOutlineMenu size={24} />
             </button>
           ) : (
