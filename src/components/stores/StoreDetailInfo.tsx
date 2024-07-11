@@ -33,6 +33,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { copyToClipboard } from '@/utils/coypText';
 import { storeRatingList } from '@/constants';
+import { useToggleBooking } from '@/hooks/queries/useBookings';
 const Maps = dynamic(() => import('../Map'), {
   ssr: false,
 });
@@ -47,6 +48,8 @@ export default function StoreDetailInfo({ id }: Props) {
   const modal = useModal();
   const { isLoggedIn } = useUser();
 
+  const { mutate: toggleBooking } = useToggleBooking(id);
+
   const ratingList: { title: RatingTitle; rating: number }[] = data
     ? storeRatingList.reduce<{ title: RatingTitle; rating: number }[]>((acc, title) => {
         if (data[title] !== undefined) {
@@ -58,7 +61,7 @@ export default function StoreDetailInfo({ id }: Props) {
 
   const onBooking = () => {
     if (!isLoggedIn) return modal.show();
-    console.log('booking');
+    toggleBooking(id);
   };
 
   const onShare = () => {

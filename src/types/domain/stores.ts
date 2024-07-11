@@ -56,4 +56,11 @@ interface StoreDetail {
   city: string;
 }
 
-export type { SellingList, Store, KindMenu, StoreDetail, RatingTitle };
+interface BookingStore {
+  pk: number;
+  name: string;
+  photos: string[];
+  create_at: Date;
+}
+
+export type { SellingList, Store, KindMenu, StoreDetail, RatingTitle, BookingStore };
