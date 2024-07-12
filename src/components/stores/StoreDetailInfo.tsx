@@ -46,6 +46,7 @@ export default function StoreDetailInfo({ id }: Props) {
   const { data } = useGetStoreDetail(id);
   const router = useRouter();
   const modal = useModal();
+
   const { isLoggedIn, userInfo } = useUser();
 
   const { mutate: toggleBooking } = useToggleBooking(id);

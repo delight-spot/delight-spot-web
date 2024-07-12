@@ -20,16 +20,15 @@ type AddressData = {
 interface Props {
   onSelectAddress: (address: string) => void;
   errorMessage?: string;
+  address?: string;
 }
 
-export default function SearchAddress({ onSelectAddress, errorMessage }: Props) {
-  const [address, setAddress] = useState('');
+export default function SearchAddress({ onSelectAddress, errorMessage, address }: Props) {
   const postcodeScriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
   const open = useDaumPostcodePopup(postcodeScriptUrl);
 
   const handleComplete = (data: AddressData) => {
     onSelectAddress(data.address);
-    setAddress(data.address);
   };
 
   const handleClick = () => {
@@ -44,7 +43,7 @@ export default function SearchAddress({ onSelectAddress, errorMessage }: Props) 
         readOnly={true}
         placeholder="주소를 입력해주세요."
         onClick={handleClick}
-        value={address}
+        value={address ?? ''}
       />
     </div>
   );

@@ -39,20 +39,9 @@ const storeTabList = [
   },
 ] as const;
 
-const storeTypeList = [
-  {
-    name: '카페',
-    key: 'cafe',
-  },
-  {
-    name: '음식',
-    key: 'food',
-  },
-  {
-    name: '기타',
-    key: 'ect',
-  },
-];
+const storeTypeList = ['cafe', 'food', 'ect'] as const;
+
+const petFriendlyOptions = ['possible', 'impossible'] as const;
 
 const storeDetailMenuList = [
   {
@@ -74,4 +63,4 @@ const storeRatingList: RatingTitle[] = [
   'restroom_rating',
 ] as const;
 
-export { homeMenuList, storeTabList, storeTypeList, storeDetailMenuList, storeRatingList };
+export { homeMenuList, storeTabList, storeTypeList, storeDetailMenuList, storeRatingList, petFriendlyOptions };
