@@ -1,31 +1,35 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useCallback, useState } from 'react';
+import { useEditStore, useGetStoreDetail } from '@/hooks/queries/useStores';
+import { useCallback, useEffect, useState } from 'react';
 import { useModal } from '@/hooks/useModal';
-import { useCreateStore } from '@/hooks/queries/useStores';
 
-import Button from '../Button';
-import Input from '../Input';
 import Header from '../header/Header';
+import LoadingSpinner from '../LoadingSpinner';
+import Button from '../Button';
 import FormLabel from './FormLabel';
+import Input from '../Input';
+import SearchAddress from './SearchAddress';
 import UploadPhoto from './UploadPhoto';
 import Divider from '../Divider';
-import UploadPhotoList from '../UploadPhotoList';
-import TextArea from '../TextArea';
-import SearchAddress from './SearchAddress';
 import BottomModal from '../modal/BottomModal';
 import SelectorStoreType from './SelectorStoreType';
 import RadioButton from '../RadioButton';
-import LoadingSpinner from '../LoadingSpinner';
+import UploadPhotoList from '../UploadPhotoList';
+import TextArea from '../TextArea';
 
 import { KindMenu, PetFriendlyOption } from '@/types/domain/stores';
-import { petFriendlyOptions } from '@/constants';
 import { translateKindMenu, translatePetFriendlyType } from '@/utils/translateToKorean';
+import { petFriendlyOptions } from '@/constants';
 import { useUser } from '@/hooks/useUser';
 import AlertModal from '../modal/AlertModal';
 
-type CreateForm = {
+interface Props {
+  storeId: number;
+}
+
+type EditForm = {
   description: string;
   name: string;
   address: string;
@@ -33,29 +37,38 @@ type CreateForm = {
   petFriendly: boolean;
 };
 
-export default function StoreCreateForm() {
+export default function StoreEditForm({ storeId }: Props) {
+  const { data } = useGetStoreDetail(storeId);
+
   const {
-    formState: { errors, isValid },
-    handleSubmit,
+    formState: { isValid, errors },
     register,
-    setError,
-    setValue,
+    handleSubmit,
     getValues,
+    setValue,
+    setError,
     clearErrors,
-  } = useForm<CreateForm>({
-    defaultValues: {
-      petFriendly: false,
-    },
-  });
+  } = useForm<EditForm>();
   const { isLoggedIn } = useUser();
   const [fileUrls, setFileUrls] = useState<string[]>([]);
   const typeSelectorModal = useModal();
   const alertModal = useModal();
-  const { mutate: createStore, isPending } = useCreateStore({
+  const { mutate: editStore, isPending } = useEditStore(storeId, {
     onError: () => {
       alertModal.show();
     },
   });
+
+  useEffect(() => {
+    if (data) {
+      setValue('name', data.name);
+      setValue('description', data.description);
+      setValue('address', data.city);
+      setValue('type', data.kind_menu);
+      setValue('petFriendly', data.pet_friendly);
+      setFileUrls(data.store_photo || []);
+    }
+  }, [data, setValue]);
 
   const onSelectorType = useCallback(
     (type?: KindMenu) => {
@@ -86,17 +99,18 @@ export default function StoreCreateForm() {
 
   const onSetFileUrls = useCallback(
     (fileUrl: string) => {
+      if (!fileUrls || fileUrls.length < 0) return;
       if (fileUrls.length > 5) return;
-      setFileUrls((prev) => [...prev, fileUrl]);
+      setFileUrls((prev) => [...(prev && prev), fileUrl]);
     },
-    [fileUrls.length]
+    [fileUrls]
   );
 
   const onDeleteFileUrls = useCallback((fileUrl: string) => {
     setFileUrls((prev) => prev.filter((url) => url !== fileUrl));
   }, []);
 
-  const onSubmit = (data: CreateForm) => {
+  const onSubmit = (data: EditForm) => {
     if (!isLoggedIn) return;
     if (!data.address) {
       return setError('address', { message: '주소를 입력해주세요.' });
@@ -104,7 +118,7 @@ export default function StoreCreateForm() {
     if (!data.type) {
       return setError('type', { message: '종류를 입력해주세요.' });
     }
-    createStore({
+    editStore({
       city: data.address,
       description: data.description,
       kind_menu: data.type as KindMenu,
@@ -114,19 +128,21 @@ export default function StoreCreateForm() {
     });
   };
 
+  const disabled = !getValues('address') || !getValues('type');
+
+  console.log(fileUrls.length < 0);
+
   const petFriendlyChecked = (type?: boolean) => {
     return type ? 'possible' : 'impossible';
   };
 
-  const disabled = !isValid || !getValues('address') || !getValues('type');
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="px-4 pb-5">
       <Header
-        title="작성하기"
+        title="수정하기"
         isBack
         customButton={
-          <div>{isPending ? <LoadingSpinner /> : <Button title="게시" type="submit" disabled={disabled} />}</div>
+          <div>{isPending ? <LoadingSpinner /> : <Button title="수정" type="submit" disabled={disabled} />}</div>
         }
       />
       <div className="pt-24">

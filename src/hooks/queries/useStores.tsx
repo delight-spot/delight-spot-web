@@ -5,16 +5,25 @@ import {
   keepPreviousData,
   useInfiniteQuery,
   useMutation,
+  useQuery,
 } from '@tanstack/react-query';
 
 import { number, queryKeys } from '@/constants';
-import { createStore, getStores } from '@/services/store/store';
-import { ErrorStatus, UseMutationCustomOptions } from '@/types/common';
-import { Store } from '@/types/domain/stores';
+import {
+  CreateAndUpdateStoreArgs,
+  createStore,
+  deleteStore,
+  getStoreDetail,
+  getStores,
+  updateStore,
+} from '@/services/store/store';
+import { ErrorStatus, UseMutationCustomOptions, UseQueryCustomOption } from '@/types/common';
+import { Store, StoreDetail } from '@/types/domain/stores';
 import { queryClient } from '@/QueryProvider';
 import { useRouter } from 'next/navigation';
 import { useStoreListTabState } from '@/store/useStoreListTabStore';
 import { useToastStore } from '@/store/useToastStore';
+import { useDeleteImage } from './useImage';
 
 function useGetInfiniteStores(
   selectedType: string = 'all',
@@ -52,10 +61,65 @@ function useCreateStore(mutationOptions?: UseMutationCustomOptions) {
         message: '스토어를 생성했습니다.',
         type: 'success',
       });
-      router.push('/');
+      router.replace('/');
     },
     ...mutationOptions,
   });
 }
 
-export { useGetInfiniteStores, useCreateStore };
+function useDeleteStore(storeId: number, mutationOptions?: UseMutationCustomOptions) {
+  const { selectedTab } = useStoreListTabState();
+  const { addToast } = useToastStore();
+  const router = useRouter();
+  const prevStoreDetail = queryClient.getQueryData<StoreDetail>([queryKeys.STORE.GET_STORE_DETAIL, storeId]);
+  const { mutate: deleteImage } = useDeleteImage();
+  return useMutation({
+    mutationFn: (storeId: number) => deleteStore({ storeId }),
+    onSuccess: () => {
+      if (prevStoreDetail && prevStoreDetail.store_photo.length > 0) {
+        deleteImage(prevStoreDetail?.store_photo);
+      }
+      router.replace('/');
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.STORE.GET_STORES, selectedTab],
+      });
+      addToast({
+        message: '스토어를 제거했습니다.',
+        type: 'success',
+      });
+    },
+
+    ...mutationOptions,
+  });
+}
+
+function useEditStore(storeId: number, mutationOptions?: UseMutationCustomOptions) {
+  const router = useRouter();
+  const { addToast } = useToastStore();
+  return useMutation({
+    mutationFn: (updateArgs: CreateAndUpdateStoreArgs) => updateStore(storeId, updateArgs),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.STORE.GET_STORE_DETAIL, storeId],
+      });
+      router.push(`/store/${storeId}`);
+      addToast({
+        message: '스토어가 수정되었습니다.',
+        type: 'success',
+      });
+    },
+    ...mutationOptions,
+  });
+}
+
+function useGetStoreDetail(id: number, queryOptions?: UseQueryCustomOption<StoreDetail>) {
+  return useQuery({
+    queryKey: [queryKeys.STORE.GET_STORE_DETAIL, id],
+    queryFn: () => getStoreDetail(id),
+    staleTime: number.QUERY_ONE_HOUR_TIMES,
+    gcTime: number.QUERY_ONE_HOUR_TIMES,
+    ...queryOptions,
+  });
+}
+
+export { useGetInfiniteStores, useCreateStore, useGetStoreDetail, useDeleteStore, useEditStore };

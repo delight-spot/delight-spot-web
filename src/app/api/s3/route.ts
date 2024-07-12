@@ -1,4 +1,4 @@
-import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectsCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -70,9 +70,9 @@ export async function POST(req: Request, res: Response) {
 
 export async function DELETE(req: Request, res: Response) {
   try {
-    const { fileName } = await req.json();
+    const { fileNames } = await req.json();
 
-    if (!fileName) {
+    if (!fileNames || !Array.isArray(fileNames) || fileNames.length === 0) {
       return NextResponse.json(
         {
           error: '존재하지 않는 파일입니다.',
@@ -84,12 +84,18 @@ export async function DELETE(req: Request, res: Response) {
       );
     }
 
-    const Key = `${uuidv4()}-${fileName}`;
+    const objects = fileNames.map((url) => {
+      const key = url.split('.com/')[1];
+      return { Key: decodeURIComponent(key) };
+    });
 
     await s3.send(
-      new DeleteObjectCommand({
+      new DeleteObjectsCommand({
         Bucket,
-        Key,
+        Delete: {
+          Objects: objects,
+          Quiet: false,
+        },
       })
     );
 

@@ -1,4 +1,4 @@
-import { KindMenu, RatingTitle } from '@/types/domain/stores';
+import { KindMenu, PetFriendlyOption, RatingTitle } from '@/types/domain/stores';
 
 function translateKindMenu(word?: KindMenu): string {
   if (!word) return '';
@@ -8,6 +8,15 @@ function translateKindMenu(word?: KindMenu): string {
     food: '상점',
   };
 
+  return dictionary[word];
+}
+
+function translatePetFriendlyType(word?: PetFriendlyOption): string {
+  if (!word) return '';
+  const dictionary: Record<PetFriendlyOption, string> = {
+    possible: '가능',
+    impossible: '불가능',
+  };
   return dictionary[word];
 }
 
@@ -25,4 +34,4 @@ function translateRatingTitle(word?: RatingTitle) {
   return obj[word];
 }
 
-export { translateKindMenu, translateRatingTitle };
+export { translateKindMenu, translateRatingTitle, translatePetFriendlyType };

@@ -1,6 +1,5 @@
 'use client';
 
-import { useGetStoreDetail } from '@/hooks/queries/useGetStoreDetail';
 import { useUser } from '@/hooks/useUser';
 import { useModal } from '@/hooks/useModal';
 import { useRouter } from 'next/navigation';
@@ -34,6 +33,7 @@ import dynamic from 'next/dynamic';
 import { copyToClipboard } from '@/utils/coypText';
 import { storeRatingList } from '@/constants';
 import { useToggleBooking } from '@/hooks/queries/useBookings';
+import { useGetStoreDetail } from '@/hooks/queries/useStores';
 const Maps = dynamic(() => import('../Map'), {
   ssr: false,
 });
@@ -46,7 +46,8 @@ export default function StoreDetailInfo({ id }: Props) {
   const { data } = useGetStoreDetail(id);
   const router = useRouter();
   const modal = useModal();
-  const { isLoggedIn } = useUser();
+
+  const { isLoggedIn, userInfo } = useUser();
 
   const { mutate: toggleBooking } = useToggleBooking(id);
 
@@ -74,9 +75,11 @@ export default function StoreDetailInfo({ id }: Props) {
     router.push(`/store/${id}/review`);
   };
 
+  const isOwner = data?.owner.pk === userInfo?.pk;
+
   return (
     <div>
-      <Header title={data?.name ?? ''} isBack customMenu={<StoreDetailMenu />} />
+      <Header title={data?.name ?? ''} isBack customMenu={isOwner && <StoreDetailMenu storeId={id} />} />
       <div className="pt-20 min-w-sm md:w-md m-auto">
         <div className="flex items-center gap-2 mb-4 px-4">
           <Avatar size={40} avatarUrl={data?.owner.avatar} />

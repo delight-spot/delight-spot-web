@@ -2,6 +2,7 @@ import axios, { AxiosError } from 'axios';
 import HttpError from './httpError';
 import { getCookie } from 'cookies-next';
 import { ACCESS_TOKEN } from '@/constants';
+import { handleNetworkError } from '@/utils/handleNetworkError';
 
 export const SSR_BASE_URL = 'http://localhost:8000/api/v1';
 export const CSR_BASE_URL = '/api/v1/';
@@ -15,7 +16,7 @@ const api = axios.create({
 api.interceptors.request.use(async (config) => {
   const prevAccessToken = getCookie(ACCESS_TOKEN);
   if (prevAccessToken) {
-    config.headers.Authorization = `Bearer ${prevAccessToken}`;
+    config.headers.Authorization = prevAccessToken;
   }
 
   const csrftoken = getCookie('csrftoken'); // csrftoken 쿠키에서 가져오는 예시 함수
@@ -32,8 +33,7 @@ api.interceptors.response.use(
   },
   (error) => {
     console.warn('error ', error);
-    if (!(error instanceof AxiosError)) throw new Error('네트워크 통신 에러');
-    throw new HttpError(error.response?.status, error.response?.statusText).errorData;
+    handleNetworkError(error);
   }
 );
 

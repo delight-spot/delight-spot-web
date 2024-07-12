@@ -5,6 +5,7 @@ type SellingList = {
 };
 
 type KindMenu = 'cafe' | 'food' | 'ect';
+type PetFriendlyOption = 'possible' | 'impossible';
 type RatingTitle =
   | 'taste_rating'
   | 'atmosphere_rating'
@@ -63,4 +64,4 @@ interface BookingStore {
   create_at: Date;
 }
 
-export type { SellingList, Store, KindMenu, StoreDetail, RatingTitle, BookingStore };
+export type { SellingList, Store, KindMenu, StoreDetail, RatingTitle, BookingStore, PetFriendlyOption };

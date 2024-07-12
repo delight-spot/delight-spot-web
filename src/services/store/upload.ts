@@ -24,11 +24,11 @@ const uploadImage = async (formData: FormData): Promise<ImageResponse> => {
   }
 };
 
-const deleteImage = async (fileName: string): Promise<ImageResponse> => {
+const deleteImage = async (fileNames: string[]): Promise<ImageResponse> => {
   try {
     const response = await (
       await axios.delete('/api/s3', {
-        data: { fileName },
+        data: { fileNames },
       })
     ).data;
     return response;
