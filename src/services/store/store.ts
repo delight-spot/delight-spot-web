@@ -42,4 +42,13 @@ const getStoreDetail = async (id: number): Promise<StoreDetail> => {
   return result;
 };
 
-export { getStores, getStoreDetail, createStore };
+type StoreUpdateArgs = {};
+const updateStore = async () => {};
+
+const deleteStore = async ({ storeId }: { storeId: number; fileUrls?: string[] }) => {
+  return await (
+    await api.delete(`/stores/${storeId}`)
+  ).data;
+};
+
+export { getStores, getStoreDetail, createStore, deleteStore };

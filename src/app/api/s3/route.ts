@@ -84,7 +84,10 @@ export async function DELETE(req: Request, res: Response) {
       );
     }
 
-    const objects = fileNames.map((fileName) => ({ Key: `${uuidv4()}-${fileName}` }));
+    const objects = fileNames.map((url) => {
+      const key = url.split('.com/')[1];
+      return { Key: decodeURIComponent(key) };
+    });
 
     await s3.send(
       new DeleteObjectsCommand({
