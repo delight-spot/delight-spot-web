@@ -9,7 +9,14 @@ import {
 } from '@tanstack/react-query';
 
 import { number, queryKeys } from '@/constants';
-import { createStore, deleteStore, getStoreDetail, getStores } from '@/services/store/store';
+import {
+  CreateAndUpdateStoreArgs,
+  createStore,
+  deleteStore,
+  getStoreDetail,
+  getStores,
+  updateStore,
+} from '@/services/store/store';
 import { ErrorStatus, UseMutationCustomOptions, UseQueryCustomOption } from '@/types/common';
 import { Store, StoreDetail } from '@/types/domain/stores';
 import { queryClient } from '@/QueryProvider';
@@ -54,7 +61,7 @@ function useCreateStore(mutationOptions?: UseMutationCustomOptions) {
         message: '스토어를 생성했습니다.',
         type: 'success',
       });
-      router.push('/');
+      router.replace('/');
     },
     ...mutationOptions,
   });
@@ -86,6 +93,25 @@ function useDeleteStore(storeId: number, mutationOptions?: UseMutationCustomOpti
   });
 }
 
+function useEditStore(storeId: number, mutationOptions?: UseMutationCustomOptions) {
+  const router = useRouter();
+  const { addToast } = useToastStore();
+  return useMutation({
+    mutationFn: (updateArgs: CreateAndUpdateStoreArgs) => updateStore(storeId, updateArgs),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.STORE.GET_STORE_DETAIL, storeId],
+      });
+      router.push(`/store/${storeId}`);
+      addToast({
+        message: '스토어가 수정되었습니다.',
+        type: 'success',
+      });
+    },
+    ...mutationOptions,
+  });
+}
+
 function useGetStoreDetail(id: number, queryOptions?: UseQueryCustomOption<StoreDetail>) {
   return useQuery({
     queryKey: [queryKeys.STORE.GET_STORE_DETAIL, id],
@@ -96,4 +122,4 @@ function useGetStoreDetail(id: number, queryOptions?: UseQueryCustomOption<Store
   });
 }
 
-export { useGetInfiniteStores, useCreateStore, useGetStoreDetail, useDeleteStore };
+export { useGetInfiniteStores, useCreateStore, useGetStoreDetail, useDeleteStore, useEditStore };

@@ -1,7 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useGetStoreDetail } from '@/hooks/queries/useStores';
+import { useEditStore, useGetStoreDetail } from '@/hooks/queries/useStores';
 import { useCallback, useEffect, useState } from 'react';
 import { useModal } from '@/hooks/useModal';
 
@@ -22,6 +22,8 @@ import TextArea from '../TextArea';
 import { KindMenu, PetFriendlyOption } from '@/types/domain/stores';
 import { translateKindMenu, translatePetFriendlyType } from '@/utils/translateToKorean';
 import { petFriendlyOptions } from '@/constants';
+import { useUser } from '@/hooks/useUser';
+import AlertModal from '../modal/AlertModal';
 
 interface Props {
   storeId: number;
@@ -39,15 +41,23 @@ export default function StoreEditForm({ storeId }: Props) {
   const { data } = useGetStoreDetail(storeId);
 
   const {
+    formState: { isValid, errors },
     register,
     handleSubmit,
     getValues,
-    formState: { isValid, errors },
     setValue,
+    setError,
     clearErrors,
   } = useForm<EditForm>();
+  const { isLoggedIn } = useUser();
   const [fileUrls, setFileUrls] = useState<string[]>([]);
   const typeSelectorModal = useModal();
+  const alertModal = useModal();
+  const { mutate: editStore, isPending } = useEditStore(storeId, {
+    onError: () => {
+      alertModal.show();
+    },
+  });
 
   useEffect(() => {
     if (data) {
@@ -100,9 +110,27 @@ export default function StoreEditForm({ storeId }: Props) {
     setFileUrls((prev) => prev.filter((url) => url !== fileUrl));
   }, []);
 
-  const onSubmit = (data: EditForm) => {};
+  const onSubmit = (data: EditForm) => {
+    if (!isLoggedIn) return;
+    if (!data.address) {
+      return setError('address', { message: '주소를 입력해주세요.' });
+    }
+    if (!data.type) {
+      return setError('type', { message: '종류를 입력해주세요.' });
+    }
+    editStore({
+      city: data.address,
+      description: data.description,
+      kind_menu: data.type as KindMenu,
+      name: data.name,
+      pet_friendly: data.petFriendly,
+      store_photo: fileUrls,
+    });
+  };
 
-  const disabled = !isValid || !getValues('address') || !getValues('type');
+  const disabled = !getValues('address') || !getValues('type');
+
+  console.log(fileUrls.length < 0);
 
   const petFriendlyChecked = (type?: boolean) => {
     return type ? 'possible' : 'impossible';
@@ -114,7 +142,7 @@ export default function StoreEditForm({ storeId }: Props) {
         title="수정하기"
         isBack
         customButton={
-          <div>{false ? <LoadingSpinner /> : <Button title="수정" type="submit" disabled={disabled} />}</div>
+          <div>{isPending ? <LoadingSpinner /> : <Button title="수정" type="submit" disabled={disabled} />}</div>
         }
       />
       <div className="pt-24">
@@ -203,6 +231,8 @@ export default function StoreEditForm({ storeId }: Props) {
           />
         </div>
       </BottomModal>
+
+      <AlertModal type="error" close={alertModal.hide} isOpen={alertModal.isVisible} />
     </form>
   );
 }

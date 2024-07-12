@@ -22,6 +22,8 @@ import LoadingSpinner from '../LoadingSpinner';
 import { KindMenu, PetFriendlyOption } from '@/types/domain/stores';
 import { petFriendlyOptions } from '@/constants';
 import { translateKindMenu, translatePetFriendlyType } from '@/utils/translateToKorean';
+import { useUser } from '@/hooks/useUser';
+import AlertModal from '../modal/AlertModal';
 
 type CreateForm = {
   description: string;
@@ -45,9 +47,15 @@ export default function StoreCreateForm() {
       petFriendly: false,
     },
   });
+  const { isLoggedIn } = useUser();
   const [fileUrls, setFileUrls] = useState<string[]>([]);
   const typeSelectorModal = useModal();
-  const { mutate: createStore, isPending } = useCreateStore();
+  const alertModal = useModal();
+  const { mutate: createStore, isPending } = useCreateStore({
+    onError: () => {
+      alertModal.show();
+    },
+  });
 
   const onSelectorType = useCallback(
     (type?: KindMenu) => {
@@ -89,6 +97,7 @@ export default function StoreCreateForm() {
   }, []);
 
   const onSubmit = (data: CreateForm) => {
+    if (!isLoggedIn) return;
     if (!data.address) {
       return setError('address', { message: '주소를 입력해주세요.' });
     }
@@ -206,6 +215,8 @@ export default function StoreCreateForm() {
           />
         </div>
       </BottomModal>
+
+      <AlertModal type="error" close={alertModal.hide} isOpen={alertModal.isVisible} />
     </form>
   );
 }
