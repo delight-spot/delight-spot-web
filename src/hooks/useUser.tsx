@@ -1,12 +1,13 @@
-import { ACCESS_TOKEN, number, queryKeys } from '@/constants';
+import { number, queryKeys } from '@/constants';
 import { getMyInfo } from '@/services/user';
+import { useLoginState } from '@/store/useLoginState';
 import { ErrorStatus } from '@/types/common';
 import { User } from '@/types/domain/user';
 import { useQuery } from '@tanstack/react-query';
-import { getCookie } from 'cookies-next';
 
 function useUser() {
-  const accessToken = getCookie(ACCESS_TOKEN);
+  const { token } = useLoginState();
+
   const {
     data: users,
     isError,
@@ -16,12 +17,12 @@ function useUser() {
     queryFn: getMyInfo,
     gcTime: number.QUERY_ONE_HOUR_TIMES,
     staleTime: number.QUERY_ONE_HOUR_TIMES,
-    enabled: !!accessToken,
+    enabled: !!token,
   });
 
   return {
     userInfo: users,
-    isLoggedIn: users && !isError && !!accessToken,
+    isLoggedIn: users && !isError && !!token,
     userError: usersError,
     isUserError: isError,
   };

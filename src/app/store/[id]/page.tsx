@@ -1,6 +1,7 @@
 import SSRSuspense from '@/components/SSRSuspense';
 import StoreDetailInfo from '@/components/stores/StoreDetailInfo';
 import StoreDetailSkeleton from '@/components/stores/StoreDetailSkeleton';
+import Toast from '@/components/Toast';
 
 interface Props {
   params: {
@@ -14,6 +15,7 @@ export default function StoreDetailPage({ params: { id } }: Props) {
       <SSRSuspense fallback={<StoreDetailSkeleton />}>
         <StoreDetailInfo id={Number(id)} />
       </SSRSuspense>
+      <Toast isShowing />
     </section>
   );
 }

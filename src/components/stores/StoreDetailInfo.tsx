@@ -3,6 +3,9 @@
 import { useUser } from '@/hooks/useUser';
 import { useModal } from '@/hooks/useModal';
 import { useRouter } from 'next/navigation';
+import { useToggleBooking } from '@/hooks/queries/useBookings';
+import { useGetStoreDetail } from '@/hooks/queries/useStores';
+import { useEffect } from 'react';
 
 import IconWrapper from '../IconWrapper';
 import RatingList from '../RatingList';
@@ -12,9 +15,9 @@ import Header from '../header/Header';
 import StoreDetailSubtitle from './StoreDetailSubTitle';
 import LoginModal from '../modal/LoginModal';
 import ImageSlider from './ImageSlider';
-import Toast from '../Toast';
-
 import StoreDetailMenu from '../header/StoreDetailMenu';
+import AlertModal from '../modal/AlertModal';
+
 import { RatingTitle } from '@/types/domain/stores';
 import { translateKindMenu } from '@/utils/translateToKorean';
 import { formatTimeAgo } from '@/utils/formatDate';
@@ -30,10 +33,8 @@ import {
 } from 'react-icons/io5';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { copyToClipboard } from '@/utils/coypText';
+import { copyToClipboard } from '@/utils/copyText';
 import { storeRatingList } from '@/constants';
-import { useToggleBooking } from '@/hooks/queries/useBookings';
-import { useGetStoreDetail } from '@/hooks/queries/useStores';
 const Maps = dynamic(() => import('../Map'), {
   ssr: false,
 });
@@ -43,7 +44,7 @@ interface Props {
 }
 
 export default function StoreDetailInfo({ id }: Props) {
-  const { data } = useGetStoreDetail(id);
+  const { data, isError } = useGetStoreDetail(id);
   const router = useRouter();
   const modal = useModal();
 
@@ -75,11 +76,20 @@ export default function StoreDetailInfo({ id }: Props) {
     router.push(`/store/${id}/review`);
   };
 
-  const isOwner = data?.owner.pk === userInfo?.pk;
+  useEffect(() => {
+    if (isError) {
+      modal.show();
+    }
+  }, [isError, modal]);
 
   return (
     <div>
-      <Header title={data?.name ?? ''} isBack backUrl="/" customMenu={isOwner && <StoreDetailMenu storeId={id} />} />
+      <Header
+        title={data?.name ?? ''}
+        isBack
+        backUrl="/"
+        customMenu={data?.is_owner && <StoreDetailMenu storeId={id} />}
+      />
       <div className="pt-20 min-w-sm md:w-md m-auto">
         <div className="flex items-center gap-2 mb-4 px-4">
           <Avatar size={40} avatarUrl={data?.owner.avatar} />
@@ -88,7 +98,7 @@ export default function StoreDetailInfo({ id }: Props) {
             <div>
               <span className="text-black">{data?.owner.username}</span>
               <div className="flex items-center gap-1 text-slate-S400">
-                <p>{data?.owner.username}</p>
+                <p aria-label="username">{data?.owner.username}</p>
                 <span>﹒</span>
                 <p>{formatTimeAgo(data?.created_at)}</p>
               </div>
@@ -97,10 +107,11 @@ export default function StoreDetailInfo({ id }: Props) {
             <div className="flex items-center gap-4">
               <IconWrapper
                 onClick={onBooking}
-                icon={<IoHeartSharp size={18} color={data?.is_liked ? '#FF5F5F' : '#C8C9DF'} />}
-                data-testid="like-icon"
+                icon={
+                  <IoHeartSharp aria-label="booking-icon" size={18} color={data?.is_liked ? '#FF5F5F' : '#C8C9DF'} />
+                }
               />
-              <IconWrapper onClick={onShare} icon={<IoShareSocialOutline size={18} data-testid="share-icon" />} />
+              <IconWrapper onClick={onShare} icon={<IoShareSocialOutline size={18} aria-label="share-icon" />} />
             </div>
           </div>
         </div>
@@ -117,12 +128,16 @@ export default function StoreDetailInfo({ id }: Props) {
           <div className="flex flex-col mt-4">
             <StoreDetailSubtitle title={data?.name ?? ''} />
 
-            <div className="flex items-center gap-1 cursor-pointer" onClick={() => copyToClipboard(data?.city ?? '')}>
+            <button
+              aria-label="city-copy-button"
+              className="flex items-center gap-1 cursor-pointer"
+              onClick={() => copyToClipboard(data?.city ?? '')}
+            >
               <span className="text-label leading-label text-primary-P300 font-semibold max-w-[200px] ">
                 {data?.city}
               </span>
               <IoCopy size={14} color="#2D47DB" />
-            </div>
+            </button>
           </div>
 
           <div className="flex items-center gap-3">
@@ -168,7 +183,7 @@ export default function StoreDetailInfo({ id }: Props) {
         <div className="my-4 px-4 flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <StoreDetailSubtitle title="리뷰" />
-            <button onClick={onReviewForm} className="flex items-center gap-1 p-2">
+            <button aria-label="reviewForm-button" onClick={onReviewForm} className="flex items-center gap-1 p-2">
               <IoPencilSharp color="#2D47DB" />
               <span className="text-subtitle leading-subtitle text-primary-P300 ">리뷰 쓰기</span>
             </button>
@@ -178,7 +193,7 @@ export default function StoreDetailInfo({ id }: Props) {
       </div>
 
       <LoginModal isOpen={modal.isVisible} onCloseModal={modal.hide} />
-      <Toast isShowing />
+      <AlertModal isOpen={modal.isVisible} close={modal.hide} type="error" />
     </div>
   );
 }

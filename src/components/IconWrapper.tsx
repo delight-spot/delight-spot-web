@@ -6,7 +6,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export default function IconWrapper({ icon, ...props }: Props) {
   return (
-    <button {...props} className="p-2">
+    <button aria-label="icon-wrapper" {...props} className="p-2">
       {icon}
     </button>
   );

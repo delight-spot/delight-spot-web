@@ -49,7 +49,7 @@ export default function StoreDetailMenu({ storeId }: Props) {
   };
 
   return (
-    <ul>
+    <ul aria-label="store-detail-menu">
       {storeDetailMenuList.map((item) => (
         <div onClick={() => handleMenuItem(item.key)} key={item.key} className="border-b last:border-0 cursor-pointer">
           <MenuItem>
