@@ -130,8 +130,6 @@ export default function StoreEditForm({ storeId }: Props) {
 
   const disabled = !getValues('address') || !getValues('type');
 
-  console.log(fileUrls.length < 0);
-
   const petFriendlyChecked = (type?: boolean) => {
     return type ? 'possible' : 'impossible';
   };
