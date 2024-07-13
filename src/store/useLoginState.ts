@@ -1,3 +1,5 @@
+import { ACCESS_TOKEN } from '@/constants';
+import { getCookie } from 'cookies-next';
 import { create } from 'zustand';
 
 interface LoginInitialState {
@@ -9,7 +11,7 @@ interface LoginInitialState {
 
 const useLoginState = create<LoginInitialState>((set) => ({
   is_member: undefined,
-  token: undefined,
+  token: getCookie(ACCESS_TOKEN),
   code: null,
   setLoginState: (state) => set((prev) => ({ ...prev, ...state })),
 }));
