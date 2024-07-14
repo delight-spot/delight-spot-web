@@ -47,8 +47,9 @@ export default function StoreDetailInfo({ id }: Props) {
   const { data, isError } = useGetStoreDetail(id);
   const router = useRouter();
   const modal = useModal();
+  const loginModal = useModal();
 
-  const { isLoggedIn, userInfo } = useUser();
+  const { isLoggedIn } = useUser();
 
   const { mutate: toggleBooking } = useToggleBooking(id);
 
@@ -62,17 +63,17 @@ export default function StoreDetailInfo({ id }: Props) {
     : [];
 
   const onBooking = () => {
-    if (!isLoggedIn) return modal.show();
+    if (!isLoggedIn) return loginModal.show();
     toggleBooking(id);
   };
 
   const onShare = () => {
-    if (!isLoggedIn) return modal.show();
+    if (!isLoggedIn) return loginModal.show();
     console.log('share');
   };
 
   const onReviewForm = () => {
-    if (!isLoggedIn) return modal.show();
+    if (!isLoggedIn) return loginModal.show();
     router.push(`/store/${id}/review`);
   };
 
@@ -83,7 +84,7 @@ export default function StoreDetailInfo({ id }: Props) {
   }, [isError, modal]);
 
   return (
-    <div>
+    <div className="pb-5">
       <Header
         title={data?.name ?? ''}
         isBack
@@ -192,7 +193,7 @@ export default function StoreDetailInfo({ id }: Props) {
         </div>
       </div>
 
-      <LoginModal isOpen={modal.isVisible} onCloseModal={modal.hide} />
+      <LoginModal isOpen={loginModal.isVisible} onCloseModal={loginModal.hide} />
       <AlertModal isOpen={modal.isVisible} close={modal.hide} type="error" />
     </div>
   );
