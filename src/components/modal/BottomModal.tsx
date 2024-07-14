@@ -21,9 +21,9 @@ const initialVariants: Variants = {
 export default function BottomModal({ isOpen, children, title, onClose }: Props) {
   const childrenRef = useRef<HTMLDivElement | null>(null);
   return (
-    <Portal>
-      <AnimatePresence>
-        {isOpen && (
+    <AnimatePresence>
+      {isOpen && (
+        <Portal>
           <div className="fixed left-0 right-0 bottom-0 top-0 z-50 flex justify-center items-center">
             <div onClick={onClose} className="absolute w-full h-full bg-black opacity-65" />
             <motion.div
@@ -49,8 +49,8 @@ export default function BottomModal({ isOpen, children, title, onClose }: Props)
               </div>
             </motion.div>
           </div>
-        )}
-      </AnimatePresence>
-    </Portal>
+        </Portal>
+      )}
+    </AnimatePresence>
   );
 }

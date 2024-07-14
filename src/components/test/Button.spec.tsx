@@ -20,7 +20,14 @@ it('lg size를 설정할 경우 className h-14 py-4이 등록됨', async () => {
   expect(screen.getByRole('button')).toHaveClass('h-14 py-4');
 });
 
-it('disabled일 경우 className은 text-slate-S500로 등록됨', async () => {
+it('disabled일 경우 className은 text-slate-S500로 등록되고 버튼이 비활성화 됨', async () => {
   await render(<Button title="test" disabled />);
   expect(screen.getByRole('button')).toHaveClass('text-slate-S500');
+  expect(screen.getByRole('button')).toBeDisabled();
+});
+
+it('버튼이 활성화되었는지 확인하고 활성화된 경우 className은 bg-primary-P300로 등록', async () => {
+  await render(<Button title="test" />);
+  expect(screen.getByRole('button')).not.toBeDisabled();
+  expect(screen.getByRole('button')).toHaveClass('bg-primary-P300');
 });
