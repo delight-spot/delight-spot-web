@@ -7,6 +7,8 @@ function filterPrivatePath(path: string) {
     /^\/store\/(create|edit)(\/\d+)?$/, //
     /^\/my\/\d+$/,
     /^\/profile\/\d+$/,
+    /^\/store\/\d+\/review\/edit\/\d+$/,
+    /^\/store\/\d+\/review$/,
   ];
   return privatePathPatterns.some((pattern) => pattern.test(path));
 }
