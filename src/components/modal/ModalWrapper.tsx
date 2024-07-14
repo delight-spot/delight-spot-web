@@ -1,6 +1,5 @@
-import Portal from '@/Portal';
-import Button from '../Button';
 import { PropsWithChildren } from 'react';
+import Portal from '../Portal';
 
 export default function ModalWrapper({ children }: PropsWithChildren) {
   return (

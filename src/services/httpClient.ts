@@ -1,5 +1,4 @@
-import axios, { AxiosError } from 'axios';
-import HttpError from './httpError';
+import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import { ACCESS_TOKEN } from '@/constants';
 import { handleNetworkError } from '@/utils/handleNetworkError';
@@ -19,7 +18,7 @@ api.interceptors.request.use(async (config) => {
     config.headers.Authorization = prevAccessToken;
   }
 
-  const csrftoken = getCookie('csrftoken'); // csrftoken 쿠키에서 가져오는 예시 함수
+  const csrftoken = getCookie('csrftoken');
   if (csrftoken) {
     config.headers['X-CSRFToken'] = csrftoken;
   }
@@ -32,7 +31,6 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.warn('error ', error);
     handleNetworkError(error);
   }
 );

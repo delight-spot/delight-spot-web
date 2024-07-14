@@ -6,7 +6,7 @@ import { HiCheckCircle, HiMiniInformationCircle, HiMiniShieldExclamation, HiMini
 
 import { cls } from '@/utils/cls';
 import { ToastType, useToastStore } from '@/store/useToastStore';
-import Portal from '@/Portal';
+import Portal from './Portal';
 
 type Props = {
   isShowing: boolean | null;

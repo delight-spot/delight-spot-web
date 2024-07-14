@@ -39,7 +39,7 @@ export default function AlertModal({ isOpen, type, title, description, close, ba
   return (
     isOpen && (
       <ModalWrapper>
-        <div className="flex flex-col gap-4 *:text-center">
+        <div aria-label="alert-modal" className="flex flex-col gap-4 *:text-center">
           <div className="flex justify-center items-center">{selectedType.icon}</div>
           <h1 className="font-bold text-subtitle leading-subtitle">{title || '서비스 장애가 발생하였습니다.'}</h1>
           {description && <p className="text-body leading-body">{description}</p>}
