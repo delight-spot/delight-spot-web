@@ -17,13 +17,13 @@ export default function AlertModal({ isOpen, type, title, description, close, ba
   const router = useRouter();
   const typeMap = {
     confirm: {
-      icon: <IoCheckmarkCircleOutline size={40} color="#5CFF63" />,
+      icon: <IoCheckmarkCircleOutline aria-label="confirm-icon" size={40} color="#5CFF63" />,
     },
     warning: {
-      icon: <IoAlertCircleOutline size={40} color="#FFBD53" />,
+      icon: <IoAlertCircleOutline aria-label="warning-icon" size={40} color="#FFBD53" />,
     },
     error: {
-      icon: <IoCloseCircleOutline size={40} color="#FF5F5F" />,
+      icon: <IoCloseCircleOutline aria-label="error-icon" size={40} color="#FF5F5F" />,
     },
   };
 
