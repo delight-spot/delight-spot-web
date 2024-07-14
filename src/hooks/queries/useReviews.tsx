@@ -2,10 +2,11 @@ import { queryClient } from '@/QueryProvider';
 import { number, queryKeys } from '@/constants';
 import {
   createReview,
+  deleteMyReview,
   getMyReview,
   getReviews,
   updateMyReview,
-  UpdateReview,
+  UpdateReviewRgs,
   UpdateWithCreateReviewArgs,
 } from '@/services/store/reviews';
 import { useToastStore } from '@/store/useToastStore';
@@ -88,11 +89,10 @@ function useUpdateReview(
   { reviewId, storeId }: { reviewId: number; storeId: number },
   mutationOptions?: UseMutationCustomOptions
 ) {
-  console.log(storeId);
   const router = useRouter();
   const { addToast } = useToastStore();
   return useMutation({
-    mutationFn: (reviewUpdateArgs: UpdateReview) => updateMyReview(reviewId, reviewUpdateArgs),
+    mutationFn: (reviewUpdateArgs: UpdateReviewRgs) => updateMyReview(reviewId, reviewUpdateArgs),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [queryKeys.REVIEW.GET_REVIEWS, storeId],
@@ -104,10 +104,28 @@ function useUpdateReview(
         message: '리뷰를 수정했습니다.',
         type: 'success',
       });
-      //router.replace(`/store/${storeId}`);
+      router.replace(`/store/${storeId}`);
     },
     ...mutationOptions,
   });
 }
 
-export { useGetReviews, useCreateReviews, useGetMyReview, useUpdateReview };
+function useDeleteReview(
+  { reviewId, storeId }: { reviewId: number; storeId: number },
+  mutationOptions?: UseMutationCustomOptions
+) {
+  return useMutation({
+    mutationFn: (username: string) => deleteMyReview({ reviewId, username }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.REVIEW.GET_REVIEWS, storeId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.STORE.GET_STORE_DETAIL, storeId],
+      });
+    },
+    ...mutationOptions,
+  });
+}
+
+export { useGetReviews, useCreateReviews, useGetMyReview, useUpdateReview, useDeleteReview };

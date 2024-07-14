@@ -41,9 +41,11 @@ export default function ReviewItem({ review, isOwner, storeId }: Props) {
             <p className="text-slate-S400">{review?.user.username}</p>
           </div>
         </div>
-        <div>
-          <IconWrapper icon={<IoEllipsisHorizontalSharp />} onClick={onMoreView}></IconWrapper>
-        </div>
+        {isOwner && (
+          <div>
+            <IconWrapper icon={<IoEllipsisHorizontalSharp />} onClick={onMoreView}></IconWrapper>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-col gap-3">

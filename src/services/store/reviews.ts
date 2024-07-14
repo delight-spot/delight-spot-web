@@ -38,11 +38,9 @@ const getMyReview = async ({ username, reviewId }: MyReviewArgs) => {
   return response;
 };
 
-type UpdateReview = UpdateWithCreateReviewArgs & { username: string };
+type UpdateReviewRgs = UpdateWithCreateReviewArgs & { username: string };
 
-const updateMyReview = async (id: number, reviewData: UpdateReview) => {
-  console.log('reviewData', reviewData);
-
+const updateMyReview = async (id: number, reviewData: UpdateReviewRgs) => {
   const response = await (
     await api.put<Promise<void>>(`/users/${reviewData.username}/reviews/${id}`, {
       id,
@@ -52,5 +50,10 @@ const updateMyReview = async (id: number, reviewData: UpdateReview) => {
   return response;
 };
 
-export { getReviews, createReview, getMyReview, updateMyReview };
-export type { UpdateReview, UpdateWithCreateReviewArgs };
+const deleteMyReview = async ({ reviewId, username }: { reviewId: number; username: string }): Promise<void> => {
+  const response = await (await api.delete(`/users/${username}/reviews/${reviewId}`)).data;
+  return response;
+};
+
+export { getReviews, createReview, getMyReview, updateMyReview, deleteMyReview };
+export type { UpdateReviewRgs, UpdateWithCreateReviewArgs };
