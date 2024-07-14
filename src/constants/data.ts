@@ -43,7 +43,7 @@ const storeTypeList = ['cafe', 'food', 'ect'] as const;
 
 const petFriendlyOptions = ['possible', 'impossible'] as const;
 
-const storeDetailMenuList = [
+const myMenuList = [
   {
     name: '수정',
     key: 'edit',
@@ -52,7 +52,7 @@ const storeDetailMenuList = [
     name: '삭제',
     key: 'delete',
   },
-];
+] as const;
 
 const storeRatingList: RatingTitle[] = [
   'taste_rating',
@@ -63,4 +63,4 @@ const storeRatingList: RatingTitle[] = [
   'restroom_rating',
 ] as const;
 
-export { homeMenuList, storeTabList, storeTypeList, storeDetailMenuList, storeRatingList, petFriendlyOptions };
+export { homeMenuList, storeTabList, storeTypeList, myMenuList, storeRatingList, petFriendlyOptions };

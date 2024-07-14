@@ -1,42 +1,47 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { useUser } from '@/hooks/useUser';
 import { useModal } from '@/hooks/useModal';
-import { useCreateReviews } from '@/hooks/queries/useReviews';
-import { useState } from 'react';
+import { useUser } from '@/hooks/useUser';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-import Button from '../../Button';
-import LoginModal from '../../modal/LoginModal';
-import AlertModal from '../../modal/AlertModal';
-import Header from '../../header/Header';
+import Button from '@/components/Button';
+import Header from '@/components/header/Header';
 import UploadPhoto from '../UploadPhoto';
-import UploadPhotoList from '../../UploadPhotoList';
-import Divider from '../../Divider';
+import Divider from '@/components/Divider';
+import UploadPhotoList from '@/components/UploadPhotoList';
 import ReviewRating from './ReviewRating';
 import TextArea from '@/components/TextArea';
+import LoginModal from '@/components/modal/LoginModal';
+import AlertModal from '@/components/modal/AlertModal';
 
 import { cls } from '@/utils/cls';
+import { useGetMyReview, useUpdateReview } from '@/hooks/queries/useReviews';
+import { RatingTitle } from '@/types/domain/stores';
 
-interface Props {
-  storeId: number;
-}
-
-type ReviewFormValue = {
+type ReviewEditForm = {
   text: string;
 };
 
-export default function ReviewForm({ storeId }: Props) {
+interface Props {
+  reviewId: number;
+  storeId: number;
+}
+
+export default function ReviewEditForm({ reviewId, storeId }: Props) {
   const {
     register,
     handleSubmit,
-    formState: { isValid, errors },
-  } = useForm<ReviewFormValue>();
-  const { isLoggedIn } = useUser();
+    formState: { errors },
+    setValue,
+    getValues,
+  } = useForm<ReviewEditForm>();
+
+  const { isLoggedIn, userInfo } = useUser();
   const loginModal = useModal();
   const errorModal = useModal();
   const [fileUrls, setFileUrls] = useState<string[]>([]);
-  const [ratings, setRatings] = useState({
+  const [ratings, setRatings] = useState<Record<RatingTitle, number>>({
     taste_rating: 0,
     atmosphere_rating: 0,
     kindness_rating: 0,
@@ -45,15 +50,39 @@ export default function ReviewForm({ storeId }: Props) {
     restroom_rating: 0,
   });
 
-  const { mutate: reviewMutate, isPending } = useCreateReviews(storeId, {
-    onError: (error) => {
-      if (error.statusCode === 403 || error.statusCode === 403) {
-        return loginModal.show();
-      } else {
+  const {
+    data: review,
+    isError: isMyReviewError,
+    isPending: isGetMyReviewPending,
+  } = useGetMyReview({ reviewId, username: userInfo?.name });
+
+  const { mutate: updateReview, isPending } = useUpdateReview(
+    { reviewId, storeId },
+    {
+      onError: () => {
         errorModal.show();
-      }
-    },
-  });
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (isMyReviewError) errorModal.show();
+  }, [errorModal, isMyReviewError]);
+
+  useEffect(() => {
+    if (review) {
+      setValue('text', review.description);
+      setRatings({
+        atmosphere_rating: review.atmosphere_rating,
+        clean_rating: review.clean_rating,
+        kindness_rating: review.kindness_rating,
+        parking_rating: review.parking_rating,
+        restroom_rating: review.restroom_rating,
+        taste_rating: review.taste_rating,
+      });
+      setFileUrls([...review.review_photo]);
+    }
+  }, [review, setValue]);
 
   const onSetFileUrls = (fileUrl: string) => {
     if (fileUrls.length > 5) return;
@@ -71,11 +100,15 @@ export default function ReviewForm({ storeId }: Props) {
     }));
   };
 
-  const onSubmit = ({ text }: ReviewFormValue) => {
+  const disabled = !getValues('text');
+
+  const onSubmit = ({ text }: ReviewEditForm) => {
+    if (isPending || isMyReviewError || isGetMyReviewPending) return;
+    if (!userInfo?.username) return;
     if (!isLoggedIn) return loginModal.show();
-    if (isPending || !text) return;
-    reviewMutate({
+    updateReview({
       description: text,
+      username: userInfo.username,
       review_photo: fileUrls,
       ...ratings,
     });
@@ -85,11 +118,11 @@ export default function ReviewForm({ storeId }: Props) {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Header
-          title="리뷰 작성"
+          title="수정"
           isBack
           customButton={
             <div>
-              <Button title="게시" type="submit" disabled={!isValid} />
+              <Button title="수정" type="submit" disabled={disabled} />
             </div>
           }
         />
@@ -128,7 +161,12 @@ export default function ReviewForm({ storeId }: Props) {
           </div>
 
           <LoginModal isOpen={loginModal.isVisible} onCloseModal={loginModal.hide} />
-          <AlertModal close={errorModal.hide} isOpen={errorModal.isVisible} type="error" />
+          <AlertModal
+            close={errorModal.hide}
+            isOpen={errorModal.isVisible}
+            type="error"
+            backUrl={`/store/${storeId}`}
+          />
         </div>
       </form>
     </>

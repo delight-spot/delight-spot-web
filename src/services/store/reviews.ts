@@ -6,7 +6,7 @@ const getReviews = async ({ storeId, page = 1 }: { storeId: number; page?: numbe
   return data;
 };
 
-type CreateReviewArgs = {
+type UpdateWithCreateReviewArgs = {
   taste_rating?: number;
   atmosphere_rating?: number;
   kindness_rating?: number;
@@ -17,7 +17,7 @@ type CreateReviewArgs = {
   description: string;
 };
 
-const createReview = async (storeId: number, reviewData: CreateReviewArgs) => {
+const createReview = async (storeId: number, reviewData: UpdateWithCreateReviewArgs) => {
   const response = await (
     await api.post(`/stores/${storeId}/reviews`, {
       ...reviewData,
@@ -26,5 +26,31 @@ const createReview = async (storeId: number, reviewData: CreateReviewArgs) => {
   return response;
 };
 
-export { getReviews, createReview };
-export type { CreateReviewArgs };
+const getMyReviews = () => {};
+
+type MyReviewArgs = {
+  username?: string;
+  reviewId: number;
+};
+const getMyReview = async ({ username, reviewId }: MyReviewArgs) => {
+  if (!username || !reviewId) return;
+  const response = await (await api.get<Promise<Review>>(`/users/${username}/reviews/${reviewId}`)).data;
+  return response;
+};
+
+type UpdateReview = UpdateWithCreateReviewArgs & { username: string };
+
+const updateMyReview = async (id: number, reviewData: UpdateReview) => {
+  console.log('reviewData', reviewData);
+
+  const response = await (
+    await api.put<Promise<void>>(`/users/${reviewData.username}/reviews/${id}`, {
+      id,
+      reviewData,
+    })
+  ).data;
+  return response;
+};
+
+export { getReviews, createReview, getMyReview, updateMyReview };
+export type { UpdateReview, UpdateWithCreateReviewArgs };

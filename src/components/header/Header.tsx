@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 import { useModal } from '@/hooks/useModal';
 import { useCloseOnOutSideClick } from '@/hooks/useCloseOnOutSide';
 import { useRef } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 
 import HeaderButton from './HeaderButton';
+import MoreViewWrapper from '../MoreViewWrapper';
 
 interface Props {
   title: string;
@@ -39,9 +39,10 @@ export default function Header({ title, isBack, backUrl, customMenu, customButto
   return (
     <header ref={headerRef} className="fixed m-auto left-0 right-0 bg-white z-50">
       <div className="w-sm md:w-md m-auto relative">
-        <div className="py-4 px-1 flex items-center relative justify-between h-14 bg-white">
+        <div className="py-4 px-1 flex items-center relative justify-between h-14 bg-white z-20">
           {isBack ? (
             <HeaderButton
+              type="button"
               icon={<MdChevronLeft aria-label="back-icon" color="#00000" size={24} />}
               onClick={onBackPage}
             />
@@ -60,31 +61,9 @@ export default function Header({ title, isBack, backUrl, customMenu, customButto
         </div>
 
         {customMenu && (
-          <AnimatePresence>
-            {rightMenuModal.isVisible && (
-              <motion.div
-                initial={{
-                  translateY: '-100%',
-                  opacity: 0,
-                }}
-                animate={{
-                  translateY: '0',
-                  opacity: 1,
-                }}
-                exit={{
-                  translateY: '-100%',
-                  opacity: 0,
-                }}
-                transition={{
-                  ease: 'easeOut',
-                  duration: 0.3,
-                }}
-                className="absolute right-4 min-w-[172px] bg-white shadow-md rounded-lg top-14 -z-10"
-              >
-                {customMenu}
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <MoreViewWrapper top={56} right={16} isOpen={rightMenuModal.isVisible}>
+            {customMenu}
+          </MoreViewWrapper>
         )}
       </div>
     </header>
