@@ -1,24 +1,51 @@
+'use client';
+
+import { useModal } from '@/hooks/useModal';
+import { useCallback, useRef } from 'react';
+import { useCloseOnOutSideClick } from '@/hooks/useCloseOnOutSide';
 import Image from 'next/image';
 import { IoStar } from 'react-icons/io5';
+import { IoEllipsisHorizontalSharp } from 'react-icons/io5';
 
 import Avatar from '../Avatar';
+import IconWrapper from '@/components/IconWrapper';
+import ReviewMoreView from './ReviewMoreView';
 
 import { Review } from '@/types/domain/reviews';
 import { formatRating } from '@/utils/formatNumber';
 
 interface Props {
   review: Review;
+  isOwner: boolean;
+  storeId: number;
 }
 
-export default function ReviewItem({ review }: Props) {
+export default function ReviewItem({ review, isOwner, storeId }: Props) {
+  const moreViewModal = useModal();
+  const menuWrapperRef = useRef<HTMLDivElement | null>(null);
+  useCloseOnOutSideClick({
+    excludeRefs: [menuWrapperRef],
+    onClose: moreViewModal.hide,
+  });
+
+  const onMoreView = useCallback(() => {
+    moreViewModal.toggle();
+  }, [moreViewModal]);
+
   return (
-    <li className="mt-10 first:mt-0 flex flex-col gap-3">
-      <div className="flex items-center gap-2">
-        <Avatar size={32} avatarUrl={review.user.avatar} />
-        <div className="flex flex-col text-body-s">
-          <p className="text-black">{review?.user.name}</p>
-          <p className="text-slate-S400">{review?.user.username}</p>
+    <li className="mt-10 first:mt-0 flex flex-col gap-3 relative">
+      <div ref={menuWrapperRef} className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Avatar size={32} avatarUrl={review.user.avatar} />
+          <div className="flex flex-col text-body-s">
+            <p className="text-slate-S400">{review?.user.username}</p>
+          </div>
         </div>
+        {isOwner && (
+          <div>
+            <IconWrapper icon={<IoEllipsisHorizontalSharp />} onClick={onMoreView}></IconWrapper>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-col gap-3">
@@ -41,6 +68,8 @@ export default function ReviewItem({ review }: Props) {
           </div>
         )}
       </div>
+
+      {isOwner && <ReviewMoreView isOpen={moreViewModal.isVisible} reviewId={review.pk} storeId={storeId} />}
     </li>
   );
 }

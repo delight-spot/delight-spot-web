@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react';
 
 import ReviewItem from './ReviewItem';
 import EmptyNotice from '@/components/EmptyNotice';
+import { useUser } from '@/hooks/useUser';
 
 interface Props {
   storeId: number;
@@ -13,6 +14,7 @@ interface Props {
 
 export default function ReviewList({ storeId }: Props) {
   const { data: reviews, fetchNextPage } = useGetReviews({ storeId });
+  const { userInfo } = useUser();
   const limitRef = useRef<HTMLDivElement | null>(null);
   const { isInterSecting } = useIntersectionObserver({
     node: limitRef.current,
@@ -30,7 +32,7 @@ export default function ReviewList({ storeId }: Props) {
       {hasReviews ? (
         <ul className="flex flex-col">
           {reviews?.pages.flat().map((review) => (
-            <ReviewItem key={review.pk} review={review} />
+            <ReviewItem key={review.pk} review={review} isOwner={userInfo?.pk === review.user.pk} storeId={storeId} />
           ))}
         </ul>
       ) : (

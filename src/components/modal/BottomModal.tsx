@@ -1,9 +1,9 @@
 'use client';
 
-import Portal from '@/Portal';
 import { AnimatePresence, Variants, motion } from 'framer-motion';
 import { useRef } from 'react';
 import { IoChevronBack } from 'react-icons/io5';
+import Portal from '../Portal';
 
 interface Props {
   isOpen: boolean;

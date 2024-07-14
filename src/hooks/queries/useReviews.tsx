@@ -1,10 +1,25 @@
 import { queryClient } from '@/QueryProvider';
 import { number, queryKeys } from '@/constants';
-import { createReview, CreateReviewArgs, getReviews } from '@/services/store/reviews';
+import {
+  createReview,
+  deleteMyReview,
+  getMyReview,
+  getReviews,
+  updateMyReview,
+  UpdateReviewRgs,
+  UpdateWithCreateReviewArgs,
+} from '@/services/store/reviews';
 import { useToastStore } from '@/store/useToastStore';
-import { ErrorStatus, UseMutationCustomOptions } from '@/types/common';
+import { ErrorStatus, UseMutationCustomOptions, UseQueryCustomOption } from '@/types/common';
 import { Review } from '@/types/domain/reviews';
-import { InfiniteData, QueryKey, UseInfiniteQueryOptions, useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import {
+  InfiniteData,
+  QueryKey,
+  UseInfiniteQueryOptions,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+} from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 function useGetReviews(
@@ -19,7 +34,7 @@ function useGetReviews(
   >
 ) {
   return useInfiniteQuery({
-    queryKey: [queryKeys.STORE.GET_REVIEWS, storeId],
+    queryKey: [queryKeys.REVIEW.GET_REVIEWS, storeId],
     queryFn: () => getReviews({ storeId, page }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPage) => {
@@ -27,6 +42,8 @@ function useGetReviews(
       const lastFeed = lastPage.at(-1);
       return lastFeed ? allPage.length + 1 : undefined;
     },
+    staleTime: number.QUERY_ONE_HOUR_TIMES,
+    gcTime: number.QUERY_ONE_HOUR_TIMES,
     ...queryOptions,
   });
 }
@@ -35,14 +52,15 @@ function useCreateReviews(storeId: number, mutationOptions?: UseMutationCustomOp
   const { addToast } = useToastStore();
   const router = useRouter();
   return useMutation({
-    mutationFn: (reviewData: CreateReviewArgs) => createReview(storeId, reviewData),
+    mutationFn: (reviewData: UpdateWithCreateReviewArgs) => createReview(storeId, reviewData),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [queryKeys.STORE.GET_REVIEWS, storeId],
+        queryKey: [queryKeys.REVIEW.GET_REVIEWS, storeId],
       });
       queryClient.invalidateQueries({
         queryKey: [queryKeys.STORE.GET_STORE_DETAIL, storeId],
       });
+
       addToast({
         message: '리뷰를 작성했습니다.',
         type: 'success',
@@ -53,4 +71,61 @@ function useCreateReviews(storeId: number, mutationOptions?: UseMutationCustomOp
   });
 }
 
-export { useGetReviews, useCreateReviews };
+function useGetMyReview(
+  { reviewId, username }: { reviewId: number; username?: string },
+  queryOptions?: UseQueryCustomOption<Review | undefined>
+) {
+  return useQuery({
+    queryKey: [queryKeys.REVIEW.GET_MY_REVIEW, reviewId],
+    queryFn: () => getMyReview({ reviewId, username }),
+    staleTime: number.QUERY_ONE_HOUR_TIMES,
+    gcTime: number.QUERY_ONE_HOUR_TIMES,
+    ...queryOptions,
+    enabled: !!username && !!reviewId,
+  });
+}
+
+function useUpdateReview(
+  { reviewId, storeId }: { reviewId: number; storeId: number },
+  mutationOptions?: UseMutationCustomOptions
+) {
+  const router = useRouter();
+  const { addToast } = useToastStore();
+  return useMutation({
+    mutationFn: (reviewUpdateArgs: UpdateReviewRgs) => updateMyReview(reviewId, reviewUpdateArgs),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.REVIEW.GET_REVIEWS, storeId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.STORE.GET_STORE_DETAIL, storeId],
+      });
+      addToast({
+        message: '리뷰를 수정했습니다.',
+        type: 'success',
+      });
+      router.replace(`/store/${storeId}`);
+    },
+    ...mutationOptions,
+  });
+}
+
+function useDeleteReview(
+  { reviewId, storeId }: { reviewId: number; storeId: number },
+  mutationOptions?: UseMutationCustomOptions
+) {
+  return useMutation({
+    mutationFn: (username: string) => deleteMyReview({ reviewId, username }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.REVIEW.GET_REVIEWS, storeId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.STORE.GET_STORE_DETAIL, storeId],
+      });
+    },
+    ...mutationOptions,
+  });
+}
+
+export { useGetReviews, useCreateReviews, useGetMyReview, useUpdateReview, useDeleteReview };

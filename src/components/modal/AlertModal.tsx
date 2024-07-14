@@ -2,6 +2,7 @@ import Button from '../Button';
 
 import { IoAlertCircleOutline, IoCloseCircleOutline, IoCheckmarkCircleOutline } from 'react-icons/io5';
 import ModalWrapper from './ModalWrapper';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   type: 'confirm' | 'warning' | 'error';
@@ -9,9 +10,11 @@ interface Props {
   description?: string;
   isOpen: boolean;
   close: () => void;
+  backUrl?: string;
 }
 
-export default function AlertModal({ isOpen, type, title, description, close }: Props) {
+export default function AlertModal({ isOpen, type, title, description, close, backUrl }: Props) {
+  const router = useRouter();
   const typeMap = {
     confirm: {
       icon: <IoCheckmarkCircleOutline size={40} color="#5CFF63" />,
@@ -26,15 +29,22 @@ export default function AlertModal({ isOpen, type, title, description, close }: 
 
   const selectedType = typeMap[type];
 
+  const onClose = () => {
+    if (backUrl) {
+      router.replace(backUrl);
+    }
+    close();
+  };
+
   return (
     isOpen && (
       <ModalWrapper>
-        <div className="flex flex-col gap-4 *:text-center">
+        <div aria-label="alert-modal" className="flex flex-col gap-4 *:text-center">
           <div className="flex justify-center items-center">{selectedType.icon}</div>
           <h1 className="font-bold text-subtitle leading-subtitle">{title || '서비스 장애가 발생하였습니다.'}</h1>
           {description && <p className="text-body leading-body">{description}</p>}
         </div>
-        <Button onClick={close} title="확인" size="lg" />
+        <Button onClick={onClose} title="확인" size="lg" />
       </ModalWrapper>
     )
   );

@@ -1,10 +1,10 @@
 interface Review {
   pk: number;
   user: {
-    name: string;
     avatar: string;
     username: string;
     date_joined: Date;
+    pk: number;
   };
   total_rating: number;
   taste_rating: number;
