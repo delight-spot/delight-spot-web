@@ -24,12 +24,6 @@ jest.mock('../Map.tsx', () => {
   };
 });
 
-jest.mock('../modal/LoginModal.tsx', () => {
-  return function MockLoginModal({ isOpen, onCloseModal }: { isOpen: boolean; onCloseModal: () => void }) {
-    return isOpen && <button onClick={onCloseModal} aria-label="loginModal-title" />;
-  };
-});
-
 jest.mock('../../utils/copyText.ts', () => ({
   copyToClipboard: jest.fn(),
 }));
@@ -77,7 +71,7 @@ describe('비로그인일 경우', () => {
     const { user } = await render(<StoreDetailInfo id={13} />);
     const [bookingIconWrapper] = screen.getAllByLabelText('icon-wrapper');
     await user.click(bookingIconWrapper);
-    const modalTitle = await screen.findByLabelText('loginModal-title');
+    const modalTitle = screen.getByText('로그인이 필요해요.');
 
     expect(modalTitle).toBeInTheDocument();
   });
@@ -86,7 +80,7 @@ describe('비로그인일 경우', () => {
     const { user } = await render(<StoreDetailInfo id={13} />);
     const reviewWriteButton = screen.getByLabelText('reviewForm-button');
     await user.click(reviewWriteButton);
-    const modalTitle = await screen.findByLabelText('loginModal-title');
+    const modalTitle = screen.getByText('로그인이 필요해요.');
 
     expect(modalTitle).toBeInTheDocument();
   });
