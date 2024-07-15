@@ -17,13 +17,13 @@ export default function AlertModal({ isOpen, type, title, description, close, ba
   const router = useRouter();
   const typeMap = {
     confirm: {
-      icon: <IoCheckmarkCircleOutline size={40} color="#5CFF63" />,
+      icon: <IoCheckmarkCircleOutline aria-label="confirm-icon" size={40} color="#5CFF63" />,
     },
     warning: {
-      icon: <IoAlertCircleOutline size={40} color="#FFBD53" />,
+      icon: <IoAlertCircleOutline aria-label="warning-icon" size={40} color="#FFBD53" />,
     },
     error: {
-      icon: <IoCloseCircleOutline size={40} color="#FF5F5F" />,
+      icon: <IoCloseCircleOutline aria-label="error-icon" size={40} color="#FF5F5F" />,
     },
   };
 
@@ -39,7 +39,7 @@ export default function AlertModal({ isOpen, type, title, description, close, ba
   return (
     isOpen && (
       <ModalWrapper>
-        <div aria-label="alert-modal" className="flex flex-col gap-4 *:text-center">
+        <div className="flex flex-col gap-4 *:text-center">
           <div className="flex justify-center items-center">{selectedType.icon}</div>
           <h1 className="font-bold text-subtitle leading-subtitle">{title || '서비스 장애가 발생하였습니다.'}</h1>
           {description && <p className="text-body leading-body">{description}</p>}
