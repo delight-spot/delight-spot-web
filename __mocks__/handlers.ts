@@ -19,6 +19,10 @@ export const handlers = [
     return res(ctx.status(200), ctx.json(storeList));
   }),
 
+  rest.post(`${API_BASE_URL}/stores`, (req, res, ctx) => {
+    return res(ctx.status(200));
+  }),
+
   rest.get(`${API_BASE_URL}/stores/:id`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(StoreDetailData));
   }),
@@ -33,5 +37,15 @@ export const handlers = [
 
   rest.post(`${API_BASE_URL}/bookings`, (req, res, ctx) => {
     return res(ctx.status(200));
+  }),
+
+  rest.post('/api/s3', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        isSuccess: true,
+        imageUrl: '/mock-test-image.png',
+      })
+    );
   }),
 ];

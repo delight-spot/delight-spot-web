@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import Input from '../Input';
 import FormLabel from './FormLabel';
