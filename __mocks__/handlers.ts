@@ -1,6 +1,7 @@
 import { rest } from 'msw';
 import storeData from '../src/server/response/stores.json';
 import reviewList from '../src/server/response/reviews.json';
+import userInfo from '../src/server/response/users.json';
 import StoreDetailData from '../src/server/response/storeDetail.json';
 
 const API_BASE_URL = '/api/v1';
@@ -36,15 +37,19 @@ export const handlers = [
     return res(ctx.status(200), ctx.json(reviewData));
   }),
 
+  rest.post(`${API_BASE_URL}/stores/:id/reviews`, (req, res, ctx) => {
+    return res(ctx.status(200));
+  }),
+
+  rest.delete(`${API_BASE_URL}/users/${userInfo.username}/reviews/:id`, (req, res, ctx) => {
+    return res(ctx.status(200));
+  }),
+
   rest.get(`${API_BASE_URL}/users/me`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(null));
   }),
 
   rest.post(`${API_BASE_URL}/bookings`, (req, res, ctx) => {
-    return res(ctx.status(200));
-  }),
-
-  rest.post(`${API_BASE_URL}/stores/:id/reviews`, (req, res, ctx) => {
     return res(ctx.status(200));
   }),
 

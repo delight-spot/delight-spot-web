@@ -19,7 +19,7 @@ export default function Avatar({ avatarUrl, size }: Props) {
         <Image src={avatarUrl} alt={'avatar'} className="rounded-full overflow-hidden" data-testid="avatar" fill />
       ) : (
         <div className="absolute w-full h-full rounded-full overflow-hidden bg-[#64748b] flex items-center justify-center">
-          <IoPerson size={size / 2} color="white" data-testid="detail-person-icon" />
+          <IoPerson aria-label="noneAvatarIcon" size={size / 2} color="white" data-testid="detail-person-icon" />
         </div>
       )}
     </div>
