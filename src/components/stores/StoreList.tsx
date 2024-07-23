@@ -5,12 +5,12 @@ import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { useEffect, useRef } from 'react';
 import { useStoreListTabState } from '@/store/useStoreListTabStore';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 
 import StoreItem from './StoreItem';
 import EmptyNotice from '../EmptyNotice';
 
 import { storeTabList } from '@/constants';
+import StoreTabList from './StoreTabList';
 
 export default function StoreList() {
   const { selectedTab, setSelectedTab } = useStoreListTabState();
@@ -26,8 +26,8 @@ export default function StoreList() {
     }
   }, [isInterSecting, fetchNextPage, isSuccess]);
 
-  const handleSelectTab = (tabKey: 'all' | 'food' | 'cafe') => {
-    setSelectedTab(tabKey);
+  const handleSelectTab = (tabKey: string) => {
+    setSelectedTab(tabKey as 'all' | 'food' | 'cafe');
   };
 
   const hasStoreList = data?.pages && data.pages.some((item) => item.length > 0);
@@ -35,21 +35,12 @@ export default function StoreList() {
   return (
     <>
       <div className="p-4 pt-20">
-        <ul className="flex items-center gap-2 border-b">
-          {storeTabList.map((tab) => (
-            <li
-              data-testid="storeList-tab"
-              className="p-4 relative cursor-pointer"
-              key={tab.key}
-              onClick={() => handleSelectTab(tab.key)}
-            >
-              <p className={tab.key === selectedTab ? 'font-bold' : 'text-slate-S400'}>{tab.title}</p>
-              {tab.key === selectedTab && (
-                <motion.div layoutId="tab" className="border absolute w-full border-primary-P300 bottom-0 left-0" />
-              )}
-            </li>
-          ))}
-        </ul>
+        <StoreTabList
+          onTabClick={handleSelectTab}
+          selectedTabKey={selectedTab}
+          tabList={storeTabList}
+          type="mainStore"
+        />
       </div>
 
       {!isPending &&
