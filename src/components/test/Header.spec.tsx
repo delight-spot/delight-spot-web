@@ -26,6 +26,7 @@ it('헤더의 메뉴 버튼을 클릭하면 customMenu로 전달한 다양한 �
 
   await user.click(screen.getByLabelText('menu-button'));
   expect(screen.getByText('공지사항')).toBeInTheDocument();
+  expect(screen.getByText('마이페이지')).toBeInTheDocument();
 });
 
 it('isBack을 props로 전달하지 않으면 back-icon을 노출하지 않는다.', async () => {
