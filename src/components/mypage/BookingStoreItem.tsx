@@ -10,9 +10,10 @@ import { useToggleBooking } from '@/hooks/queries/useBookings';
 
 interface Props {
   item: BookingStore;
+  size?: number | string;
 }
 
-export default function BookingStoreItem({ item }: Props) {
+export default function BookingStoreItem({ item, size = 156 }: Props) {
   const { mutate: deleteBooking } = useToggleBooking(item.pk);
   return (
     <li className="relative flex-none flex flex-col gap-2">
@@ -27,7 +28,13 @@ export default function BookingStoreItem({ item }: Props) {
           취소
         </button>
       </div>
-      <div className="size-[156px] relative">
+      <div
+        style={{
+          width: size,
+          height: size,
+        }}
+        className="relative"
+      >
         {item?.photos && item.photos.length > 0 ? (
           <ImageSlider images={item.photos} />
         ) : (

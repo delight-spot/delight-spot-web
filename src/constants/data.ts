@@ -1,6 +1,6 @@
 import { RatingTitle } from '@/types/domain/stores';
 
-const mainHeaderMene = [
+const mainHeaderMenu = [
   { title: '마이페이지', key: 'myPage', url: '/my' },
   { title: '공지사항', key: 'notice', url: '/notice' },
 ];
@@ -55,4 +55,4 @@ const storeRatingList: RatingTitle[] = [
   'restroom_rating',
 ] as const;
 
-export { storeTabList, storeTypeList, myMenuList, storeRatingList, petFriendlyOptions, myStoreTabList, mainHeaderMene };
+export { storeTabList, storeTypeList, myMenuList, storeRatingList, petFriendlyOptions, myStoreTabList, mainHeaderMenu };
