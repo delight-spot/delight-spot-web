@@ -1,26 +1,18 @@
 import { RatingTitle } from '@/types/domain/stores';
-import { paths } from './paths';
 
-const homeMenuList = [
+const mainHeaderMene = [
+  { title: '마이페이지', key: 'myPage', url: '/my' },
+  { title: '공지사항', key: 'notice', url: '/notice' },
+];
+
+const myStoreTabList = [
+  {
+    title: '추천 스토어',
+    key: 'recommend',
+  },
   {
     title: '찜 스토어',
     key: 'booking',
-    url: paths.BOOKING_STORE,
-  },
-  {
-    title: '공유 스토어',
-    key: 'share',
-    url: paths.SHARE_STORE,
-  },
-  {
-    title: '마이페이지',
-    key: 'myPage',
-    url: paths.MY_PAGE,
-  },
-  {
-    title: '공지사항',
-    key: 'notice',
-    url: paths.NOTICE,
   },
 ] as const;
 
@@ -63,4 +55,4 @@ const storeRatingList: RatingTitle[] = [
   'restroom_rating',
 ] as const;
 
-export { homeMenuList, storeTabList, storeTypeList, myMenuList, storeRatingList, petFriendlyOptions };
+export { storeTabList, storeTypeList, myMenuList, storeRatingList, petFriendlyOptions, myStoreTabList, mainHeaderMene };

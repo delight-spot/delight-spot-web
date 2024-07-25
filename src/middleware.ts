@@ -5,7 +5,7 @@ import { ACCESS_TOKEN } from './constants';
 function filterPrivatePath(path: string) {
   const privatePathPatterns = [
     /^\/store\/(create|edit)(\/\d+)?$/, //
-    /^\/my\/\d+$/,
+    /^\/my/,
     /^\/profile\/\d+$/,
     /^\/store\/\d+\/review\/edit\/\d+$/,
     /^\/store\/\d+\/review$/,

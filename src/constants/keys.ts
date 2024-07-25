@@ -10,6 +10,9 @@ const queryKeys = {
     GET_REVIEWS: 'GetReviews',
     GET_MY_REVIEW: 'GetMyReview',
   },
+  BOOKING: {
+    GET_BOOKINGS: 'GetBookings',
+  },
 } as const;
 
 const ACCESS_TOKEN = 'access_token';
