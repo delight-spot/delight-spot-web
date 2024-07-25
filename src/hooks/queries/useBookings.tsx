@@ -1,15 +1,51 @@
-import { queryKeys } from '@/constants';
+import { number, queryKeys } from '@/constants';
 import { queryClient } from '@/QueryProvider';
-import { toggleBooking } from '@/services/store/bookings';
+import { getBookingStoreList, toggleBooking } from '@/services/store/bookings';
+import { useStoreListTabState } from '@/store/useStoreListTabStore';
 import { useToastStore } from '@/store/useToastStore';
-import { UseMutationCustomOptions } from '@/types/common';
-import { StoreDetail } from '@/types/domain/stores';
-import { useMutation } from '@tanstack/react-query';
+import { ErrorStatus, UseMutationCustomOptions } from '@/types/common';
+import { BookingStore, StoreDetail } from '@/types/domain/stores';
+import {
+  InfiniteData,
+  keepPreviousData,
+  QueryKey,
+  useInfiniteQuery,
+  UseInfiniteQueryOptions,
+  useMutation,
+} from '@tanstack/react-query';
 
-export function useGetBookingList() {}
+export function useGetBookingList(
+  selectedType: string = 'all',
+  queryOptions?: UseInfiniteQueryOptions<
+    BookingStore[],
+    ErrorStatus,
+    InfiniteData<BookingStore[], number>,
+    BookingStore[],
+    QueryKey,
+    number
+  >
+) {
+  return useInfiniteQuery({
+    queryFn: ({ pageParam }) => {
+      return getBookingStoreList({ page: pageParam, type: selectedType });
+    },
+    queryKey: [queryKeys.BOOKING.GET_BOOKINGS, selectedType],
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPage) => {
+      if (lastPage.length < number.INFINITE_QUERY_OFFSET) return undefined;
+      const lastFeed = lastPage.at(-1);
+      return lastFeed ? allPage.length + 1 : undefined;
+    },
+    staleTime: number.QUERY_ONE_HOUR_TIMES,
+    gcTime: number.QUERY_ONE_HOUR_TIMES,
+    placeholderData: keepPreviousData,
+    ...queryOptions,
+  });
+}
 
 export function useToggleBooking(storeId: number, mutationOptions?: UseMutationCustomOptions) {
   const { addToast } = useToastStore();
+  const selectedTab = useStoreListTabState((state) => state.selectedTab);
   return useMutation({
     mutationFn: (storeId: number) => toggleBooking(storeId),
     onMutate: (storeId: number) => {
@@ -33,7 +69,14 @@ export function useToggleBooking(storeId: number, mutationOptions?: UseMutationC
         type: 'error',
       });
     },
-    onSuccess: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.BOOKING.GET_BOOKINGS, selectedTab],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.STORE.GET_STORES, selectedTab],
+      });
+    },
     ...mutationOptions,
   });
 }

@@ -1,3 +1,4 @@
+import { User } from '@/types/domain/user';
 import api from './httpClient';
 
 const kakaoAuthCode = async (code: string): Promise<{ is_member?: boolean; kakao_jwt?: string }> => {
@@ -25,7 +26,7 @@ const logout = async () => {
   return response;
 };
 
-const getMyInfo = async () => {
+const getMyInfo = async (): Promise<User> => {
   const response = await (await api('/users/me')).data;
   return response;
 };

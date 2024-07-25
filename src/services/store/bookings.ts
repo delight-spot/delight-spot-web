@@ -4,13 +4,17 @@ import api from '../httpClient';
 type BookingListParams = {
   page: number;
   keyword?: string;
-  type: KindMenu;
+  type?: string;
 };
 
-const getBookingStoreList = async ({ storeId, params }: { storeId: number; params: BookingListParams }) => {
+const getBookingStoreList = async ({ page, type, keyword }: BookingListParams) => {
   const response = await (
     await api.get(`/bookings`, {
-      params,
+      params: {
+        ...(type !== 'all' && { type }),
+        page,
+        keyword,
+      },
     })
   ).data;
   return response;
