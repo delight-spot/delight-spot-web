@@ -1,6 +1,6 @@
 'use client';
 
-import BookingStoreList from './BookingStoreList';
+import BookingStoreList from './LimitBookingStoreList';
 import RecommendStoreList from './RecommendStoreList';
 import StoreTypeTitle from './StoreTypeTitle';
 
