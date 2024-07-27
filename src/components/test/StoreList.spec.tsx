@@ -5,6 +5,19 @@ import storeData from '../../../src/server/response/stores.json';
 import { translateKindMenu } from '@/utils/translateToKorean';
 import { KindMenu } from '@/types/domain/stores';
 
+const routerPush = jest.fn();
+const routerReplace = jest.fn();
+
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      prefetch: () => null,
+      push: routerPush,
+      replace: routerReplace,
+    };
+  },
+}));
+
 it('스토어 리스트의 아이템 항목과 상세페이지로 이동하는 올바른 링크가 제대로 표시된다.', async () => {
   await render(<StoreList />);
 
