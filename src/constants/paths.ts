@@ -1,8 +1,6 @@
 const paths = {
   HOME: 'home',
-  BOOKING_STORE: 'booking-store',
-  SHARE_STORE: 'share-store',
-  MY_PAGE: 'my-page',
+  MY_PAGE: 'my',
   NOTICE: 'notice',
 } as const;
 

@@ -6,6 +6,7 @@ type User = {
   gender: 'male' | 'female';
   date_joined: Date;
   is_host: boolean;
+  avatar: string;
 };
 
 export type { User };

@@ -33,7 +33,7 @@ export default function ReviewItem({ review, isOwner, storeId }: Props) {
   }, [moreViewModal]);
 
   return (
-    <li className="mt-10 first:mt-0 flex flex-col gap-3 relative">
+    <li aria-label="reviewItem" className="mt-10 first:mt-0 flex flex-col gap-3 relative">
       <div ref={menuWrapperRef} className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Avatar size={32} avatarUrl={review.user.avatar} />

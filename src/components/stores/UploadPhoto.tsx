@@ -28,6 +28,7 @@ export default function UploadPhoto({ onSetFileUrls }: Props) {
     mutate: upload,
     isPending,
     error,
+    data,
   } = useUploadImage({
     onSuccess: (data) => {
       if (data.imageUrl) {
@@ -55,6 +56,7 @@ export default function UploadPhoto({ onSetFileUrls }: Props) {
   return (
     <div className="flex items-end gap-2">
       <label
+        aria-label="upload-image"
         htmlFor="photo"
         className="size-24 aspect-square bg-slate-S200 flex items-center justify-center rounded-lg cursor-pointer relative overflow-hidden"
       >

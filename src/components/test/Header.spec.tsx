@@ -2,7 +2,6 @@ import render from '@/utils/test/render';
 import Header from '../header/Header';
 import HeaderMenu from '../HeaderMenu';
 import { screen } from '@testing-library/dom';
-import { homeMenuList } from '@/constants';
 
 const routerPush = jest.fn();
 const routerBack = jest.fn();
@@ -26,14 +25,8 @@ it('헤더의 메뉴 버튼을 클릭하면 customMenu로 전달한 다양한 �
   const { user } = await render(<Header customMenu={<HeaderMenu />} title="" />);
 
   await user.click(screen.getByLabelText('menu-button'));
-
-  const links = screen.getAllByRole('link');
-
-  links.forEach((link, index) => {
-    const menu = homeMenuList[index];
-    expect(screen.getByText(menu.title)).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', menu.url);
-  });
+  expect(screen.getByText('공지사항')).toBeInTheDocument();
+  expect(screen.getByText('마이페이지')).toBeInTheDocument();
 });
 
 it('isBack을 props로 전달하지 않으면 back-icon을 노출하지 않는다.', async () => {

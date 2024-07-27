@@ -166,7 +166,12 @@ export default function StoreCreateForm() {
             <FormLabel text="애완동물 가능 여부" />
             <ul className="flex gap-4 items-center">
               {petFriendlyOptions.map((item) => (
-                <li onClick={() => onSelectorPetFriendly(item)} key={item} className="flex items-center gap-1">
+                <li
+                  aria-label="petFriendOptionLi"
+                  onClick={() => onSelectorPetFriendly(item)}
+                  key={item}
+                  className="flex items-center gap-1"
+                >
                   <FormLabel text={translatePetFriendlyType(item)} />
                   <RadioButton checked={petFriendlyChecked(getValues('petFriendly')) === item} />
                 </li>

@@ -4,21 +4,31 @@ import { useGetInfiniteStores } from '@/hooks/queries/useStores';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { useEffect, useRef } from 'react';
 import { useStoreListTabState } from '@/store/useStoreListTabStore';
+import { useModal } from '@/hooks/useModal';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 
 import StoreItem from './StoreItem';
 import EmptyNotice from '../EmptyNotice';
+import StoreTabList from './StoreTabList';
+import LoginModal from '../modal/LoginModal';
+import AlertModal from '../modal/AlertModal';
 
 import { storeTabList } from '@/constants';
 
 export default function StoreList() {
   const { selectedTab, setSelectedTab } = useStoreListTabState();
-  const { data, fetchNextPage, isPending, hasNextPage, isSuccess } = useGetInfiniteStores(selectedTab);
+  const { data, fetchNextPage, isPending, isSuccess, error: storeListError } = useGetInfiniteStores(selectedTab);
   const limitRef = useRef<HTMLDivElement | null>(null);
   const { isInterSecting } = useIntersectionObserver({
     node: limitRef.current,
   });
+  const errorModal = useModal();
+
+  useEffect(() => {
+    if (storeListError) {
+      errorModal.show();
+    }
+  }, [storeListError, errorModal]);
 
   useEffect(() => {
     if (isSuccess && isInterSecting) {
@@ -26,8 +36,8 @@ export default function StoreList() {
     }
   }, [isInterSecting, fetchNextPage, isSuccess]);
 
-  const handleSelectTab = (tabKey: 'all' | 'food' | 'cafe') => {
-    setSelectedTab(tabKey);
+  const handleSelectTab = (tabKey: string) => {
+    setSelectedTab(tabKey as 'all' | 'food' | 'cafe');
   };
 
   const hasStoreList = data?.pages && data.pages.some((item) => item.length > 0);
@@ -35,21 +45,12 @@ export default function StoreList() {
   return (
     <>
       <div className="p-4 pt-20">
-        <ul className="flex items-center gap-2 border-b">
-          {storeTabList.map((tab) => (
-            <li
-              data-testid="storeList-tab"
-              className="p-4 relative cursor-pointer"
-              key={tab.key}
-              onClick={() => handleSelectTab(tab.key)}
-            >
-              <p className={tab.key === selectedTab ? 'font-bold' : 'text-slate-S400'}>{tab.title}</p>
-              {tab.key === selectedTab && (
-                <motion.div layoutId="tab" className="border absolute w-full border-primary-P300 bottom-0 left-0" />
-              )}
-            </li>
-          ))}
-        </ul>
+        <StoreTabList
+          onTabClick={handleSelectTab}
+          selectedTabKey={selectedTab}
+          tabList={storeTabList}
+          type="mainStore"
+        />
       </div>
 
       {!isPending &&
@@ -65,6 +66,11 @@ export default function StoreList() {
           <EmptyNotice height={400} />
         ))}
       <div ref={limitRef} className="mt-4" />
+      {storeListError?.statusCode === 401 ? (
+        <LoginModal isOpen={errorModal.isVisible} onCloseModal={errorModal.hide} />
+      ) : (
+        <AlertModal close={errorModal.hide} isOpen={errorModal.isVisible} type="error" />
+      )}
     </>
   );
 }

@@ -26,7 +26,12 @@ export default function ReviewRating({ onRatingChange, ratings }: Props) {
           <li key={label} className="flex items-center gap-3">
             <label className="mr-4">{translateRatingTitle(label)}</label>
             {[1, 2, 3, 4, 5].map((rating) => (
-              <button key={rating} type="button" onClick={() => onRatingChange(label, rating)}>
+              <button
+                aria-label={`${label}-${rating}-score`}
+                key={rating}
+                type="button"
+                onClick={() => onRatingChange(label, rating)}
+              >
                 <FaStar size={24} className={rating <= ratings[label] ? 'text-yellow-500' : 'text-gray-300'} />
               </button>
             ))}
