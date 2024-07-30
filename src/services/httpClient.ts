@@ -3,7 +3,7 @@ import { getCookie } from 'cookies-next';
 import { ACCESS_TOKEN } from '@/constants';
 import { handleNetworkError } from '@/utils/handleNetworkError';
 
-export const SSR_BASE_URL = 'http://localhost:8000/api/v1';
+export const SSR_BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1`;
 export const CSR_BASE_URL = '/api/v1/';
 
 const isServer = typeof window === 'undefined';
