@@ -81,8 +81,7 @@ export default function StoreDetailInfo({ id }: Props) {
     if (isError) {
       modal.show();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isError, modal]);
 
   return (
     <div className="pb-5">
@@ -190,7 +189,7 @@ export default function StoreDetailInfo({ id }: Props) {
       </div>
 
       <LoginModal isOpen={loginModal.isVisible} onCloseModal={loginModal.hide} />
-      <AlertModal isOpen={modal.isVisible} close={modal.hide} type="error" />
+      <AlertModal isOpen={modal.isVisible} close={modal.hide} type="error" backUrl="/" />
     </div>
   );
 }
