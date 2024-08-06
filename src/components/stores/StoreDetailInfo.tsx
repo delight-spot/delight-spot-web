@@ -81,7 +81,8 @@ export default function StoreDetailInfo({ id }: Props) {
     if (isError) {
       modal.show();
     }
-  }, [isError, modal]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="pb-5">
