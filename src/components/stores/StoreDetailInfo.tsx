@@ -51,7 +51,7 @@ export default function StoreDetailInfo({ id }: Props) {
 
   const { isLoggedIn } = useUser();
 
-  const { mutate: toggleBooking } = useToggleBooking(id);
+  const { mutate: toggleBooking } = useToggleBooking();
 
   const ratingList: { title: RatingTitle; rating: number }[] = data
     ? storeRatingList.reduce<{ title: RatingTitle; rating: number }[]>((acc, title) => {
