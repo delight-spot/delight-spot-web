@@ -60,7 +60,7 @@ interface StoreDetail {
 interface BookingStore {
   pk: number;
   name: string;
-  photos: string[];
+  photos: string[][];
   create_at: Date;
 }
 

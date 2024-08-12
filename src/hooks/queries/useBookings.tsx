@@ -14,13 +14,18 @@ import {
   useMutation,
 } from '@tanstack/react-query';
 
+type BookingStoreList = {
+  pk: number;
+  store: BookingStore[];
+};
+
 export function useGetBookingList(
   selectedType: string = 'all',
   queryOptions?: UseInfiniteQueryOptions<
-    BookingStore[],
+    BookingStoreList[],
     ErrorStatus,
-    InfiniteData<BookingStore[], number>,
-    BookingStore[],
+    InfiniteData<BookingStoreList[], number>,
+    BookingStoreList[],
     QueryKey,
     number
   >

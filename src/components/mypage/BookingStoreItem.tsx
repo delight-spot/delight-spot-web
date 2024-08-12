@@ -19,7 +19,7 @@ export default function BookingStoreItem({ item, size = 156 }: Props) {
     <li className="relative flex-none flex flex-col gap-2">
       <div className="flex items-center justify-between">
         <Link href={`/store/${item.pk}`} className="text-black text-body-s">
-          {item.name}
+          {item.name.length > 8 ? `${item.name.slice(0, 8)}...` : item.name}
         </Link>
         <button
           onClick={() => deleteBooking(item.pk)}
@@ -36,7 +36,7 @@ export default function BookingStoreItem({ item, size = 156 }: Props) {
         className="relative"
       >
         {item?.photos && item.photos.length > 0 ? (
-          <ImageSlider images={item.photos} />
+          <ImageSlider images={item.photos[0]} />
         ) : (
           <div
             className="absolute w-full h-full bg-slate-200 flex items-center justify-center"

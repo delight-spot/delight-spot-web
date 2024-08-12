@@ -64,7 +64,7 @@ export default function LimitBookingStoreList() {
     <div className="relative w-full group">
       {showBackButton && <ListMoveButton direction="left" onClick={handleBackClick} />}
       <ul ref={listRef} className="flex items-center gap-4 overflow-x-auto relative pb-1">
-        {data?.pages.flat().map((item) => (
+        {data?.pages[0][0].store.map((item) => (
           <BookingStoreItem item={item} key={item.pk} />
         ))}
       </ul>
@@ -75,11 +75,13 @@ export default function LimitBookingStoreList() {
           isHide={data?.pages && data?.pages[0].length < 5}
         />
       )}
-      <div className="flex items-center justify-end text-label text-primary-P300 font-semibold">
-        <Link href="/my/bookings" className="p-1">
-          더보기
-        </Link>
-      </div>
+      {data?.pages && data?.pages[0][0].store.length > 0 && (
+        <div className="flex items-center justify-end text-label text-primary-P300 font-semibold">
+          <Link href="/my/bookings" className="p-1">
+            더보기
+          </Link>
+        </div>
+      )}
 
       {getBookingListError?.statusCode === 401 ? (
         <LoginModal isOpen={errorModal.isVisible} onCloseModal={errorModal.hide} />
