@@ -61,7 +61,7 @@ interface BookingStore {
   pk: number;
   name: string;
   photos: string[][];
-  create_at: Date;
+  created_at: string | Date;
 }
 
 export type { SellingList, Store, KindMenu, StoreDetail, RatingTitle, BookingStore, PetFriendlyOption };
