@@ -17,6 +17,7 @@ export default function StoreItem({ store }: Props) {
   const handleImageError = () => {
     setImageError(true);
   };
+
   return (
     <li className="flex gap-2">
       <div className="relative w-[8rem] h-[8rem] rounded-md overflow-hidden ">
