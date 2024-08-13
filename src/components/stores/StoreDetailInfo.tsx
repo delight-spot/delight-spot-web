@@ -95,7 +95,12 @@ export default function StoreDetailInfo({ id }: Props) {
 
   return (
     <div className="pb-5">
-      <Header title={data?.name ?? ''} isBack customMenu={data?.is_owner && <StoreDetailMenu storeId={id} />} />
+      <Header
+        title={data?.name ?? ''}
+        isBack
+        backUrl="/"
+        customMenu={data?.is_owner && <StoreDetailMenu storeId={id} />}
+      />
       <div className="pt-20 min-w-sm md:w-md m-auto">
         <div className="flex items-center gap-2 mb-4 px-4">
           <Avatar size={40} avatarUrl={data?.owner.avatar} />

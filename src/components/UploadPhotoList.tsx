@@ -43,6 +43,7 @@ export default function UploadPhotoList({ fileUrls = [], onDeleteFileUrls }: Pro
                 </div>
               )}
               <button
+                type="button"
                 onClick={() => deleteImage(fileUrls[index])}
                 className="absolute right-1 top-0 z-20 p-1 bg-system-S200 rounded-full hover:bg-system-S100 transition-colors"
               >
