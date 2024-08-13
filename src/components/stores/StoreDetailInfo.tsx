@@ -35,6 +35,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { copyToClipboard } from '@/utils/copyText';
 import { storeRatingList } from '@/constants';
+import { useToastStore } from '@/store/useToastStore';
 const Maps = dynamic(() => import('../Map'), {
   ssr: false,
 });
@@ -45,6 +46,7 @@ interface Props {
 
 export default function StoreDetailInfo({ id }: Props) {
   const { data, isError } = useGetStoreDetail(id);
+  const { addToast } = useToastStore();
   const router = useRouter();
   const modal = useModal();
   const loginModal = useModal();
@@ -75,6 +77,14 @@ export default function StoreDetailInfo({ id }: Props) {
   const onReviewForm = () => {
     if (!isLoggedIn) return loginModal.show();
     router.push(`/store/${id}/review`);
+  };
+
+  const onCopyAddress = async () => {
+    await copyToClipboard(data?.city ?? '');
+    addToast({
+      message: '주소를 복사했습니다.',
+      type: 'success',
+    });
   };
 
   useEffect(() => {
@@ -127,7 +137,7 @@ export default function StoreDetailInfo({ id }: Props) {
             <button
               aria-label="city-copy-button"
               className="flex items-center gap-1 cursor-pointer"
-              onClick={() => copyToClipboard(data?.city ?? '')}
+              onClick={onCopyAddress}
             >
               <span className="text-label leading-label text-primary-P300 font-semibold max-w-[200px] ">
                 {data?.city}
